@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Comunidad Campesina de Apurí</title>
+
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
+
+    <!-- Archivos de nuestra aplicación -->
+    <script src="js/supabase.js"></script>
     <script src="js/inicio.js"></script>
-<script src="js/inicio.js"></script>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -18,9 +27,13 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: #f5f7f4;
+            background: #f4f6f3;
             color: #26352b;
         }
+
+        /* =========================
+           HEADER
+        ========================= */
 
         header {
             background: #285943;
@@ -31,6 +44,7 @@
         .header-content {
             max-width: 1100px;
             margin: auto;
+
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -47,18 +61,26 @@
             margin-left: 20px;
         }
 
+        /* =========================
+           HERO
+        ========================= */
+
         .hero {
-            background: linear-gradient(
-                rgba(20, 60, 40, 0.75),
-                rgba(20, 60, 40, 0.75)
-            ),
-            url("https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1600&q=80");
+
+            background:
+                linear-gradient(
+                    rgba(20, 60, 40, 0.75),
+                    rgba(20, 60, 40, 0.75)
+                ),
+                url("https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1600&q=80");
 
             background-size: cover;
             background-position: center;
 
             color: white;
+
             padding: 90px 20px;
+
             text-align: center;
         }
 
@@ -73,133 +95,262 @@
         }
 
         .button {
+
             display: inline-block;
+
             background: #e5b94b;
             color: #1e3024;
+
             padding: 13px 25px;
+
             border-radius: 8px;
+
             text-decoration: none;
+
             font-weight: bold;
         }
 
+        /* =========================
+           CONTENEDOR
+        ========================= */
+
         .container {
+
             max-width: 1100px;
+
             margin: 40px auto;
+
             padding: 0 20px;
         }
 
         .section-title {
+
             text-align: center;
+
             margin-bottom: 25px;
         }
 
+        .section-title h2 {
+            margin-bottom: 8px;
+        }
+
+        /* =========================
+           TARJETAS ECONÓMICAS
+        ========================= */
+
         .cards {
+
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
             gap: 18px;
         }
 
         .card {
+
             background: white;
+
             border-radius: 12px;
+
             padding: 25px;
+
             text-align: center;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+
+            box-shadow:
+                0 3px 12px
+                rgba(0, 0, 0, 0.08);
         }
 
         .card .icon {
+
             font-size: 32px;
+
             margin-bottom: 12px;
         }
 
         .card h3 {
+
             margin-bottom: 8px;
         }
 
         .amount {
+
             font-size: 24px;
+
             font-weight: bold;
+
             color: #285943;
         }
 
+        /* =========================
+           TRANSPARENCIA
+        ========================= */
+
         .transparency {
+
             background: white;
+
             padding: 30px;
+
             border-radius: 12px;
+
             margin-top: 30px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+
+            box-shadow:
+                0 3px 12px
+                rgba(0, 0, 0, 0.08);
+        }
+
+        .transparency h2 {
+
+            margin-bottom: 15px;
         }
 
         .movement {
+
             display: flex;
-            justify-content: space-between;
+
+            justify-content:
+                space-between;
+
             padding: 15px 0;
-            border-bottom: 1px solid #ddd;
+
+            border-bottom:
+                1px solid #ddd;
         }
 
         .income {
+
             color: #287a46;
+
             font-weight: bold;
         }
 
         .expense {
+
             color: #a33a32;
+
             font-weight: bold;
         }
 
+        /* =========================
+           FOOTER
+        ========================= */
+
         footer {
+
             margin-top: 60px;
+
             background: #1d3d2c;
+
             color: white;
+
             text-align: center;
+
             padding: 30px 20px;
         }
 
+        /* =========================
+           CELULAR
+        ========================= */
+
         @media (max-width: 800px) {
+
             .cards {
-                grid-template-columns: repeat(2, 1fr);
+
+                grid-template-columns:
+                    repeat(2, 1fr);
             }
 
             .hero h1 {
+
                 font-size: 32px;
             }
         }
 
         @media (max-width: 500px) {
+
             .header-content {
+
                 flex-direction: column;
+
                 gap: 12px;
             }
 
             nav a {
+
                 margin: 0 8px;
             }
 
             .cards {
+
                 grid-template-columns: 1fr;
             }
+
+            .hero {
+
+                padding: 70px 20px;
+            }
+
+            .hero h1 {
+
+                font-size: 28px;
+            }
+
+            .movement {
+
+                gap: 15px;
+            }
         }
+
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
+
 </head>
+
 
 <body>
 
+
+<!-- =========================
+     CABECERA
+========================= -->
+
 <header>
+
     <div class="header-content">
-        <div class="logo">🌿 Comunidad de Apurí</div>
+
+        <div class="logo">
+            🌿 Comunidad de Apurí
+        </div>
 
         <nav>
-            <a href="#transparencia">Transparencia</a>
-            <a href="#">Ingresar</a>
+
+            <a href="#transparencia">
+                Transparencia
+            </a>
+
+            <a href="#">
+                Ingresar
+            </a>
+
         </nav>
+
     </div>
+
 </header>
+
+
+<!-- =========================
+     PRESENTACIÓN
+========================= -->
 
 <section class="hero">
 
-    <h1>Comunidad Campesina de Apurí</h1>
+    <h1>
+        Comunidad Campesina de Apurí
+    </h1>
 
     <p>
         Gestión comunal, participación y transparencia
@@ -211,77 +362,186 @@
 
 </section>
 
+
+<!-- =========================
+     INFORMACIÓN ECONÓMICA
+========================= -->
+
 <section class="container">
 
     <div class="section-title">
-        <h2>Situación económica comunal</h2>
-        <p>Información económica de carácter público para los comuneros.</p>
+
+        <h2>
+            Situación económica comunal
+        </h2>
+
+        <p>
+            Información económica de carácter público
+            para los comuneros.
+        </p>
+
     </div>
+
 
     <div class="cards">
 
-    <div class="card">
-        <div class="icon">💰</div>
-        <h3>Ingresos</h3>
-        <div class="amount" id="total-ingresos">Cargando...</div>
+
+        <!-- INGRESOS -->
+
+        <div class="card">
+
+            <div class="icon">
+                💰
+            </div>
+
+            <h3>
+                Ingresos
+            </h3>
+
+            <div
+                class="amount"
+                id="total-ingresos">
+
+                Cargando...
+
+            </div>
+
+        </div>
+
+
+        <!-- EGRESOS -->
+
+        <div class="card">
+
+            <div class="icon">
+                💸
+            </div>
+
+            <h3>
+                Egresos
+            </h3>
+
+            <div
+                class="amount"
+                id="total-egresos">
+
+                Cargando...
+
+            </div>
+
+        </div>
+
+
+        <!-- SALDO -->
+
+        <div class="card">
+
+            <div class="icon">
+                🏦
+            </div>
+
+            <h3>
+                Saldo
+            </h3>
+
+            <div
+                class="amount"
+                id="total-saldo">
+
+                Cargando...
+
+            </div>
+
+        </div>
+
+
+        <!-- MULTAS -->
+
+        <div class="card">
+
+            <div class="icon">
+                ⚠️
+            </div>
+
+            <h3>
+                Multas pendientes
+            </h3>
+
+            <div
+                class="amount"
+                id="total-multas">
+
+                Cargando...
+
+            </div>
+
+        </div>
+
+
     </div>
 
-    <div class="card">
-        <div class="icon">💸</div>
-        <h3>Egresos</h3>
-        <div class="amount" id="total-egresos">Cargando...</div>
-    </div>
 
-    <div class="card">
-        <div class="icon">🏦</div>
-        <h3>Saldo</h3>
-        <div class="amount" id="total-saldo">Cargando...</div>
-    </div>
+    <!-- =========================
+         MOVIMIENTOS
+    ========================= -->
 
-    <div class="card">
-        <div class="icon">⚠️</div>
-        <h3>Multas pendientes</h3>
-        <div class="amount" id="total-multas">Cargando...</div>
-    </div>
+    <div
+        class="transparency"
+        id="transparencia">
 
-</div>
-    <div class="transparency" id="transparencia">
-
-        <h2>📊 Últimos movimientos</h2>
+        <h2>
+            📊 Últimos movimientos
+        </h2>
 
         <div class="movement">
-            <span>Aporte voluntario</span>
-            <span class="income">+ S/ 100.00</span>
+
+            <span>
+                Aportes voluntarios
+            </span>
+
+            <span class="income">
+                Se mostrarán desde Supabase
+            </span>
+
         </div>
 
         <div class="movement">
-            <span>Aporte voluntario</span>
-            <span class="income">+ S/ 50.00</span>
-        </div>
 
-        <div class="movement">
-            <span>Compra de herramientas para faena</span>
-            <span class="expense">- S/ 420.00</span>
-        </div>
+            <span>
+                Egresos comunales
+            </span>
 
-        <div class="movement">
-            <span>Compra de materiales</span>
-            <span class="expense">- S/ 280.00</span>
+            <span class="expense">
+                Se mostrarán desde Supabase
+            </span>
+
         </div>
 
     </div>
+
 
 </section>
 
+
+<!-- =========================
+     PIE DE PÁGINA
+========================= -->
+
 <footer>
 
-    <strong>Comunidad Campesina de Apurí</strong>
+    <strong>
+        Comunidad Campesina de Apurí
+    </strong>
 
     <p style="margin-top: 10px;">
+
         Portal de Gestión y Transparencia Comunal
+
     </p>
 
 </footer>
 
+
 </body>
+
 </html>
