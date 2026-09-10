@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Mi Portal - Comunidad de Apurí</title>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Configuración de Supabase -->
+    <script src="js/supabase.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f3;
+            color: #26352b;
+        }
+
+        header {
+            background: #285943;
+            color: white;
+            padding: 18px 20px;
+        }
+
+        .header-content {
+            max-width: 1100px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logout-button {
+            background: transparent;
+            color: white;
+
+            border: 1px solid rgba(255,255,255,0.6);
+
+            padding: 9px 15px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.08);
+
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            color: #285943;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .cards {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.08);
+
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .card h2 {
+            color: #285943;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .error {
+            background: #fdecec;
+            color: #a33a32;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            margin-top: 20px;
+        }
+
+        footer {
+            margin-top: 60px;
+
+            background: #1d3d2c;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 30px 20px;
+        }
+
+        @media (max-width: 700px) {
+
+            .header-content {
+                gap: 15px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome {
+                padding: 25px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="header-content">
+
+        <div class="logo">
+            🌿 Comunidad de Apurí
+        </div>
+
+        <button
+            class="logout-button"
+            id="logout-button">
+
+            Cerrar sesión
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+    <div
+        id="loading"
+        class="loading">
+
+        Verificando sesión...
+
+    </div>
+
+
+    <div
+        id="dashboard"
+        style="display: none;">
+
+
+        <section class="welcome">
+
+            <h1>
+                Mi Portal Comunal
+            </h1>
+
+            <p>
+                Bienvenido al Portal de Gestión y Transparencia
+                de la Comunidad Campesina de Apurí.
+            </p>
+
+            <p style="margin-top: 10px;">
+                Desde aquí podrás consultar tu información
+                comunal, pagos, faenas, asistencias y multas.
+            </p>
+
+        </section>
+
+
+        <section class="cards">
+
+
+            <div class="card">
+
+                <div class="icon">
+                    👤
+                </div>
+
+                <h2>
+                    Mis datos
+                </h2>
+
+                <p>
+                    Consulta tu información como comunero.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">
+                    💰
+                </div>
+
+                <h2>
+                    Mis pagos
+                </h2>
+
+                <p>
+                    Consulta tus aportes, pagos y saldos.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">
+                    🤝
+                </div>
+
+                <h2>
+                    Mis faenas
+                </h2>
+
+                <p>
+                    Consulta tus faenas y asistencias.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">
+                    ⚠️
+                </div>
+
+                <h2>
+                    Mis multas
+                </h2>
+
+                <p>
+                    Consulta las multas registradas a tu nombre.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">
+                    📊
+                </div>
+
+                <h2>
+                    Transparencia comunal
+                </h2>
+
+                <p>
+                    Consulta la información económica
+                    disponible para los comuneros activos.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">
+                    📋
+                </div>
+
+                <h2>
+                    Mi situación
+                </h2>
+
+                <p>
+                    Consulta un resumen de tu situación comunal.
+                </p>
+
+            </div>
+
+
+        </section>
+
+    </div>
+
+
+    <div
+        id="error"
+        class="error"
+        style="display: none;">
+
+        No se pudo verificar la sesión.
+
+    </div>
+
+
+</main>
+
+
+<footer>
+
+    <strong>
+        Comunidad Campesina de Apurí
+    </strong>
+
+    <p style="margin-top: 10px;">
+        Portal de Gestión y Transparencia Comunal
+    </p>
+
+</footer>
+
+
+<script>
+
+    async function verificarSesion() {
+
+        const loading =
+            document.getElementById("loading");
+
+        const dashboard =
+            document.getElementById("dashboard");
+
+        const error =
+            document.getElementById("error");
+
+
+        const {
+            data,
+            error: sessionError
+        } = await supabaseClient.auth.getSession();
+
+
+        if (
+            sessionError ||
+            !data.session
+        ) {
+
+            window.location.href = "login.html";
+
+            return;
+        }
+
+
+        loading.style.display = "none";
+
+        dashboard.style.display = "block";
+
+    }
+
+
+    async function cerrarSesion() {
+
+        const {
+            error
+        } = await supabaseClient.auth.signOut();
+
+
+        if (error) {
+
+            console.error(
+                "Error al cerrar sesión:",
+                error
+            );
+
+            return;
+        }
+
+
+        window.location.href = "login.html";
+
+    }
+
+
+    document
+        .getElementById("logout-button")
+        .addEventListener(
+            "click",
+            cerrarSesion
+        );
+
+
+    verificarSesion();
+
+</script>
+
+
+</body>
+
+</html>
