@@ -274,6 +274,34 @@
             margin-top: 10px;
         }
 
+        .multas-panel {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-top: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .total-multas {
+            background: #fff6e8;
+            border-radius: 10px;
+            padding: 12px 18px;
+            text-align: right;
+            min-width: 145px;
+        }
+
+        .total-multas span {
+            display: block;
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .total-multas strong {
+            color: #a15c00;
+            font-size: 20px;
+        }
+
         @media (max-width: 700px) {
 
             .header-content {
@@ -302,6 +330,10 @@
 
             .cards {
                 grid-template-columns: 1fr;
+            }
+
+            .total-multas {
+                text-align: left;
             }
 
             .pagos-panel {
@@ -614,6 +646,45 @@
     </div>
 
 
+        <section class="multas-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>⚠️ Mis multas</h2>
+                    <p>Consulta las multas pendientes registradas a tu nombre.</p>
+                </div>
+                <div class="total-multas">
+                    <span>Total pendiente</span>
+                    <strong id="total-multas">S/ 0.00</strong>
+                </div>
+            </div>
+
+            <div id="multas-loading" class="panel-loading">
+                Cargando multas...
+            </div>
+
+            <div id="multas-vacio" class="panel-empty" style="display:none;">
+                No tienes multas pendientes. 🎉
+            </div>
+
+            <div class="tabla-contenedor" id="tabla-multas-contenedor" style="display:none;">
+                <table class="tabla-pagos">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Concepto</th>
+                            <th>Estado</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-multas-body"></tbody>
+                </table>
+            </div>
+
+            <div id="multas-error" class="panel-error" style="display:none;">
+                No se pudieron cargar tus multas.
+            </div>
+        </section>
+
     <div
         id="error"
         class="error"
@@ -842,6 +913,60 @@
     }
 
 
+    async function cargarMisMultas() {
+
+        const loading = document.getElementById("multas-loading");
+        const vacio = document.getElementById("multas-vacio");
+        const tabla = document.getElementById("tabla-multas-contenedor");
+        const body = document.getElementById("tabla-multas-body");
+        const error = document.getElementById("multas-error");
+        const totalElemento = document.getElementById("total-multas");
+
+        const {
+            data: multas,
+            error: rpcError
+        } = await supabaseClient.rpc("obtener_mis_multas");
+
+        loading.style.display = "none";
+
+        if (rpcError) {
+            console.error("Error obteniendo multas:", rpcError);
+            error.style.display = "block";
+            return;
+        }
+
+        if (!multas || multas.length === 0) {
+            vacio.style.display = "block";
+            return;
+        }
+
+        let total = 0;
+        body.innerHTML = "";
+
+        multas.forEach(multa => {
+            const monto = Number(multa.monto || 0);
+            total += monto;
+
+            const fila = document.createElement("tr");
+            const fecha = multa.fecha
+                ? new Date(multa.fecha + "T00:00:00").toLocaleDateString("es-PE")
+                : "-";
+
+            fila.innerHTML = `
+                <td>${fecha}</td>
+                <td>${multa.concepto || "-"}</td>
+                <td>${multa.estado || "-"}</td>
+                <td>S/ ${monto.toFixed(2)}</td>
+            `;
+
+            body.appendChild(fila);
+        });
+
+        totalElemento.textContent = "S/ " + total.toFixed(2);
+        tabla.style.display = "block";
+    }
+
+
     async function cerrarSesion() {
 
         const {
@@ -875,6 +1000,7 @@
 
     verificarSesion();
     cargarMisPagos();
+    cargarMisMultas();
 
 </script>
 
