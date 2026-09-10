@@ -10,10 +10,8 @@
 
     <title>Mi Portal - Comunidad de Apurí</title>
 
-    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- Configuración de Supabase -->
     <script src="js/supabase.js"></script>
 
     <style>
@@ -39,7 +37,6 @@
         .header-content {
             max-width: 1100px;
             margin: auto;
-
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -53,13 +50,9 @@
         .logout-button {
             background: transparent;
             color: white;
-
             border: 1px solid rgba(255,255,255,0.6);
-
             padding: 9px 15px;
-
             border-radius: 7px;
-
             cursor: pointer;
         }
 
@@ -75,15 +68,9 @@
 
         .welcome {
             background: white;
-
             border-radius: 14px;
-
             padding: 30px;
-
-            box-shadow:
-                0 3px 12px
-                rgba(0,0,0,0.08);
-
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
             margin-bottom: 25px;
         }
 
@@ -92,32 +79,67 @@
             margin-bottom: 10px;
         }
 
+        .welcome-name {
+            font-size: 25px;
+            font-weight: bold;
+            color: #26352b;
+            margin: 15px 0 8px;
+        }
+
         .welcome p {
             color: #666;
             line-height: 1.6;
         }
 
+        .datos-personales {
+            margin-top: 22px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .dato {
+            background: #f4f6f3;
+            padding: 15px;
+            border-radius: 9px;
+        }
+
+        .dato-label {
+            display: block;
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .dato-value {
+            font-weight: bold;
+            color: #285943;
+        }
+
+        .estado-activo {
+            color: #067647;
+        }
+
         .cards {
             display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
+            grid-template-columns: repeat(3, 1fr);
             gap: 18px;
         }
 
         .card {
             background: white;
-
             border-radius: 12px;
-
             padding: 25px;
-
-            box-shadow:
-                0 3px 12px
-                rgba(0,0,0,0.08);
-
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
             text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
         }
 
         .icon {
@@ -146,23 +168,16 @@
         .error {
             background: #fdecec;
             color: #a33a32;
-
             padding: 20px;
-
             border-radius: 10px;
-
             margin-top: 20px;
         }
 
         footer {
             margin-top: 60px;
-
             background: #1d3d2c;
-
             color: white;
-
             text-align: center;
-
             padding: 30px 20px;
         }
 
@@ -172,12 +187,28 @@
                 gap: 15px;
             }
 
-            .cards {
-                grid-template-columns: 1fr;
+            .logo {
+                font-size: 17px;
+            }
+
+            .container {
+                margin-top: 25px;
             }
 
             .welcome {
                 padding: 25px 20px;
+            }
+
+            .welcome-name {
+                font-size: 21px;
+            }
+
+            .datos-personales {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
             }
 
         }
@@ -234,15 +265,96 @@
                 Mi Portal Comunal
             </h1>
 
+            <div
+                id="nombre-comunero"
+                class="welcome-name">
+
+                Cargando...
+
+            </div>
+
             <p>
                 Bienvenido al Portal de Gestión y Transparencia
                 de la Comunidad Campesina de Apurí.
             </p>
 
-            <p style="margin-top: 10px;">
-                Desde aquí podrás consultar tu información
-                comunal, pagos, faenas, asistencias y multas.
-            </p>
+            <div class="datos-personales">
+
+                <div class="dato">
+
+                    <span class="dato-label">
+                        Código
+                    </span>
+
+                    <span
+                        id="dato-codigo"
+                        class="dato-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="dato">
+
+                    <span class="dato-label">
+                        DNI
+                    </span>
+
+                    <span
+                        id="dato-dni"
+                        class="dato-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="dato">
+
+                    <span class="dato-label">
+                        Centro poblado
+                    </span>
+
+                    <span
+                        id="dato-centro"
+                        class="dato-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="dato">
+
+                    <span class="dato-label">
+                        Celular
+                    </span>
+
+                    <span
+                        id="dato-celular"
+                        class="dato-value">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="dato">
+
+                    <span class="dato-label">
+                        Estado
+                    </span>
+
+                    <span
+                        id="dato-estado"
+                        class="dato-value estado-activo">
+                        -
+                    </span>
+
+                </div>
+
+            </div>
 
         </section>
 
@@ -278,7 +390,7 @@
                 </h2>
 
                 <p>
-                    Consulta tus aportes, pagos y saldos.
+                    Consulta tus aportes y pagos realizados.
                 </p>
 
             </div>
@@ -291,11 +403,11 @@
                 </div>
 
                 <h2>
-                    Mis faenas
+                    Mis actividades
                 </h2>
 
                 <p>
-                    Consulta tus faenas y asistencias.
+                    Consulta tus faenas, reuniones y asistencias.
                 </p>
 
             </div>
@@ -329,8 +441,7 @@
                 </h2>
 
                 <p>
-                    Consulta la información económica
-                    disponible para los comuneros activos.
+                    Consulta los ingresos y gastos de la comunidad.
                 </p>
 
             </div>
@@ -339,15 +450,15 @@
             <div class="card">
 
                 <div class="icon">
-                    📋
+                    🏘️
                 </div>
 
                 <h2>
-                    Mi situación
+                    Datos de mi comunidad
                 </h2>
 
                 <p>
-                    Consulta un resumen de tu situación comunal.
+                    Consulta información y autoridades de la comunidad.
                 </p>
 
             </div>
@@ -398,6 +509,11 @@
             document.getElementById("error");
 
 
+        /*
+         * Primero comprobamos que exista
+         * una sesión válida.
+         */
+
         const {
             data,
             error: sessionError
@@ -413,6 +529,99 @@
 
             return;
         }
+
+
+        /*
+         * Ahora obtenemos los datos del
+         * comunero correspondiente a esta sesión.
+         */
+
+        const {
+            data: comunero,
+            error: comuneroError
+        } = await supabaseClient.rpc(
+            "obtener_mi_comunero"
+        );
+
+
+        if (
+            comuneroError ||
+            !comunero ||
+            comunero.length === 0
+        ) {
+
+            console.error(
+                "Error obteniendo datos del comunero:",
+                comuneroError
+            );
+
+            loading.style.display = "none";
+
+            error.style.display = "block";
+
+            error.textContent =
+                "No se pudieron cargar sus datos comunales.";
+
+            return;
+        }
+
+
+        const datos = comunero[0];
+
+
+        /*
+         * Si por alguna razón el comunero
+         * está inactivo, cerramos la sesión.
+         */
+
+        if (datos.estado !== "ACTIVO") {
+
+            await supabaseClient.auth.signOut();
+
+            window.location.href = "login.html";
+
+            return;
+        }
+
+
+        /*
+         * Mostrar datos reales.
+         */
+
+        document.getElementById(
+            "nombre-comunero"
+        ).textContent =
+            datos.nombres + " " + datos.apellidos;
+
+
+        document.getElementById(
+            "dato-codigo"
+        ).textContent =
+            datos.codigo;
+
+
+        document.getElementById(
+            "dato-dni"
+        ).textContent =
+            datos.dni;
+
+
+        document.getElementById(
+            "dato-centro"
+        ).textContent =
+            datos.centro_poblado || "No registrado";
+
+
+        document.getElementById(
+            "dato-celular"
+        ).textContent =
+            datos.celular || "No registrado";
+
+
+        document.getElementById(
+            "dato-estado"
+        ).textContent =
+            datos.estado;
 
 
         loading.style.display = "none";
