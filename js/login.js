@@ -1,171 +1,190 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const form = document.getElementById("login-form");
-    const dniInput = document.getElementById("dni");
-    const passwordInput = document.getElementById("password");
-    const button = document.getElementById("login-button");
-    const message = document.getElementById("message");
+    const form = document.querySelector("form");
 
-
-    function mostrarMensaje(texto, tipo) {
-
-        message.textContent = texto;
-
-        message.className = "message " + tipo;
+    if (!form) {
+        console.error("No se encontró el formulario de login.");
+        return;
     }
 
+    const dniInput =
+        document.querySelector("#dni") ||
+        document.querySelector('input[name="dni"]') ||
+        document.querySelector('input[type="text"]');
+
+    const passwordInput =
+        document.querySelector("#password") ||
+        document.querySelector('input[name="password"]') ||
+        document.querySelector('input[type="password"]');
+
+    const mensaje =
+        document.querySelector("#mensaje") ||
+        document.querySelector("#error-message") ||
+        document.querySelector(".mensaje") ||
+        document.querySelector(".error-message");
 
     form.addEventListener("submit", async (event) => {
 
         event.preventDefault();
 
-        const dni = dniInput.value.trim();
-        const password = passwordInput.value;
+        const dni = dniInput?.value.trim() || "";
+        const password = passwordInput?.value || "";
 
+        if (!dni || !password) {
+
+            mostrarMensaje(
+                "Ingrese su DNI y contraseña.",
+                true
+            );
+
+            return;
+        }
 
         if (!/^\d{8}$/.test(dni)) {
 
             mostrarMensaje(
-                "Ingrese un DNI válido de 8 dígitos.",
-                "error"
+                "El DNI debe tener 8 dígitos.",
+                true
             );
 
             return;
         }
 
+        const boton =
+            form.querySelector('button[type="submit"]') ||
+            form.querySelector("button");
 
-        if (!password) {
+        const textoOriginal =
+            boton ? boton.textContent : "";
 
-            mostrarMensaje(
-                "Ingrese su contraseña.",
-                "error"
-            );
-
-            return;
+        if (boton) {
+            boton.disabled = true;
+            boton.textContent = "Ingresando...";
         }
 
-
-        button.disabled = true;
-        button.textContent = "Ingresando...";
-
-        mostrarMensaje("", "");
-
+        mostrarMensaje("Validando sus datos...", false);
 
         try {
 
             /*
-             * PASO 1
-             * Buscamos el usuario mediante su DNI.
-             *
-             * La función de Supabase solamente
-             * devuelve usuarios de comuneros ACTIVOS.
+             * Enviamos DNI + contraseña a nuestra
+             * Edge Function de Supabase.
              */
 
-            const {
-                data: usuario,
-                error: errorDni
-            } = await supabaseClient.rpc(
-                "obtener_login_por_dni",
-                {
-                    p_dni: dni
-                }
-            );
+            const { data, error } =
+                await supabaseClient.functions.invoke(
+                    "login-dni",
+                    {
+                        body: {
+                            dni: dni,
+                            password: password
+                        }
+                    }
+                );
 
+            console.log("Respuesta login:", data);
 
-            if (errorDni) {
+            if (error) {
 
                 console.error(
-                    "Error al buscar DNI:",
-                    errorDni
+                    "Error llamando a login-dni:",
+                    error
                 );
 
                 mostrarMensaje(
-                    "No se pudo verificar el DNI. Intente nuevamente.",
-                    "error"
+                    "No fue posible comunicarse con el servicio de acceso.",
+                    true
                 );
 
                 return;
             }
 
-
             /*
-             * Si no existe resultado,
-             * el DNI no pertenece a un comunero activo.
+             * Comunero inactivo
              */
 
-            if (!usuario || usuario.length === 0) {
+            if (data?.inactive) {
 
                 mostrarMensaje(
-                    "El DNI no está registrado como comunero activo.",
-                    "error"
+                    data.message ||
+                    "Su condición actual como comunero se encuentra INACTIVA.",
+                    true
                 );
 
                 return;
             }
 
+            /*
+             * Usuario o contraseña incorrectos
+             */
 
-            const email = usuario[0].email;
+            if (
+                !data?.success ||
+                !data?.session?.access_token ||
+                !data?.session?.refresh_token
+            ) {
 
+                mostrarMensaje(
+                    data?.message ||
+                    "DNI o contraseña incorrectos.",
+                    true
+                );
+
+                return;
+            }
 
             /*
-             * PASO 2
-             * Autenticamos al usuario mediante
-             * Supabase Auth.
+             * Guardamos la sesión de Supabase.
              *
-             * El comunero NO necesita conocer
-             * este correo interno.
+             * Desde este momento dashboard.html
+             * podrá reconocer al usuario autenticado.
              */
 
             const {
-                data: sesion,
-                error: errorLogin
-            } = await supabaseClient.auth.signInWithPassword({
+                access_token,
+                refresh_token
+            } = data.session;
 
-                email: email,
-
-                password: password
-
+            const {
+                data: sessionData,
+                error: sessionError
+            } = await supabaseClient.auth.setSession({
+                access_token,
+                refresh_token
             });
 
-
-            if (errorLogin) {
+            if (sessionError) {
 
                 console.error(
-                    "Error de autenticación:",
-                    errorLogin
+                    "Error guardando sesión:",
+                    sessionError
                 );
 
                 mostrarMensaje(
-                    "DNI o contraseña incorrectos.",
-                    "error"
+                    "No fue posible establecer la sesión.",
+                    true
                 );
 
                 return;
             }
 
+            console.log(
+                "Sesión establecida correctamente:",
+                sessionData
+            );
 
             /*
-             * Login correcto.
+             * Login exitoso.
              */
 
-            console.log(
-                "Usuario autenticado:",
-                sesion.user
-            );
-
-
             mostrarMensaje(
-                "Ingreso correcto. Redirigiendo...",
-                "success"
+                "Acceso correcto. Ingresando...",
+                false
             );
-
 
             setTimeout(() => {
-
                 window.location.href = "dashboard.html";
-
-            }, 800);
-
+            }, 500);
 
         } catch (error) {
 
@@ -175,18 +194,38 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             mostrarMensaje(
-                "Ocurrió un error. Intente nuevamente.",
-                "error"
+                "Ocurrió un error al procesar el acceso.",
+                true
             );
 
         } finally {
 
-            button.disabled = false;
+            if (boton) {
+                boton.disabled = false;
+                boton.textContent = textoOriginal;
+            }
+        }
+    });
 
-            button.textContent = "🔐 Ingresar";
 
+    function mostrarMensaje(texto, esError) {
+
+        if (mensaje) {
+
+            mensaje.textContent = texto;
+
+            mensaje.style.display = "block";
+
+            if (esError) {
+                mensaje.style.color = "#b42318";
+            } else {
+                mensaje.style.color = "#067647";
+            }
+
+            return;
         }
 
-    });
+        console.log(texto);
+    }
 
 });
