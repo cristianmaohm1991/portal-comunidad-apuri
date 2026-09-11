@@ -415,6 +415,21 @@
             color: #68736e;
         }
 
+        .badge-programada {
+            background: #eef5f0;
+            color: #285943;
+        }
+
+        .badge-cerrada {
+            background: #f1f3f2;
+            color: #4d5953;
+        }
+
+        .badge-postergada {
+            background: #fff8ed;
+            color: #9b5b00;
+        }
+
         .badge-multa {
             color: #9b5b00;
             font-weight: 700;
@@ -851,6 +866,7 @@
                             <th>Tipo</th>
                             <th>Fecha</th>
                             <th>Lugar</th>
+                            <th>Estado</th>
                             <th>Asistencia</th>
                             <th>Multa</th>
                         </tr>
@@ -1231,14 +1247,30 @@
                   ).toLocaleDateString("es-PE")
                 : "-";
 
-            let asistencia;
+            const estado = actividad.estado || "-";
 
-            if (actividad.asistio === true) {
-                asistencia = '<span class="badge badge-ok">✓ Asistió</span>';
-            } else if (actividad.asistio === false) {
-                asistencia = '<span class="badge badge-no">✕ No asistió</span>';
+            let estadoBadge;
+
+            if (estado === "PROGRAMADA") {
+                estadoBadge = '<span class="badge badge-programada">PROGRAMADA</span>';
+            } else if (estado === "CERRADA") {
+                estadoBadge = '<span class="badge badge-cerrada">CERRADA</span>';
+            } else if (estado === "POSTERGADA") {
+                estadoBadge = '<span class="badge badge-postergada">POSTERGADA</span>';
             } else {
-                asistencia = '<span class="badge badge-pendiente">Pendiente</span>';
+                estadoBadge = '<span class="badge badge-pendiente">' + estado + '</span>';
+            }
+
+            let asistencia = "—";
+
+            if (estado === "CERRADA") {
+                if (actividad.asistio === true) {
+                    asistencia = '<span class="badge badge-ok">✓ Asistió</span>';
+                } else if (actividad.asistio === false) {
+                    asistencia = '<span class="badge badge-no">✕ No asistió</span>';
+                } else {
+                    asistencia = '<span class="badge badge-pendiente">Sin registro</span>';
+                }
             }
 
             const multa = Number(actividad.multa || 0);
@@ -1248,6 +1280,7 @@
                 <td>${actividad.tipo || "-"}</td>
                 <td>${fecha}</td>
                 <td>${actividad.lugar || "-"}</td>
+                <td>${estadoBadge}</td>
                 <td>${asistencia}</td>
                 <td class="badge-multa">
                     ${multa > 0 ? "S/ " + multa.toFixed(2) : "—"}
