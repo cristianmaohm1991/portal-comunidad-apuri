@@ -47,6 +47,7 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <button class="tab" data-open="empresa">🏢 Empresa / tercero</button>
 <button class="tab" data-open="egreso">➖ Egreso</button>
 <button class="tab" data-open="historial">📋 Historial</button>
+<button class="tab" data-open="actividades">📅 Actividades</button>
 </div>
 
 <section id="aporte" class="panel">
@@ -131,18 +132,55 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 </div>
 <div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>Fondo</th><th>Medio</th><th>Monto</th><th>Comprobante</th><th>Observación</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="tabla"><tr><td colspan="10" class="empty">Cargando...</td></tr></tbody></table></div>
 </section>
+
+<section id="actividades" class="panel hide">
+<h2>📅 Actividades y asistencia</h2>
+<div class="result" style="margin-bottom:16px">
+  <b>Flujo:</b> crear actividad → registrar asistencia → cerrar actividad → generar multas automáticamente.
+</div>
+
+<div class="grid">
+<div class="field full"><label>Título de la actividad *</label><input id="tituloAct" maxlength="200" placeholder="Ej.: Faena de limpieza" required></div>
+<div class="field"><label>Tipo *</label><select id="tipoAct"><option value="FAENA">🔨 Faena</option><option value="REUNION">👥 Reunión</option></select></div>
+<div class="field"><label>Fecha *</label><input type="date" id="fechaAct" required></div>
+<div class="field"><label>Lugar</label><input id="lugarAct" maxlength="200" placeholder="Ej.: Centro poblado San Jerónimo"></div>
+<div class="field"><label>Multa por inasistencia (S/) *</label><input type="number" id="multaAct" min="0" step="0.01" value="0"></div>
+<div class="field full"><label>Descripción</label><textarea id="descripcionAct" maxlength="500" placeholder="Detalle de la actividad"></textarea></div>
+</div>
+<div class="actions"><button class="btn primary" id="crearAct">➕ Crear actividad</button><button class="btn secondary" id="refrescarAct">🔄 Actualizar</button></div>
+
+<div class="tablewrap">
+<table style="min-width:850px">
+<thead><tr><th>Fecha</th><th>Actividad</th><th>Tipo</th><th>Lugar</th><th>Multa</th><th>Estado</th><th>Acción</th></tr></thead>
+<tbody id="tablaActividades"><tr><td colspan="7" class="empty">Cargando...</td></tr></tbody>
+</table>
+</div>
+
+<div id="asistenciaBox" class="panel hide" style="margin-top:20px;background:#f8faf8">
+<h2 id="tituloAsistencia">Registrar asistencia</h2>
+<div id="infoActividad" class="small"></div>
+<div class="tablewrap">
+<table style="min-width:700px">
+<thead><tr><th>Código</th><th>Comunero</th><th>DNI</th><th>Asistencia</th><th>Observación</th></tr></thead>
+<tbody id="tablaAsistencia"></tbody>
+</table>
+</div>
+<div class="actions"><button class="btn primary" id="guardarAsistencias">💾 Guardar asistencia</button><button class="btn secondary" id="cerrarAct">🔒 Cerrar actividad y generar multas</button></div>
+</div>
+</section>
 </main>
 
 <script>
 const sb=supabaseClient;
 let comuneroA=null, comuneroM=null, multaSeleccionada=null, movimientos=[];
+let actividades=[], actividadSeleccionada=null, asistenciaActual=[];
 
 const $=id=>document.getElementById(id);
 const money=n=>'S/ '+Number(n||0).toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
 function msg(t,e=false){const x=$('msg');x.textContent=t;x.className='msg'+(e?' err':'');setTimeout(()=>x.classList.add('hide'),5500)}
 function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[s]))}
 function hoy(){return new Date().toISOString().slice(0,10)}
-function dates(){['fechaA','fechaE','fechaG'].forEach(x=>$(x).value=hoy())}
+function dates(){['fechaA','fechaE','fechaG'].forEach(x=>$(x).value=hoy());$('fechaAct').value=hoy()}
 
 async function acceso(){
  const {data:{session},error:sessionError}=await sb.auth.getSession();
@@ -167,6 +205,75 @@ async function buscarDNI(dni){
  const {data,error}=await sb.rpc('buscar_comunero_tesoreria',{p_dni:dni});
  if(error)throw error;
  return data?.[0]||null
+}
+
+async function cargarActividades(){
+ const {data,error}=await sb.rpc('obtener_actividades_tesoreria');
+ if(error){msg('Error al cargar actividades: '+error.message,true);return}
+ actividades=data||[];
+ $('tablaActividades').innerHTML=actividades.length?actividades.map(a=>{
+   const cerrada=a.estado==='CERRADA', anulada=a.estado==='ANULADA';
+   return `<tr><td>${esc(a.fecha)}</td><td><b>${esc(a.titulo)}</b>${a.descripcion?`<div class="small">${esc(a.descripcion)}</div>`:''}</td><td>${esc(a.tipo)}</td><td>${esc(a.lugar||'-')}</td><td>${money(a.multa_inasistencia)}</td><td><span class="estado ${cerrada?'estado-activo':anulada?'estado-anulado':'estado-activo'}">${esc(a.estado)}</span></td><td><button class="btn secondary btn-asistencia" data-id="${a.id}">👥 ${cerrada?'Ver asistencia':'Asistencia'}</button></td></tr>`
+ }).join(''):'<tr><td colspan="7" class="empty">No hay actividades registradas.</td></tr>';
+ document.querySelectorAll('.btn-asistencia').forEach(b=>b.onclick=()=>abrirAsistencia(b.dataset.id));
+}
+async function abrirAsistencia(id){
+ const a=actividades.find(x=>x.id===id); if(!a)return;
+ actividadSeleccionada=a;
+ $('tituloAsistencia').textContent='Asistencia: '+a.titulo;
+ $('infoActividad').textContent=`${a.fecha} · ${a.tipo} · Multa por inasistencia: ${money(a.multa_inasistencia)} · Estado: ${a.estado}`;
+ const {data,error}=await sb.rpc('obtener_asistencia_actividad',{p_actividad_id:id});
+ if(error){msg('Error al cargar asistencia: '+error.message,true);return}
+ asistenciaActual=data||[];
+ $('tablaAsistencia').innerHTML=asistenciaActual.map((x,i)=>`<tr><td>${esc(x.codigo)}</td><td><b>${esc(x.nombre_completo)}</b></td><td>${esc(x.dni)}</td><td><select class="asis-select" data-index="${i}" ${a.estado!=='PROGRAMADA'?'disabled':''}><option value="">Seleccionar</option><option value="PRESENTE" ${x.asistencia==='PRESENTE'?'selected':''}>🟢 Presente</option><option value="AUSENTE" ${x.asistencia==='AUSENTE'?'selected':''}>🔴 Ausente</option><option value="JUSTIFICADO" ${x.asistencia==='JUSTIFICADO'?'selected':''}>🟡 Justificado</option></select></td><td><input class="asis-obs" data-index="${i}" value="${esc(x.observacion||'')}" maxlength="200" ${a.estado!=='PROGRAMADA'?'disabled':''}></td></tr>`).join('');
+ $('guardarAsistencias').disabled=a.estado!=='PROGRAMADA';
+ $('cerrarAct').disabled=a.estado!=='PROGRAMADA';
+ $('asistenciaBox').classList.remove('hide');
+ $('asistenciaBox').scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('crearAct').onclick=async()=>{
+ const titulo=$('tituloAct').value.trim();
+ const fecha=$('fechaAct').value;
+ const multa=Number($('multaAct').value);
+ if(!titulo||!fecha||Number.isNaN(multa)||multa<0){msg('Completa título, fecha y una multa válida.',true);return}
+ const b=$('crearAct');b.disabled=true;b.textContent='Creando...';
+ const {data,error}=await sb.rpc('crear_actividad_tesoreria',{p_titulo:titulo,p_tipo:$('tipoAct').value,p_descripcion:$('descripcionAct').value.trim()||null,p_fecha:fecha,p_lugar:$('lugarAct').value.trim()||null,p_multa:multa});
+ b.disabled=false;b.textContent='➕ Crear actividad';
+ if(error){msg('No se pudo crear: '+error.message,true);return}
+ msg('Actividad creada correctamente.');
+ $('tituloAct').value='';$('descripcionAct').value='';$('lugarAct').value='';$('multaAct').value='0';$('tipoAct').value='FAENA';$('fechaAct').value=hoy();
+ await cargarActividades();
+}
+$('refrescarAct').onclick=cargarActividades;
+$('guardarAsistencias').onclick=async()=>{
+ if(!actividadSeleccionada||actividadSeleccionada.estado!=='PROGRAMADA')return;
+ const selects=document.querySelectorAll('.asis-select');
+ const obs=document.querySelectorAll('.asis-obs');
+ const faltantes=[];
+ for(let i=0;i<asistenciaActual.length;i++){
+   const estado=selects[i].value;
+   if(!estado)faltantes.push(asistenciaActual[i].nombre_completo);
+ }
+ if(faltantes.length){msg(`Falta registrar asistencia de ${faltantes.length} comunero(s).`,true);return}
+ const b=$('guardarAsistencias');b.disabled=true;b.textContent='Guardando...';
+ try{
+   for(let i=0;i<asistenciaActual.length;i++){
+     const {error}=await sb.rpc('guardar_asistencia_actividad',{p_actividad_id:actividadSeleccionada.id,p_comunero_id:asistenciaActual[i].comunero_id,p_asistencia:selects[i].value,p_observacion:obs[i].value.trim()||null});
+     if(error)throw error;
+   }
+   msg('Asistencias guardadas correctamente.');
+   await abrirAsistencia(actividadSeleccionada.id);
+ }catch(e){msg('No se pudieron guardar las asistencias: '+e.message,true)}finally{b.disabled=false;b.textContent='💾 Guardar asistencia'}
+}
+$('cerrarAct').onclick=async()=>{
+ if(!actividadSeleccionada||actividadSeleccionada.estado!=='PROGRAMADA')return;
+ const ok=confirm(`¿Cerrar la actividad "${actividadSeleccionada.titulo}"?\n\nAl cerrar se generarán automáticamente las multas de los ausentes. Esta acción no debe repetirse.`);
+ if(!ok)return;
+ const b=$('cerrarAct');b.disabled=true;b.textContent='Cerrando...';
+ const {error}=await sb.rpc('cerrar_actividad',{p_actividad_id:actividadSeleccionada.id});
+ if(error){msg('No se pudo cerrar: '+error.message,true);b.disabled=false;b.textContent='🔒 Cerrar actividad y generar multas';return}
+ msg('Actividad cerrada y multas generadas correctamente.');
+ await fondos();await cargarActividades();await abrirAsistencia(actividadSeleccionada.id);
 }
 $('buscarA').onclick=async()=>{
  const dni=$('dniA').value.trim(); if(!dni){msg('Ingresa un DNI.',true);return}
@@ -245,10 +352,10 @@ async function anularMovimiento(id){
 
 $('filtrar').onclick=cargar;$('todo').onclick=()=>{$('desde').value='';$('hasta').value='';cargar()};
 $('csv').onclick=()=>{if(!movimientos.length){msg('No hay movimientos para exportar.',true);return}const rows=[['Fecha','Tipo','Concepto','Fondo','Medio','Monto','Comprobante','Observación','Estado','Motivo anulación'],...movimientos.map(m=>[m.fecha,m.tipo,m.concepto,m.fondo||'',m.medio||'',m.monto,m.comprobante||'',m.observacion||'',m.estado||'ACTIVO',m.motivo_anulacion||''])];const csv=rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='movimientos_tesoreria.csv';a.click()};
-document.querySelectorAll('.tab[data-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab[data-open]').forEach(x=>x.classList.remove('active'));b.classList.add('active');['aporte','multa','empresa','egreso','historial'].forEach(id=>$(id).classList.add('hide'));$(b.dataset.open).classList.remove('hide');if(b.dataset.open==='historial')cargar()});
+document.querySelectorAll('.tab[data-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab[data-open]').forEach(x=>x.classList.remove('active'));b.classList.add('active');['aporte','multa','empresa','egreso','historial','actividades'].forEach(id=>$(id).classList.add('hide'));$(b.dataset.open).classList.remove('hide');if(b.dataset.open==='historial')cargar();if(b.dataset.open==='actividades')cargarActividades()});
 $('salir').onclick=async()=>{await sb.auth.signOut();location.href='login.html'};
 dates();
-(async()=>{if(await acceso()){await fondos();await cargar()}})();
+(async()=>{if(await acceso()){await fondos();await cargar();await cargarActividades()}})();
 </script>
 </body>
 </html>
