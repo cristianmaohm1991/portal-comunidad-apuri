@@ -331,7 +331,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 560px;
+            min-width: 760px;
         }
 
         th, td {
@@ -381,6 +381,52 @@
             line-height: 1.5;
         }
 
+
+        /* FONDOS / BOLSILLOS */
+        .funds-summary {
+            margin-bottom: 22px;
+        }
+
+        .funds-heading {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 11px;
+            color: var(--texto);
+        }
+
+        .funds-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .fund-card {
+            background: #f7f9f8;
+            border: 1px solid var(--borde);
+            border-radius: 11px;
+            padding: 17px 18px;
+        }
+
+        .fund-card .fund-label {
+            display: block;
+            color: var(--gris);
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .fund-card strong {
+            color: var(--verde);
+            font-size: 25px;
+        }
+
+        .fund-card.total {
+            background: var(--verde-suave);
+            border-color: #dce9e0;
+        }
+
+        .fund-card.total strong {
+            color: var(--verde-oscuro);
+        }
 
         /* TRANSPARENCIA */
         .transparency-summary {
@@ -513,6 +559,12 @@
             color: var(--gris);
             font-size: 12px;
             text-align: right;
+        }
+
+        .transparency-filter-note {
+            color: var(--gris);
+            font-size: 11px;
+            margin: -8px 0 15px;
         }
 
         /* SIMPLE INFORMATION PANELS */
@@ -747,6 +799,10 @@
         }
 
         @media (max-width: 650px) {
+
+            .funds-grid {
+                grid-template-columns: 1fr;
+            }
 
             .transparency-summary {
                 grid-template-columns: 1fr;
@@ -1037,8 +1093,36 @@
                 <h2>Transparencia comunal</h2>
             </div>
             <p class="panel-subtitle">
-                Consulta los ingresos, egresos y movimientos económicos de la comunidad.
+                Consulta la situación de los fondos y los movimientos económicos de la comunidad.
             </p>
+
+            <div class="funds-summary">
+                <div class="funds-heading">Situación actual de los fondos</div>
+
+                <div class="funds-grid">
+                    <div class="fund-card">
+                        <span class="fund-label">💵 Efectivo</span>
+                        <strong id="fondo-efectivo">S/ 0.00</strong>
+                    </div>
+
+                    <div class="fund-card">
+                        <span class="fund-label">🏦 Banco</span>
+                        <strong id="fondo-banco">S/ 0.00</strong>
+                    </div>
+
+                    <div class="fund-card">
+                        <span class="fund-label">📱 Yape</span>
+                        <strong id="fondo-yape">S/ 0.00</strong>
+                    </div>
+                </div>
+
+                <div class="funds-grid" style="margin-top:12px;">
+                    <div class="fund-card total">
+                        <span class="fund-label">💰 Total disponible</span>
+                        <strong id="fondo-total">S/ 0.00</strong>
+                    </div>
+                </div>
+            </div>
 
             <div class="transparency-summary">
                 <div class="transparency-card">
@@ -1082,6 +1166,10 @@
                 </button>
             </div>
 
+            <p class="transparency-filter-note">
+                Los filtros afectan el detalle de movimientos. La situación de fondos muestra el saldo actual de cada bolsillo.
+            </p>
+
             <div class="transparency-actions">
                 <button type="button" class="transparency-button secondary" id="btn-exportar-transparencia">
                     📥 Exportar CSV
@@ -1103,6 +1191,7 @@
                             <th>Fecha</th>
                             <th>Tipo</th>
                             <th>Concepto</th>
+                            <th>Fondo</th>
                             <th>Medio</th>
                             <th>Comprobante</th>
                             <th>Monto</th>
@@ -1121,9 +1210,8 @@
             </div>
 
             <p class="finance-note">
-                La información de esta sección corresponde a los movimientos económicos
-                registrados en la tesorería de la comunidad. Los filtros permiten consultar
-                períodos específicos y la información mostrada puede exportarse en formato CSV.
+                La información corresponde a los movimientos económicos registrados en la tesorería.
+                Los filtros permiten consultar períodos específicos y la información mostrada puede exportarse en formato CSV.
             </p>
         </section>
 
@@ -1528,7 +1616,6 @@
     }
 
 
-
     let movimientosTransparenciaActuales = [];
 
     function formatoSoles(monto) {
@@ -1576,6 +1663,37 @@
 
         document.getElementById("transparencia-saldo").textContent =
             formatoSoles(datos.saldo);
+    }
+
+    async function cargarSituacionFondos() {
+        const {
+            data: fondos,
+            error: rpcError
+        } = await supabaseClient.rpc("obtener_situacion_fondos");
+
+        if (rpcError) {
+            console.error("Error obteniendo situación de fondos:", rpcError);
+            throw rpcError;
+        }
+
+        const datos = fondos && fondos.length ? fondos[0] : {
+            efectivo: 0,
+            banco: 0,
+            yape: 0,
+            total: 0
+        };
+
+        document.getElementById("fondo-efectivo").textContent =
+            formatoSoles(datos.efectivo);
+
+        document.getElementById("fondo-banco").textContent =
+            formatoSoles(datos.banco);
+
+        document.getElementById("fondo-yape").textContent =
+            formatoSoles(datos.yape);
+
+        document.getElementById("fondo-total").textContent =
+            formatoSoles(datos.total);
     }
 
     async function cargarMovimientosTransparencia() {
@@ -1652,6 +1770,7 @@
                 <td>${fecha}</td>
                 <td>${tipo}</td>
                 <td>${movimiento.concepto || "-"}</td>
+                <td>${movimiento.fondo || "-"}</td>
                 <td>${movimiento.medio || "-"}</td>
                 <td>${movimiento.comprobante || "-"}</td>
                 <td class="${esIngreso ? "movement-income" : "movement-expense"}">
@@ -1672,6 +1791,7 @@
 
     async function cargarTransparencia() {
         try {
+            await cargarSituacionFondos();
             await cargarResumenCaja();
             await cargarMovimientosTransparencia();
         } catch (e) {
@@ -1690,7 +1810,6 @@
         const partes = mes.split("-");
         const anio = Number(partes[0]);
         const mesNumero = Number(partes[1]);
-
         const ultimoDia = new Date(anio, mesNumero, 0).getDate();
 
         document.getElementById("filtro-desde").value =
@@ -1711,6 +1830,7 @@
             "Fecha",
             "Tipo",
             "Concepto",
+            "Fondo",
             "Medio",
             "Comprobante",
             "Monto"
@@ -1720,6 +1840,7 @@
             movimiento.fecha || "",
             movimiento.tipo || "",
             movimiento.concepto || "",
+            movimiento.fondo || "",
             movimiento.medio || "",
             movimiento.comprobante || "",
             Number(movimiento.monto || 0).toFixed(2)
@@ -1737,7 +1858,6 @@
 
         const url = URL.createObjectURL(blob);
         const enlace = document.createElement("a");
-
         const hoy = new Date().toISOString().slice(0, 10);
 
         enlace.href = url;
