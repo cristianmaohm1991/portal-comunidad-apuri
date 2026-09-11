@@ -165,7 +165,7 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <tbody id="tablaAsistencia"></tbody>
 </table>
 </div>
-<div class="actions"><button class="btn primary" id="guardarAsistencias">💾 Guardar asistencia</button><button class="btn secondary" id="cerrarAct">🔒 Cerrar actividad y generar multas</button></div>
+<div class="actions" style="border-top:1px solid var(--bor);padding-top:15px"><button class="btn primary" id="guardarAsistencias">💾 Guardar asistencia</button><button class="btn primary" id="cerrarAct">🔒 Cerrar actividad y generar multas</button></div>
 </div>
 </section>
 </main>
@@ -213,9 +213,10 @@ async function cargarActividades(){
  actividades=data||[];
  $('tablaActividades').innerHTML=actividades.length?actividades.map(a=>{
    const cerrada=a.estado==='CERRADA', anulada=a.estado==='ANULADA';
-   return `<tr><td>${esc(a.fecha)}</td><td><b>${esc(a.titulo)}</b>${a.descripcion?`<div class="small">${esc(a.descripcion)}</div>`:''}</td><td>${esc(a.tipo)}</td><td>${esc(a.lugar||'-')}</td><td>${money(a.multa_inasistencia)}</td><td><span class="estado ${cerrada?'estado-activo':anulada?'estado-anulado':'estado-activo'}">${esc(a.estado)}</span></td><td><button class="btn secondary btn-asistencia" data-id="${a.id}">👥 ${cerrada?'Ver asistencia':'Asistencia'}</button></td></tr>`
+   return `<tr><td>${esc(a.fecha)}</td><td><b>${esc(a.titulo)}</b>${a.descripcion?`<div class="small">${esc(a.descripcion)}</div>`:''}</td><td>${esc(a.tipo)}</td><td>${esc(a.lugar||'-')}</td><td>${money(a.multa_inasistencia)}</td><td><span class="estado ${cerrada?'estado-activo':anulada?'estado-anulado':'estado-activo'}">${esc(a.estado)}</span></td><td><div class="actions" style="margin:0"><button class="btn secondary btn-asistencia" data-id="${a.id}">👥 ${cerrada?'Ver asistencia':'Asistencia'}</button>${a.estado==='PROGRAMADA'?`<button class="btn primary btn-cerrar-lista" data-id="${a.id}">🔒 Cerrar</button>`:''}</div></td></tr>`
  }).join(''):'<tr><td colspan="7" class="empty">No hay actividades registradas.</td></tr>';
  document.querySelectorAll('.btn-asistencia').forEach(b=>b.onclick=()=>abrirAsistencia(b.dataset.id));
+  document.querySelectorAll('.btn-cerrar-lista').forEach(b=>b.onclick=()=>cerrarActividad(b.dataset.id));
 }
 async function abrirAsistencia(id){
  const a=actividades.find(x=>x.id===id); if(!a)return;
@@ -265,16 +266,20 @@ $('guardarAsistencias').onclick=async()=>{
    await abrirAsistencia(actividadSeleccionada.id);
  }catch(e){msg('No se pudieron guardar las asistencias: '+e.message,true)}finally{b.disabled=false;b.textContent='💾 Guardar asistencia'}
 }
-$('cerrarAct').onclick=async()=>{
- if(!actividadSeleccionada||actividadSeleccionada.estado!=='PROGRAMADA')return;
- const ok=confirm(`¿Cerrar la actividad "${actividadSeleccionada.titulo}"?\n\nAl cerrar se generarán automáticamente las multas de los ausentes. Esta acción no debe repetirse.`);
+async function cerrarActividad(id){
+ const a=actividades.find(x=>x.id===id);if(!a||a.estado!=='PROGRAMADA')return;
+ const ok=confirm(`¿Cerrar la actividad "${a.titulo}"?\n\nAl cerrar se generarán automáticamente las multas de los ausentes. Esta acción no debe repetirse.`);
  if(!ok)return;
- const b=$('cerrarAct');b.disabled=true;b.textContent='Cerrando...';
- const {error}=await sb.rpc('cerrar_actividad',{p_actividad_id:actividadSeleccionada.id});
- if(error){msg('No se pudo cerrar: '+error.message,true);b.disabled=false;b.textContent='🔒 Cerrar actividad y generar multas';return}
+ const b=$('cerrarAct');if(b){b.disabled=true;b.textContent='Cerrando...';}
+ const {error}=await sb.rpc('cerrar_actividad',{p_actividad_id:id});
+ if(error){
+   if(b){b.disabled=false;b.textContent='🔒 Cerrar actividad y generar multas';}
+   msg('No se pudo cerrar: '+error.message,true);return;
+ }
  msg('Actividad cerrada y multas generadas correctamente.');
- await fondos();await cargarActividades();await abrirAsistencia(actividadSeleccionada.id);
+ await fondos();await cargarActividades();await abrirAsistencia(id);
 }
+$('cerrarAct').onclick=async()=>{if(!actividadSeleccionada)return;await cerrarActividad(actividadSeleccionada.id)};
 $('buscarA').onclick=async()=>{
  const dni=$('dniA').value.trim(); if(!dni){msg('Ingresa un DNI.',true);return}
  try{const p=await buscarDNI(dni);comuneroA=p;if(!p){$('personaA').classList.add('hide');msg('No se encontró un comunero con ese DNI.',true);return}
