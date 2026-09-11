@@ -220,7 +220,7 @@ $('formEgreso').onsubmit=async e=>{
  b.disabled=false;b.textContent='Registrar egreso';if(error){msg(error.message,true);return}msg('Egreso registrado correctamente.');$('formEgreso').reset();dates();await fondos();await cargar()
 }
 async function cargar(){
- const {data,error}=await sb.rpc('obtener_movimientos_transparencia',{p_fecha_inicio:$('desde').value||null,p_fecha_fin:$('hasta').value||null});
+ const {data,error}=await sb.rpc('obtener_historial_tesoreria',{p_fecha_inicio:$('desde').value||null,p_fecha_fin:$('hasta').value||null});
  if(error){msg('Error al cargar historial: '+error.message,true);return}movimientos=data||[];
  $('tabla').innerHTML=movimientos.length?movimientos.map(m=>{
  const anulado=m.estado==='ANULADO';
