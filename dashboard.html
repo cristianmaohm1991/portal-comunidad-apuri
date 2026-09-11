@@ -557,6 +557,61 @@
             font-size: 12px;
         }
 
+        /* CAMBIO DE CONTRASEÑA */
+        .password-box {
+            margin-top: 22px;
+            padding-top: 22px;
+            border-top: 1px solid var(--borde);
+        }
+        .password-box h3 { font-size: 16px; margin-bottom: 6px; }
+        .password-box p {
+            color: var(--gris); font-size: 13px; line-height: 1.5; margin-bottom: 13px;
+        }
+        .password-button {
+            border: 1px solid var(--verde); background: white; color: var(--verde);
+            border-radius: 9px; padding: 10px 15px; cursor: pointer; font-weight: 700;
+        }
+        .password-button:hover { background: var(--verde-suave); }
+        .password-modal {
+            position: fixed; inset: 0; background: rgba(20,35,27,.48);
+            display: none; align-items: center; justify-content: center;
+            padding: 20px; z-index: 1000;
+        }
+        .password-modal.show { display: flex; }
+        .password-card {
+            width: min(430px,100%); background: white; border-radius: 15px;
+            padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,.18);
+        }
+        .password-card h3 { font-size: 20px; margin-bottom: 7px; }
+        .password-help {
+            color: var(--gris); font-size: 13px; line-height: 1.5; margin-bottom: 18px;
+        }
+        .password-field { margin-bottom: 13px; }
+        .password-field label {
+            display: block; font-size: 11px; color: var(--gris);
+            text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px;
+        }
+        .password-field input {
+            width: 100%; border: 1px solid var(--borde); border-radius: 9px;
+            padding: 11px 12px; font: inherit; color: var(--texto); background: white;
+        }
+        .password-modal-actions {
+            display: flex; gap: 9px; justify-content: flex-end; margin-top: 18px;
+        }
+        .password-modal-actions button {
+            border: 1px solid var(--borde); border-radius: 9px; padding: 10px 14px;
+            background: white; color: var(--texto); cursor: pointer; font-weight: 700;
+        }
+        .password-modal-actions .primary {
+            background: var(--verde); color: white; border-color: var(--verde);
+        }
+        .password-message {
+            display: none; margin-top: 12px; padding: 10px 12px;
+            border-radius: 9px; font-size: 13px; line-height: 1.4;
+        }
+        .password-message.ok { display: block; background: #eaf5ed; color: #287044; }
+        .password-message.error { display: block; background: #fdecec; color: #a33a32; }
+
         /* SIMPLE INFORMATION PANELS */
         .simple-message {
             color: var(--gris);
@@ -940,6 +995,17 @@
                     <strong id="dato-estado">-</strong>
                 </div>
             </div>
+
+            <div class="password-box">
+                <h3>🔐 Seguridad de mi cuenta</h3>
+                <p>
+                    Puedes cambiar tu contraseña de acceso en cualquier momento.
+                    La nueva contraseña será la que usarás junto con tu DNI.
+                </p>
+                <button type="button" class="password-button" id="abrir-cambio-password">
+                    Cambiar contraseña
+                </button>
+            </div>
         </section>
 
         <!-- SITUACIÓN FINANCIERA -->
@@ -1190,6 +1256,29 @@
     </div>
 
 </main>
+
+    <!-- MODAL CAMBIO DE CONTRASEÑA -->
+    <div class="password-modal" id="password-modal">
+        <div class="password-card">
+            <h3>🔐 Cambiar contraseña</h3>
+            <p class="password-help">
+                Ingresa una nueva contraseña para tu cuenta. Usa al menos 8 caracteres.
+            </p>
+            <div class="password-field">
+                <label for="nueva-password">Nueva contraseña</label>
+                <input type="password" id="nueva-password" autocomplete="new-password">
+            </div>
+            <div class="password-field">
+                <label for="confirmar-password">Confirmar nueva contraseña</label>
+                <input type="password" id="confirmar-password" autocomplete="new-password">
+            </div>
+            <div id="password-message" class="password-message"></div>
+            <div class="password-modal-actions">
+                <button type="button" id="cancelar-cambio-password">Cancelar</button>
+                <button type="button" class="primary" id="guardar-cambio-password">Guardar contraseña</button>
+            </div>
+        </div>
+    </div>
 
 <footer>
     <div class="footer-content">
@@ -1718,6 +1807,63 @@
         URL.revokeObjectURL(a.href);
     });
 
+
+    function mostrarMensajePassword(tipo, mensaje) {
+        const box = document.getElementById("password-message");
+        box.className = "password-message " + tipo;
+        box.textContent = mensaje;
+    }
+
+    function cerrarModalPassword() {
+        document.getElementById("password-modal").classList.remove("show");
+        document.getElementById("nueva-password").value = "";
+        document.getElementById("confirmar-password").value = "";
+        const box = document.getElementById("password-message");
+        box.className = "password-message";
+        box.textContent = "";
+    }
+
+    function abrirModalPassword() {
+        document.getElementById("password-modal").classList.add("show");
+        document.getElementById("nueva-password").focus();
+    }
+
+    async function cambiarPassword() {
+        const nueva = document.getElementById("nueva-password").value;
+        const confirmar = document.getElementById("confirmar-password").value;
+        const boton = document.getElementById("guardar-cambio-password");
+
+        if (nueva.length < 8) {
+            mostrarMensajePassword("error", "La contraseña debe tener al menos 8 caracteres.");
+            return;
+        }
+
+        if (nueva !== confirmar) {
+            mostrarMensajePassword("error", "Las contraseñas no coinciden.");
+            return;
+        }
+
+        boton.disabled = true;
+        boton.textContent = "Guardando...";
+
+        const { error } = await supabaseClient.auth.updateUser({ password: nueva });
+
+        boton.disabled = false;
+        boton.textContent = "Guardar contraseña";
+
+        if (error) {
+            console.error("Error cambiando contraseña:", error);
+            mostrarMensajePassword(
+                "error",
+                "No se pudo cambiar la contraseña: " + (error.message || "Error desconocido.")
+            );
+            return;
+        }
+
+        mostrarMensajePassword("ok", "Contraseña actualizada correctamente.");
+        setTimeout(cerrarModalPassword, 1300);
+    }
+
     async function cerrarSesion() {
 
         const { error } =
@@ -1742,6 +1888,23 @@
             cerrarSesion
         );
 
+
+
+    document.getElementById("abrir-cambio-password").addEventListener(
+        "click", abrirModalPassword
+    );
+
+    document.getElementById("cancelar-cambio-password").addEventListener(
+        "click", cerrarModalPassword
+    );
+
+    document.getElementById("guardar-cambio-password").addEventListener(
+        "click", cambiarPassword
+    );
+
+    document.getElementById("password-modal").addEventListener("click", (event) => {
+        if (event.target.id === "password-modal") cerrarModalPassword();
+    });
 
     verificarSesion();
     cargarMisActividades();
