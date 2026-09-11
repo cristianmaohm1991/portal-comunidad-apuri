@@ -1243,9 +1243,69 @@
             </div>
             <p class="panel-subtitle">Información general y autoridades de la comunidad.</p>
 
-            <div class="simple-message">
-                Aquí se mostrará la información de la Comunidad Campesina de Apurí
-                y los integrantes de su directiva.
+            <div id="comunidad-loading" class="loading">
+                Cargando información de la comunidad...
+            </div>
+
+            <div id="comunidad-contenido" style="display:none;">
+
+                <div class="personal-grid">
+                    <div class="personal-item">
+                        <span>Comunidad</span>
+                        <strong id="comunidad-nombre">-</strong>
+                    </div>
+
+                    <div class="personal-item">
+                        <span>Distrito</span>
+                        <strong id="comunidad-distrito">-</strong>
+                    </div>
+
+                    <div class="personal-item">
+                        <span>Provincia</span>
+                        <strong id="comunidad-provincia">-</strong>
+                    </div>
+
+                    <div class="personal-item">
+                        <span>Departamento</span>
+                        <strong id="comunidad-departamento">-</strong>
+                    </div>
+
+                    <div class="personal-item">
+                        <span>Dirección</span>
+                        <strong id="comunidad-direccion">-</strong>
+                    </div>
+
+                    <div class="personal-item">
+                        <span>Teléfono</span>
+                        <strong id="comunidad-telefono">-</strong>
+                    </div>
+
+                    <div class="personal-item">
+                        <span>Correo</span>
+                        <strong id="comunidad-correo">-</strong>
+                    </div>
+                </div>
+
+                <div class="password-box" style="margin-top:20px;">
+                    <h3>🏘️ Sobre nuestra comunidad</h3>
+                    <p id="comunidad-descripcion">-</p>
+                </div>
+
+                <div class="password-box" style="margin-top:20px;">
+                    <h3>👥 Directiva comunal</h3>
+                    <div id="directiva-contenido">
+                        <p>No hay integrantes de la directiva registrados actualmente.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="comunidad-vacia" class="empty" style="display:none;">
+                No hay información institucional registrada.
+            </div>
+
+            <div id="comunidad-error" class="panel-error" style="display:none;">
+                No se pudo cargar la información de la comunidad.
             </div>
         </section>
 
@@ -1487,6 +1547,7 @@
         cargarMisMultas();
         cargarFondosTransparencia();
         cargarTransparencia();
+        cargarDatosComunidad();
     }
 
 
@@ -1705,7 +1766,123 @@
         return "S/ " + Number(monto || 0).toFixed(2);
     }
 
-    async function cargarTransparencia() {
+    
+async function cargarDatosComunidad() {
+    const loading = document.getElementById('comunidad-loading');
+    const contenido = document.getElementById('comunidad-contenido');
+    const vacio = document.getElementById('comunidad-vacia');
+    const error = document.getElementById('comunidad-error');
+
+    try {
+        loading.style.display = 'block';
+        contenido.style.display = 'none';
+        vacio.style.display = 'none';
+        error.style.display = 'none';
+
+        const { data, error: rpcError } =
+            await supabaseClient.rpc('obtener_datos_comunidad');
+
+        if (rpcError) throw rpcError;
+
+        if (!data || data.length === 0) {
+            loading.style.display = 'none';
+            vacio.style.display = 'block';
+            return;
+        }
+
+        const info = data[0];
+
+        const texto = (valor) =>
+            valor === null || valor === undefined || String(valor).trim() === ''
+                ? 'No registrado'
+                : valor;
+
+        document.getElementById('comunidad-nombre').textContent =
+            texto(info.comunidad_nombre);
+
+        document.getElementById('comunidad-distrito').textContent =
+            texto(info.distrito);
+
+        document.getElementById('comunidad-provincia').textContent =
+            texto(info.provincia);
+
+        document.getElementById('comunidad-departamento').textContent =
+            texto(info.departamento);
+
+        document.getElementById('comunidad-direccion').textContent =
+            texto(info.direccion);
+
+        document.getElementById('comunidad-telefono').textContent =
+            texto(info.telefono);
+
+        document.getElementById('comunidad-correo').textContent =
+            texto(info.correo);
+
+        document.getElementById('comunidad-descripcion').textContent =
+            texto(info.descripcion);
+
+        const directiva = document.getElementById('directiva-contenido');
+
+        if (info.directiva_cargo && info.directiva_nombres) {
+            const nombreCompleto =
+                `${info.directiva_nombres} ${info.directiva_apellidos || ''}`.trim();
+
+            const inicio = info.directiva_fecha_inicio
+                ? new Date(info.directiva_fecha_inicio + 'T00:00:00')
+                    .toLocaleDateString('es-PE')
+                : '';
+
+            const fin = info.directiva_fecha_fin
+                ? new Date(info.directiva_fecha_fin + 'T00:00:00')
+                    .toLocaleDateString('es-PE')
+                : 'Vigente';
+
+            directiva.innerHTML = `
+                <div class="personal-grid">
+                    <div class="personal-item">
+                        <span>Cargo</span>
+                        <strong>${escapeHtml(info.directiva_cargo)}</strong>
+                    </div>
+                    <div class="personal-item">
+                        <span>Nombre</span>
+                        <strong>${escapeHtml(nombreCompleto)}</strong>
+                    </div>
+                    <div class="personal-item">
+                        <span>Periodo</span>
+                        <strong>${escapeHtml(inicio)} - ${escapeHtml(fin)}</strong>
+                    </div>
+                </div>
+                ${
+                    info.directiva_observacion
+                        ? `<p class="finance-note">${escapeHtml(info.directiva_observacion)}</p>`
+                        : ''
+                }
+            `;
+        } else {
+            directiva.innerHTML =
+                '<p>No hay integrantes de la directiva registrados actualmente.</p>';
+        }
+
+        loading.style.display = 'none';
+        contenido.style.display = 'block';
+
+    } catch (err) {
+        console.error('Error cargando datos de comunidad:', err);
+        loading.style.display = 'none';
+        error.style.display = 'block';
+    }
+}
+
+function escapeHtml(valor) {
+    return String(valor ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+async function cargarTransparencia() {
         const desde = document.getElementById("transparencia-desde").value || null;
         const hasta = document.getElementById("transparencia-hasta").value || null;
         const loading = document.getElementById("transparencia-loading");
