@@ -391,6 +391,36 @@
             padding: 17px;
         }
 
+        .badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-ok {
+            background: #eaf5ed;
+            color: #287044;
+        }
+
+        .badge-no {
+            background: #fff1e8;
+            color: #a35319;
+        }
+
+        .badge-pendiente {
+            background: #f1f3f2;
+            color: #68736e;
+        }
+
+        .badge-multa {
+            color: #9b5b00;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
         /* FOOTER */
         footer {
             border-top: 1px solid var(--borde);
@@ -805,9 +835,32 @@
             </div>
             <p class="panel-subtitle">Consulta tus faenas, reuniones y asistencias.</p>
 
-            <div class="simple-message">
-                Aquí se mostrarán tus actividades comunales, fechas, lugares,
-                asistencia y, cuando corresponda, la multa generada por inasistencia.
+            <div id="actividades-loading" class="loading">
+                Cargando actividades...
+            </div>
+
+            <div id="actividades-vacio" class="empty" style="display:none;">
+                No tienes actividades registradas.
+            </div>
+
+            <div id="tabla-actividades-contenedor" class="table-wrap" style="display:none;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Actividad</th>
+                            <th>Tipo</th>
+                            <th>Fecha</th>
+                            <th>Lugar</th>
+                            <th>Asistencia</th>
+                            <th>Multa</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-actividades-body"></tbody>
+                </table>
+            </div>
+
+            <div id="actividades-error" class="panel-error" style="display:none;">
+                No se pudieron cargar tus actividades.
             </div>
         </section>
 
@@ -1140,6 +1193,74 @@
     }
 
 
+    async function cargarMisActividades() {
+
+        const loading = document.getElementById("actividades-loading");
+        const vacio = document.getElementById("actividades-vacio");
+        const tabla = document.getElementById("tabla-actividades-contenedor");
+        const body = document.getElementById("tabla-actividades-body");
+        const error = document.getElementById("actividades-error");
+
+        const {
+            data: actividades,
+            error: rpcError
+        } = await supabaseClient.rpc("obtener_mis_actividades");
+
+        loading.style.display = "none";
+
+        if (rpcError) {
+            console.error("Error obteniendo actividades:", rpcError);
+            error.style.display = "block";
+            return;
+        }
+
+        if (!actividades || actividades.length === 0) {
+            vacio.style.display = "block";
+            return;
+        }
+
+        body.innerHTML = "";
+
+        actividades.forEach(actividad => {
+
+            const fila = document.createElement("tr");
+
+            const fecha = actividad.fecha
+                ? new Date(
+                    actividad.fecha + "T00:00:00"
+                  ).toLocaleDateString("es-PE")
+                : "-";
+
+            let asistencia;
+
+            if (actividad.asistio === true) {
+                asistencia = '<span class="badge badge-ok">✓ Asistió</span>';
+            } else if (actividad.asistio === false) {
+                asistencia = '<span class="badge badge-no">✕ No asistió</span>';
+            } else {
+                asistencia = '<span class="badge badge-pendiente">Pendiente</span>';
+            }
+
+            const multa = Number(actividad.multa || 0);
+
+            fila.innerHTML = `
+                <td>${actividad.titulo || "-"}</td>
+                <td>${actividad.tipo || "-"}</td>
+                <td>${fecha}</td>
+                <td>${actividad.lugar || "-"}</td>
+                <td>${asistencia}</td>
+                <td class="badge-multa">
+                    ${multa > 0 ? "S/ " + multa.toFixed(2) : "—"}
+                </td>
+            `;
+
+            body.appendChild(fila);
+        });
+
+        tabla.style.display = "block";
+    }
+
+
     async function cerrarSesion() {
 
         const { error } =
@@ -1166,6 +1287,7 @@
 
 
     verificarSesion();
+    cargarMisActividades();
 
 </script>
 
