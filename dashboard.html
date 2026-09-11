@@ -1821,43 +1821,57 @@ async function cargarDatosComunidad() {
         document.getElementById('comunidad-descripcion').textContent =
             texto(info.descripcion);
 
+        /* =====================================================
+           DIRECTIVA COMUNAL
+           La función puede devolver varias filas:
+           una por cada integrante de la directiva vigente.
+           ===================================================== */
+
         const directiva = document.getElementById('directiva-contenido');
 
-        if (info.directiva_cargo && info.directiva_nombres) {
-            const nombreCompleto =
-                `${info.directiva_nombres} ${info.directiva_apellidos || ''}`.trim();
+        const integrantes = data.filter(item =>
+            item.directiva_cargo &&
+            item.directiva_nombres
+        );
 
-            const inicio = info.directiva_fecha_inicio
-                ? new Date(info.directiva_fecha_inicio + 'T00:00:00')
-                    .toLocaleDateString('es-PE')
-                : '';
-
-            const fin = info.directiva_fecha_fin
-                ? new Date(info.directiva_fecha_fin + 'T00:00:00')
-                    .toLocaleDateString('es-PE')
-                : 'Vigente';
+        if (integrantes.length > 0) {
 
             directiva.innerHTML = `
                 <div class="personal-grid">
-                    <div class="personal-item">
-                        <span>Cargo</span>
-                        <strong>${escapeHtml(info.directiva_cargo)}</strong>
-                    </div>
-                    <div class="personal-item">
-                        <span>Nombre</span>
-                        <strong>${escapeHtml(nombreCompleto)}</strong>
-                    </div>
-                    <div class="personal-item">
-                        <span>Periodo</span>
-                        <strong>${escapeHtml(inicio)} - ${escapeHtml(fin)}</strong>
-                    </div>
+                    ${integrantes.map(item => {
+                        const nombreCompleto =
+                            `${item.directiva_nombres} ${item.directiva_apellidos || ''}`.trim();
+
+                        const inicio = item.directiva_fecha_inicio
+                            ? new Date(item.directiva_fecha_inicio + 'T00:00:00')
+                                .toLocaleDateString('es-PE')
+                            : 'No registrado';
+
+                        const fin = item.directiva_fecha_fin
+                            ? new Date(item.directiva_fecha_fin + 'T00:00:00')
+                                .toLocaleDateString('es-PE')
+                            : 'Vigente';
+
+                        return `
+                            <div class="personal-item">
+                                <span>Cargo</span>
+                                <strong>${escapeHtml(item.directiva_cargo)}</strong>
+                            </div>
+
+                            <div class="personal-item">
+                                <span>Nombre</span>
+                                <strong>${escapeHtml(nombreCompleto)}</strong>
+                            </div>
+
+                            <div class="personal-item">
+                                <span>Periodo</span>
+                                <strong>${escapeHtml(inicio)} - ${escapeHtml(fin)}</strong>
+                            </div>
+                        `;
+                    }).join('')}
                 </div>
-                ${
-                    info.directiva_observacion
-                        ? `<p class="finance-note">${escapeHtml(info.directiva_observacion)}</p>`
-                        : ''
-                }
             `;
+
         } else {
             directiva.innerHTML =
                 '<p>No hay integrantes de la directiva registrados actualmente.</p>';
