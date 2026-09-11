@@ -139,6 +139,13 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
   <b>Flujo:</b> crear actividad → registrar asistencia → cerrar actividad → generar multas automáticamente.
 </div>
 
+<div class="result" style="margin-bottom:16px;border:1px solid #d9e4dc;background:#f7faf8">
+  <b>👥 Cuentas de comuneros</b>
+  <div class="small" style="margin:6px 0 10px">Crea las cuentas de acceso de los comuneros que todavía no tienen usuario. La contraseña inicial será su DNI.</div>
+  <button class="btn secondary" id="crearCuentasComuneros">⚙️ Crear cuentas faltantes</button>
+  <div id="resultadoCuentas" class="small hide" style="margin-top:10px;white-space:pre-line"></div>
+</div>
+
 <div class="grid">
 <div class="field full"><label>Título de la actividad *</label><input id="tituloAct" maxlength="200" placeholder="Ej.: Faena de limpieza" required></div>
 <div class="field"><label>Tipo *</label><select id="tipoAct"><option value="FAENA">🔨 Faena</option><option value="REUNION">👥 Reunión</option></select></div>
@@ -165,7 +172,7 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <tbody id="tablaAsistencia"></tbody>
 </table>
 </div>
-<div class="actions" style="border-top:1px solid var(--bor);padding-top:15px"><button class="btn primary" id="guardarAsistencias">💾 Guardar asistencia</button><button class="btn primary" id="cerrarAct">🔒 Cerrar actividad y generar multas</button></div>
+<div class="actions"><button class="btn primary" id="guardarAsistencias">💾 Guardar asistencia</button><button class="btn secondary" id="cerrarAct">🔒 Cerrar actividad y generar multas</button></div>
 </div>
 </section>
 </main>
@@ -213,10 +220,9 @@ async function cargarActividades(){
  actividades=data||[];
  $('tablaActividades').innerHTML=actividades.length?actividades.map(a=>{
    const cerrada=a.estado==='CERRADA', anulada=a.estado==='ANULADA';
-   return `<tr><td>${esc(a.fecha)}</td><td><b>${esc(a.titulo)}</b>${a.descripcion?`<div class="small">${esc(a.descripcion)}</div>`:''}</td><td>${esc(a.tipo)}</td><td>${esc(a.lugar||'-')}</td><td>${money(a.multa_inasistencia)}</td><td><span class="estado ${cerrada?'estado-activo':anulada?'estado-anulado':'estado-activo'}">${esc(a.estado)}</span></td><td><div class="actions" style="margin:0"><button class="btn secondary btn-asistencia" data-id="${a.id}">👥 ${cerrada?'Ver asistencia':'Asistencia'}</button>${a.estado==='PROGRAMADA'?`<button class="btn primary btn-cerrar-lista" data-id="${a.id}">🔒 Cerrar</button>`:''}</div></td></tr>`
+   return `<tr><td>${esc(a.fecha)}</td><td><b>${esc(a.titulo)}</b>${a.descripcion?`<div class="small">${esc(a.descripcion)}</div>`:''}</td><td>${esc(a.tipo)}</td><td>${esc(a.lugar||'-')}</td><td>${money(a.multa_inasistencia)}</td><td><span class="estado ${cerrada?'estado-activo':anulada?'estado-anulado':'estado-activo'}">${esc(a.estado)}</span></td><td><button class="btn secondary btn-asistencia" data-id="${a.id}">👥 ${cerrada?'Ver asistencia':'Asistencia'}</button></td></tr>`
  }).join(''):'<tr><td colspan="7" class="empty">No hay actividades registradas.</td></tr>';
  document.querySelectorAll('.btn-asistencia').forEach(b=>b.onclick=()=>abrirAsistencia(b.dataset.id));
-  document.querySelectorAll('.btn-cerrar-lista').forEach(b=>b.onclick=()=>cerrarActividad(b.dataset.id));
 }
 async function abrirAsistencia(id){
  const a=actividades.find(x=>x.id===id); if(!a)return;
@@ -246,6 +252,32 @@ $('crearAct').onclick=async()=>{
  await cargarActividades();
 }
 $('refrescarAct').onclick=cargarActividades;
+
+$('crearCuentasComuneros').onclick=async()=>{
+ const b=$('crearCuentasComuneros');
+ const resultado=$('resultadoCuentas');
+ const ok=confirm('¿Crear las cuentas de acceso que todavía no existen?\n\nUsuario inicial = DNI\nContraseña inicial = DNI\n\nLas cuentas que ya existen no serán modificadas.');
+ if(!ok)return;
+ b.disabled=true;b.textContent='Creando cuentas...';
+ resultado.classList.add('hide');resultado.textContent='';
+ try{
+   const {data,error}=await sb.functions.invoke('crear-cuentas-comuneros',{body:{}});
+   if(error)throw error;
+   if(!data?.success)throw new Error(data?.message||'No fue posible completar el proceso.');
+   const lineas=(data.resultados||[]).map(x=>{
+     const estado=x.resultado==='CREADO'?'CREADO':x.resultado==='YA_EXISTE'?'YA EXISTE':'ERROR';
+     return `${x.codigo} · ${x.nombre} → ${estado}${x.detalle?' · '+x.detalle:''}`;
+   });
+   resultado.textContent=lineas.join('\n')||'No se encontraron comuneros para procesar.';
+   resultado.classList.remove('hide');
+   msg('Proceso de cuentas completado.');
+ }catch(e){
+   console.error('crear-cuentas-comuneros:',e);
+   msg('No se pudieron crear las cuentas: '+(e.message||e),true);
+ }finally{
+   b.disabled=false;b.textContent='⚙️ Crear cuentas faltantes';
+ }
+};
 $('guardarAsistencias').onclick=async()=>{
  if(!actividadSeleccionada||actividadSeleccionada.estado!=='PROGRAMADA')return;
  const selects=document.querySelectorAll('.asis-select');
@@ -266,20 +298,16 @@ $('guardarAsistencias').onclick=async()=>{
    await abrirAsistencia(actividadSeleccionada.id);
  }catch(e){msg('No se pudieron guardar las asistencias: '+e.message,true)}finally{b.disabled=false;b.textContent='💾 Guardar asistencia'}
 }
-async function cerrarActividad(id){
- const a=actividades.find(x=>x.id===id);if(!a||a.estado!=='PROGRAMADA')return;
- const ok=confirm(`¿Cerrar la actividad "${a.titulo}"?\n\nAl cerrar se generarán automáticamente las multas de los ausentes. Esta acción no debe repetirse.`);
+$('cerrarAct').onclick=async()=>{
+ if(!actividadSeleccionada||actividadSeleccionada.estado!=='PROGRAMADA')return;
+ const ok=confirm(`¿Cerrar la actividad "${actividadSeleccionada.titulo}"?\n\nAl cerrar se generarán automáticamente las multas de los ausentes. Esta acción no debe repetirse.`);
  if(!ok)return;
- const b=$('cerrarAct');if(b){b.disabled=true;b.textContent='Cerrando...';}
- const {error}=await sb.rpc('cerrar_actividad',{p_actividad_id:id});
- if(error){
-   if(b){b.disabled=false;b.textContent='🔒 Cerrar actividad y generar multas';}
-   msg('No se pudo cerrar: '+error.message,true);return;
- }
+ const b=$('cerrarAct');b.disabled=true;b.textContent='Cerrando...';
+ const {error}=await sb.rpc('cerrar_actividad',{p_actividad_id:actividadSeleccionada.id});
+ if(error){msg('No se pudo cerrar: '+error.message,true);b.disabled=false;b.textContent='🔒 Cerrar actividad y generar multas';return}
  msg('Actividad cerrada y multas generadas correctamente.');
- await fondos();await cargarActividades();await abrirAsistencia(id);
+ await fondos();await cargarActividades();await abrirAsistencia(actividadSeleccionada.id);
 }
-$('cerrarAct').onclick=async()=>{if(!actividadSeleccionada)return;await cerrarActividad(actividadSeleccionada.id)};
 $('buscarA').onclick=async()=>{
  const dni=$('dniA').value.trim(); if(!dni){msg('Ingresa un DNI.',true);return}
  try{const p=await buscarDNI(dni);comuneroA=p;if(!p){$('personaA').classList.add('hide');msg('No se encontró un comunero con ese DNI.',true);return}
