@@ -331,7 +331,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 760px;
+            min-width: 560px;
         }
 
         th, td {
@@ -381,65 +381,67 @@
             line-height: 1.5;
         }
 
-
-        /* FONDOS / BOLSILLOS */
-        .funds-summary {
-            margin-bottom: 22px;
-        }
-
-        .funds-heading {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 11px;
-            color: var(--texto);
-        }
-
-        .funds-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        .fund-card {
-            background: #f7f9f8;
-            border: 1px solid var(--borde);
-            border-radius: 11px;
-            padding: 17px 18px;
-        }
-
-        .fund-card .fund-label {
-            display: block;
-            color: var(--gris);
-            font-size: 12px;
-            margin-bottom: 7px;
-        }
-
-        .fund-card strong {
-            color: var(--verde);
-            font-size: 25px;
-        }
-
-        .fund-card.total {
-            background: var(--verde-suave);
-            border-color: #dce9e0;
-        }
-
-        .fund-card.total strong {
-            color: var(--verde-oscuro);
-        }
-
         /* TRANSPARENCIA */
+        .transparency-filters {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .transparency-field label {
+            display: block;
+            font-size: 11px;
+            color: var(--gris);
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            margin-bottom: 6px;
+        }
+
+        .transparency-field input {
+            width: 100%;
+            border: 1px solid var(--borde);
+            border-radius: 9px;
+            padding: 11px 12px;
+            font: inherit;
+            color: var(--texto);
+            background: white;
+        }
+
+        .transparency-actions {
+            display: flex;
+            gap: 9px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .transparency-actions button {
+            border: 1px solid var(--borde);
+            border-radius: 9px;
+            padding: 10px 14px;
+            background: white;
+            color: var(--texto);
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .transparency-actions .primary {
+            background: var(--verde);
+            color: white;
+            border-color: var(--verde);
+        }
+
         .transparency-summary {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
         .transparency-card {
             background: #f7f9f8;
             border-radius: 11px;
-            padding: 16px 18px;
+            padding: 15px 17px;
         }
 
         .transparency-card span {
@@ -451,120 +453,27 @@
 
         .transparency-card strong {
             color: var(--verde);
-            font-size: 24px;
+            font-size: 22px;
         }
 
-        .transparency-card.egreso strong {
-            color: #9b5b00;
-        }
-
-        .transparency-card.saldo {
+        .transparency-card.balance {
             background: var(--verde-suave);
         }
 
-        .transparency-card.saldo strong {
-            color: var(--verde-oscuro);
+        .transparency-card.balance strong {
+            font-size: 25px;
         }
 
-        .transparency-filters {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr auto auto;
-            gap: 10px;
-            align-items: end;
-            margin-bottom: 18px;
-            padding: 16px;
-            background: #f7f9f8;
-            border-radius: 11px;
-        }
+        .transparency-type-ingreso { color: #287044; font-weight: 700; }
+        .transparency-type-egreso { color: #a33a32; font-weight: 700; }
 
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+        .transparency-loading { display: none; }
 
-        .filter-group label {
-            color: var(--gris);
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .35px;
-        }
-
-        .filter-group input {
-            width: 100%;
-            border: 1px solid var(--borde);
-            border-radius: 8px;
-            background: white;
-            color: var(--texto);
-            padding: 10px 11px;
-            font-family: inherit;
-            font-size: 13px;
-            outline: none;
-        }
-
-        .filter-group input:focus {
-            border-color: #b9cfc0;
-        }
-
-        .transparency-button {
-            border: 0;
-            border-radius: 8px;
-            padding: 10px 14px;
-            cursor: pointer;
-            font-size: 13px;
-            white-space: nowrap;
-            height: 38px;
-        }
-
-        .transparency-button.primary {
-            background: var(--verde);
-            color: white;
-        }
-
-        .transparency-button.secondary {
-            background: white;
-            color: var(--texto);
-            border: 1px solid var(--borde);
-        }
-
-        .transparency-button:hover {
-            opacity: .9;
-        }
-
-        .transparency-actions {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 12px;
-        }
-
-        .movement-income {
-            color: var(--verde) !important;
-            font-weight: 700;
-        }
-
-        .movement-expense {
-            color: #9b5b00 !important;
-            font-weight: 700;
-        }
-
-        .movement-type {
-            font-size: 11px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .transparency-total {
-            margin-top: 14px;
-            color: var(--gris);
-            font-size: 12px;
-            text-align: right;
-        }
-
-        .transparency-filter-note {
-            color: var(--gris);
-            font-size: 11px;
-            margin: -8px 0 15px;
+        @media (max-width: 650px) {
+            .transparency-filters,
+            .transparency-summary {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* SIMPLE INFORMATION PANELS */
@@ -796,26 +705,6 @@
             .footer-content {
                 flex-direction: column;
             }
-        }
-
-        @media (max-width: 650px) {
-
-            .funds-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .transparency-summary {
-                grid-template-columns: 1fr;
-            }
-
-            .transparency-filters {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .transparency-button {
-                width: 100%;
-            }
-
         }
 
         @media (max-width: 390px) {
@@ -1092,99 +981,49 @@
                 <span class="icon">📊</span>
                 <h2>Transparencia comunal</h2>
             </div>
-            <p class="panel-subtitle">
-                Consulta la situación de los fondos y los movimientos económicos de la comunidad.
-            </p>
+            <p class="panel-subtitle">Consulta los ingresos y gastos de la comunidad.</p>
 
-            <div class="funds-summary">
-                <div class="funds-heading">Situación actual de los fondos</div>
-
-                <div class="funds-grid">
-                    <div class="fund-card">
-                        <span class="fund-label">💵 Efectivo</span>
-                        <strong id="fondo-efectivo">S/ 0.00</strong>
-                    </div>
-
-                    <div class="fund-card">
-                        <span class="fund-label">🏦 Banco</span>
-                        <strong id="fondo-banco">S/ 0.00</strong>
-                    </div>
-
-                    <div class="fund-card">
-                        <span class="fund-label">📱 Yape</span>
-                        <strong id="fondo-yape">S/ 0.00</strong>
-                    </div>
+            <div class="transparency-filters">
+                <div class="transparency-field">
+                    <label for="transparencia-desde">Desde</label>
+                    <input type="date" id="transparencia-desde">
                 </div>
-
-                <div class="funds-grid" style="margin-top:12px;">
-                    <div class="fund-card total">
-                        <span class="fund-label">💰 Total disponible</span>
-                        <strong id="fondo-total">S/ 0.00</strong>
-                    </div>
+                <div class="transparency-field">
+                    <label for="transparencia-hasta">Hasta</label>
+                    <input type="date" id="transparencia-hasta">
                 </div>
+            </div>
+
+            <div class="transparency-actions">
+                <button class="primary" id="transparencia-filtrar">🔎 Consultar</button>
+                <button id="transparencia-todo">📅 Todo</button>
+                <button id="transparencia-csv">⬇️ Exportar Excel/CSV</button>
             </div>
 
             <div class="transparency-summary">
                 <div class="transparency-card">
-                    <span>Total ingresos</span>
+                    <span>Ingresos del periodo</span>
                     <strong id="transparencia-ingresos">S/ 0.00</strong>
                 </div>
-
-                <div class="transparency-card egreso">
-                    <span>Total egresos</span>
+                <div class="transparency-card">
+                    <span>Egresos del periodo</span>
                     <strong id="transparencia-egresos">S/ 0.00</strong>
                 </div>
-
-                <div class="transparency-card saldo">
-                    <span>Saldo de caja</span>
+                <div class="transparency-card balance">
+                    <span>Saldo actual de la comunidad</span>
                     <strong id="transparencia-saldo">S/ 0.00</strong>
                 </div>
             </div>
 
-            <div class="transparency-filters">
-                <div class="filter-group">
-                    <label for="filtro-mes">Mes y año</label>
-                    <input type="month" id="filtro-mes">
-                </div>
-
-                <div class="filter-group">
-                    <label for="filtro-desde">Desde</label>
-                    <input type="date" id="filtro-desde">
-                </div>
-
-                <div class="filter-group">
-                    <label for="filtro-hasta">Hasta</label>
-                    <input type="date" id="filtro-hasta">
-                </div>
-
-                <button type="button" class="transparency-button primary" id="btn-consultar-transparencia">
-                    Consultar
-                </button>
-
-                <button type="button" class="transparency-button secondary" id="btn-limpiar-transparencia">
-                    Limpiar
-                </button>
-            </div>
-
-            <p class="transparency-filter-note">
-                Los filtros afectan el detalle de movimientos. La situación de fondos muestra el saldo actual de cada bolsillo.
-            </p>
-
-            <div class="transparency-actions">
-                <button type="button" class="transparency-button secondary" id="btn-exportar-transparencia">
-                    📥 Exportar CSV
-                </button>
-            </div>
-
-            <div id="transparencia-loading" class="loading">
-                Cargando movimientos...
+            <div id="transparencia-loading" class="loading transparency-loading">
+                Consultando movimientos...
             </div>
 
             <div id="transparencia-vacio" class="empty" style="display:none;">
-                No hay movimientos registrados para el período seleccionado.
+                No hay movimientos en el periodo seleccionado.
             </div>
 
-            <div id="tabla-transparencia-contenedor" class="table-wrap" style="display:none;">
+            <div id="transparencia-tabla" class="table-wrap" style="display:none;">
                 <table>
                     <thead>
                         <tr>
@@ -1193,25 +1032,20 @@
                             <th>Concepto</th>
                             <th>Fondo</th>
                             <th>Medio</th>
-                            <th>Comprobante</th>
                             <th>Monto</th>
                         </tr>
                     </thead>
-                    <tbody id="tabla-transparencia-body"></tbody>
+                    <tbody id="transparencia-body"></tbody>
                 </table>
             </div>
 
             <div id="transparencia-error" class="panel-error" style="display:none;">
-                No se pudieron cargar los movimientos de transparencia.
-            </div>
-
-            <div class="transparency-total" id="transparencia-total-movimientos">
-                0 movimientos
+                No se pudo cargar la información de transparencia.
             </div>
 
             <p class="finance-note">
-                La información corresponde a los movimientos económicos registrados en la tesorería.
-                Los filtros permiten consultar períodos específicos y la información mostrada puede exportarse en formato CSV.
+                La información corresponde a movimientos activos registrados por la tesorería.
+                Los movimientos anulados no forman parte del saldo ni de esta consulta.
             </p>
         </section>
 
@@ -1616,291 +1450,117 @@
     }
 
 
-    let movimientosTransparenciaActuales = [];
+    let movimientosTransparencia = [];
 
-    function formatoSoles(monto) {
+    function formatoFecha(fecha) {
+        return fecha ? new Date(fecha + "T00:00:00").toLocaleDateString("es-PE") : "-";
+    }
+
+    function dinero(monto) {
         return "S/ " + Number(monto || 0).toFixed(2);
     }
 
-    function escaparCSV(valor) {
-        const texto = String(valor ?? "");
-        return '"' + texto.replace(/"/g, '""') + '"';
-    }
-
-    function obtenerFechasTransparencia() {
-        const desde = document.getElementById("filtro-desde").value || null;
-        const hasta = document.getElementById("filtro-hasta").value || null;
-
-        if (desde && hasta && desde > hasta) {
-            throw new Error("La fecha 'Desde' no puede ser posterior a 'Hasta'.");
-        }
-
-        return { desde, hasta };
-    }
-
-    async function cargarResumenCaja() {
-        const {
-            data: resumen,
-            error: rpcError
-        } = await supabaseClient.rpc("obtener_resumen_caja");
-
-        if (rpcError) {
-            console.error("Error obteniendo resumen de caja:", rpcError);
-            throw rpcError;
-        }
-
-        const datos = resumen && resumen.length ? resumen[0] : {
-            ingresos: 0,
-            egresos: 0,
-            saldo: 0
-        };
-
-        document.getElementById("transparencia-ingresos").textContent =
-            formatoSoles(datos.ingresos);
-
-        document.getElementById("transparencia-egresos").textContent =
-            formatoSoles(datos.egresos);
-
-        document.getElementById("transparencia-saldo").textContent =
-            formatoSoles(datos.saldo);
-    }
-
-    async function cargarSituacionFondos() {
-        const {
-            data: fondos,
-            error: rpcError
-        } = await supabaseClient.rpc("obtener_situacion_fondos");
-
-        if (rpcError) {
-            console.error("Error obteniendo situación de fondos:", rpcError);
-            throw rpcError;
-        }
-
-        const datos = fondos && fondos.length ? fondos[0] : {
-            efectivo: 0,
-            banco: 0,
-            yape: 0,
-            total: 0
-        };
-
-        document.getElementById("fondo-efectivo").textContent =
-            formatoSoles(datos.efectivo);
-
-        document.getElementById("fondo-banco").textContent =
-            formatoSoles(datos.banco);
-
-        document.getElementById("fondo-yape").textContent =
-            formatoSoles(datos.yape);
-
-        document.getElementById("fondo-total").textContent =
-            formatoSoles(datos.total);
-    }
-
-    async function cargarMovimientosTransparencia() {
+    async function cargarTransparencia() {
+        const desde = document.getElementById("transparencia-desde").value || null;
+        const hasta = document.getElementById("transparencia-hasta").value || null;
         const loading = document.getElementById("transparencia-loading");
         const vacio = document.getElementById("transparencia-vacio");
-        const tabla = document.getElementById("tabla-transparencia-contenedor");
-        const body = document.getElementById("tabla-transparencia-body");
+        const tabla = document.getElementById("transparencia-tabla");
+        const body = document.getElementById("transparencia-body");
         const error = document.getElementById("transparencia-error");
-        const totalMovimientos = document.getElementById("transparencia-total-movimientos");
 
         loading.style.display = "block";
         vacio.style.display = "none";
         tabla.style.display = "none";
         error.style.display = "none";
-        body.innerHTML = "";
-        movimientosTransparenciaActuales = [];
 
-        let fechas;
-
-        try {
-            fechas = obtenerFechasTransparencia();
-        } catch (e) {
-            loading.style.display = "none";
-            error.textContent = e.message;
-            error.style.display = "block";
-            return;
-        }
-
-        const {
-            data: movimientos,
-            error: rpcError
-        } = await supabaseClient.rpc(
+        const { data, error: rpcError } = await supabaseClient.rpc(
             "obtener_movimientos_transparencia",
-            {
-                p_fecha_inicio: fechas.desde,
-                p_fecha_fin: fechas.hasta
-            }
+            { p_fecha_inicio: desde, p_fecha_fin: hasta }
         );
 
         loading.style.display = "none";
 
         if (rpcError) {
-            console.error("Error obteniendo movimientos:", rpcError);
-            error.textContent = "No se pudieron cargar los movimientos de transparencia.";
+            console.error("Error obteniendo transparencia:", rpcError);
+            error.textContent = "No se pudo cargar la información de transparencia: " + rpcError.message;
             error.style.display = "block";
             return;
         }
 
-        movimientosTransparenciaActuales = movimientos || [];
+        movimientosTransparencia = data || [];
 
-        if (movimientosTransparenciaActuales.length === 0) {
-            totalMovimientos.textContent = "0 movimientos";
+        let ingresos = 0;
+        let egresos = 0;
+        movimientosTransparencia.forEach(m => {
+            if (m.tipo === "INGRESO") ingresos += Number(m.monto || 0);
+            if (m.tipo === "EGRESO") egresos += Number(m.monto || 0);
+        });
+
+        document.getElementById("transparencia-ingresos").textContent = dinero(ingresos);
+        document.getElementById("transparencia-egresos").textContent = dinero(egresos);
+
+        // El saldo siempre representa la situación actual, no solamente el periodo filtrado.
+        const { data: todos, error: saldoError } = await supabaseClient.rpc(
+            "obtener_movimientos_transparencia",
+            { p_fecha_inicio: null, p_fecha_fin: null }
+        );
+
+        if (!saldoError) {
+            let saldo = 0;
+            (todos || []).forEach(m => {
+                const monto = Number(m.monto || 0);
+                saldo += m.tipo === "INGRESO" ? monto : -monto;
+            });
+            document.getElementById("transparencia-saldo").textContent = dinero(saldo);
+        }
+
+        if (!movimientosTransparencia.length) {
             vacio.style.display = "block";
             return;
         }
 
-        movimientosTransparenciaActuales.forEach(movimiento => {
-            const fila = document.createElement("tr");
-
-            const fecha = movimiento.fecha
-                ? new Date(
-                    movimiento.fecha + "T00:00:00"
-                  ).toLocaleDateString("es-PE")
-                : "-";
-
-            const esIngreso = movimiento.tipo === "INGRESO";
-            const tipo = esIngreso
-                ? '<span class="movement-type movement-income">INGRESO</span>'
-                : '<span class="movement-type movement-expense">EGRESO</span>';
-
-            const monto = Number(movimiento.monto || 0);
-
-            fila.innerHTML = `
-                <td>${fecha}</td>
-                <td>${tipo}</td>
-                <td>${movimiento.concepto || "-"}</td>
-                <td>${movimiento.fondo || "-"}</td>
-                <td>${movimiento.medio || "-"}</td>
-                <td>${movimiento.comprobante || "-"}</td>
-                <td class="${esIngreso ? "movement-income" : "movement-expense"}">
-                    ${formatoSoles(monto)}
+        body.innerHTML = movimientosTransparencia.map(m => `
+            <tr>
+                <td>${formatoFecha(m.fecha)}</td>
+                <td class="${m.tipo === "INGRESO" ? "transparency-type-ingreso" : "transparency-type-egreso"}">
+                    ${m.tipo === "INGRESO" ? "Ingreso" : "Egreso"}
                 </td>
-            `;
-
-            body.appendChild(fila);
-        });
-
-        totalMovimientos.textContent =
-            movimientosTransparenciaActuales.length === 1
-                ? "1 movimiento"
-                : movimientosTransparenciaActuales.length + " movimientos";
+                <td>${m.concepto || "-"}</td>
+                <td>${m.fondo || "-"}</td>
+                <td>${m.medio || "-"}</td>
+                <td>${dinero(m.monto)}</td>
+            </tr>
+        `).join("");
 
         tabla.style.display = "block";
     }
 
-    async function cargarTransparencia() {
-        try {
-            await cargarSituacionFondos();
-            await cargarResumenCaja();
-            await cargarMovimientosTransparencia();
-        } catch (e) {
-            console.error("Error cargando transparencia:", e);
-            document.getElementById("transparencia-error").style.display = "block";
-        }
-    }
+    document.getElementById("transparencia-filtrar").addEventListener("click", cargarTransparencia);
+    document.getElementById("transparencia-todo").addEventListener("click", () => {
+        document.getElementById("transparencia-desde").value = "";
+        document.getElementById("transparencia-hasta").value = "";
+        cargarTransparencia();
+    });
 
-    function aplicarFiltroMes() {
-        const mes = document.getElementById("filtro-mes").value;
-
-        if (!mes) {
-            return;
-        }
-
-        const partes = mes.split("-");
-        const anio = Number(partes[0]);
-        const mesNumero = Number(partes[1]);
-        const ultimoDia = new Date(anio, mesNumero, 0).getDate();
-
-        document.getElementById("filtro-desde").value =
-            anio + "-" + String(mesNumero).padStart(2, "0") + "-01";
-
-        document.getElementById("filtro-hasta").value =
-            anio + "-" + String(mesNumero).padStart(2, "0") + "-" +
-            String(ultimoDia).padStart(2, "0");
-    }
-
-    function exportarTransparenciaCSV() {
-        if (!movimientosTransparenciaActuales.length) {
+    document.getElementById("transparencia-csv").addEventListener("click", () => {
+        if (!movimientosTransparencia.length) {
             alert("No hay movimientos para exportar.");
             return;
         }
-
-        const encabezados = [
-            "Fecha",
-            "Tipo",
-            "Concepto",
-            "Fondo",
-            "Medio",
-            "Comprobante",
-            "Monto"
+        const rows = [
+            ["Fecha", "Tipo", "Concepto", "Fondo", "Medio", "Monto"],
+            ...movimientosTransparencia.map(m => [
+                m.fecha || "", m.tipo || "", m.concepto || "", m.fondo || "", m.medio || "", m.monto || 0
+            ])
         ];
-
-        const filas = movimientosTransparenciaActuales.map(movimiento => [
-            movimiento.fecha || "",
-            movimiento.tipo || "",
-            movimiento.concepto || "",
-            movimiento.fondo || "",
-            movimiento.medio || "",
-            movimiento.comprobante || "",
-            Number(movimiento.monto || 0).toFixed(2)
-        ]);
-
-        const contenido = [
-            encabezados.map(escaparCSV).join(","),
-            ...filas.map(fila => fila.map(escaparCSV).join(","))
-        ].join("\r\n");
-
-        const blob = new Blob(
-            ["\uFEFF" + contenido],
-            { type: "text/csv;charset=utf-8;" }
-        );
-
-        const url = URL.createObjectURL(blob);
-        const enlace = document.createElement("a");
-        const hoy = new Date().toISOString().slice(0, 10);
-
-        enlace.href = url;
-        enlace.download = "transparencia-comunal-" + hoy + ".csv";
-        document.body.appendChild(enlace);
-        enlace.click();
-        enlace.remove();
-
-        URL.revokeObjectURL(url);
-    }
-
-    document
-        .getElementById("btn-consultar-transparencia")
-        .addEventListener("click", cargarMovimientosTransparencia);
-
-    document
-        .getElementById("btn-limpiar-transparencia")
-        .addEventListener("click", () => {
-            document.getElementById("filtro-mes").value = "";
-            document.getElementById("filtro-desde").value = "";
-            document.getElementById("filtro-hasta").value = "";
-            cargarMovimientosTransparencia();
-        });
-
-    document
-        .getElementById("filtro-mes")
-        .addEventListener("change", aplicarFiltroMes);
-
-    document
-        .getElementById("filtro-desde")
-        .addEventListener("change", () => {
-            document.getElementById("filtro-mes").value = "";
-        });
-
-    document
-        .getElementById("filtro-hasta")
-        .addEventListener("change", () => {
-            document.getElementById("filtro-mes").value = "";
-        });
-
-    document
-        .getElementById("btn-exportar-transparencia")
-        .addEventListener("click", exportarTransparenciaCSV);
+        const csv = rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob(["\ufeff" + csv], {type:"text/csv;charset=utf-8"}));
+        a.download = "transparencia_comunal.csv";
+        a.click();
+        URL.revokeObjectURL(a.href);
+    });
 
     async function cerrarSesion() {
 
