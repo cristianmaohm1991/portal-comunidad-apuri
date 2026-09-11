@@ -133,9 +133,7 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 </main>
 
 <script>
-const URL='https://lrwewsaigjpvhgkpcpdp.supabase.co';
-const KEY='sb_publishable_sdMjDpcJeQ0M7aRcqjOm4A_2FSS5DJ5';
-const sb=supabase.createClient(URL,KEY);
+const sb=supabaseClient;
 let comuneroA=null, comuneroM=null, multaSeleccionada=null, movimientos=[];
 
 const $=id=>document.getElementById(id);
@@ -146,10 +144,12 @@ function hoy(){return new Date().toISOString().slice(0,10)}
 function dates(){['fechaA','fechaE','fechaG'].forEach(x=>$(x).value=hoy())}
 
 async function acceso(){
- const {data:{session}}=await sb.auth.getSession();
- if(!session){location.href='index.html';return false}
+ const {data:{session},error:sessionError}=await sb.auth.getSession();
+ if(sessionError){msg('Error al verificar la sesión: '+sessionError.message,true);return false}
+ if(!session){location.href='login.html';return false}
  const {data,error}=await sb.rpc('obtener_mi_perfil');
- if(error||!data?.length){msg('No se pudo verificar el perfil.',true);return false}
+ if(error){console.error('obtener_mi_perfil:',error);msg('No se pudo verificar el perfil: '+error.message,true);return false}
+ if(!data?.length){msg('No existe un perfil asociado a este usuario.',true);return false}
  const p=data[0];
  if(!['TESORERO','ADMINISTRADOR'].includes(p.rol)){
    msg('No tiene permisos para acceder a Tesorería.',true);
@@ -226,7 +226,7 @@ async function cargar(){
 $('filtrar').onclick=cargar;$('todo').onclick=()=>{$('desde').value='';$('hasta').value='';cargar()};
 $('csv').onclick=()=>{if(!movimientos.length){msg('No hay movimientos para exportar.',true);return}const rows=[['Fecha','Tipo','Concepto','Fondo','Medio','Monto','Comprobante','Observación'],...movimientos.map(m=>[m.fecha,m.tipo,m.concepto,m.fondo||'',m.medio||'',m.monto,m.comprobante||'',m.observacion||''])];const csv=rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='movimientos_tesoreria.csv';a.click()};
 document.querySelectorAll('.tab[data-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab[data-open]').forEach(x=>x.classList.remove('active'));b.classList.add('active');['aporte','multa','empresa','egreso','historial'].forEach(id=>$(id).classList.add('hide'));$(b.dataset.open).classList.remove('hide');if(b.dataset.open==='historial')cargar()});
-$('salir').onclick=async()=>{await sb.auth.signOut();location.href='index.html'};
+$('salir').onclick=async()=>{await sb.auth.signOut();location.href='login.html'};
 dates();
 (async()=>{if(await acceso()){await fondos();await cargar()}})();
 </script>
