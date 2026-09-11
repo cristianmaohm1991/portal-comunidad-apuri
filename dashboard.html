@@ -1,756 +1,949 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Mi Portal - Comunidad de Apurí</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Portal Comunal - Comunidad de Apurí</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script src="js/supabase.js"></script>
 
     <style>
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        :root {
+            --verde: #285943;
+            --verde-oscuro: #1d4634;
+            --verde-suave: #eef5f0;
+            --texto: #24332b;
+            --gris: #69746f;
+            --borde: #e5eae7;
+            --fondo: #f7f9f8;
+            --blanco: #ffffff;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f3;
-            color: #26352b;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--fondo);
+            color: var(--texto);
+            min-height: 100vh;
         }
 
+        button {
+            font-family: inherit;
+        }
+
+        /* HEADER */
         header {
-            background: #285943;
+            background: var(--verde);
             color: white;
-            padding: 18px 20px;
-        }
-
-        .header-content {
-            max-width: 1100px;
-            margin: auto;
+            height: 72px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
         }
 
-        .logo {
-            font-size: 20px;
-            font-weight: bold;
+        .header-content {
+            width: min(1180px, calc(100% - 40px));
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .brand-mark {
+            font-size: 25px;
+        }
+
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-mini {
+            text-align: right;
+        }
+
+        .user-mini strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .user-mini span {
+            display: block;
+            font-size: 12px;
+            opacity: .78;
+            margin-top: 3px;
         }
 
         .logout-button {
+            border: 0;
+            border-left: 1px solid rgba(255,255,255,.35);
             background: transparent;
             color: white;
-            border: 1px solid rgba(255,255,255,0.6);
-            padding: 9px 15px;
-            border-radius: 7px;
+            padding: 9px 0 9px 18px;
             cursor: pointer;
+            font-size: 14px;
         }
 
-        .logout-button:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
+        /* MAIN */
         .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 54px 0 70px;
         }
 
         .welcome {
-            background: white;
-            border-radius: 14px;
-            padding: 30px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 32px;
+        }
+
+        .eyebrow {
+            color: var(--gris);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
         }
 
         .welcome h1 {
-            color: #285943;
-            margin-bottom: 10px;
-        }
-
-        .welcome-name {
-            font-size: 25px;
-            font-weight: bold;
-            color: #26352b;
-            margin: 15px 0 8px;
+            font-size: clamp(28px, 4vw, 40px);
+            line-height: 1.15;
+            color: var(--texto);
+            margin-bottom: 9px;
         }
 
         .welcome p {
-            color: #666;
-            line-height: 1.6;
+            color: var(--gris);
+            font-size: 16px;
+            line-height: 1.5;
         }
 
-        .datos-personales {
-            margin-top: 22px;
+        .welcome-date {
+            color: var(--gris);
+            font-size: 14px;
+            white-space: nowrap;
+            padding-bottom: 6px;
+        }
+
+        /* NAV CARDS */
+        .modules {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+        }
+
+        .module {
+            appearance: none;
+            border: 1px solid var(--borde);
+            background: var(--blanco);
+            border-radius: 13px;
+            min-height: 145px;
+            padding: 23px 18px 19px;
+            text-align: left;
+            cursor: pointer;
+            transition: .18s ease;
+            color: var(--texto);
+            position: relative;
+        }
+
+        .module:hover {
+            border-color: #cddbd2;
+            transform: translateY(-2px);
+        }
+
+        .module.active {
+            background: var(--verde-suave);
+            border-color: #dce9e0;
+        }
+
+        .module-icon {
+            font-size: 27px;
+            margin-bottom: 19px;
+        }
+
+        .module h2 {
+            font-size: 16px;
+            line-height: 1.3;
+            padding-right: 18px;
+        }
+
+        .module-arrow {
+            position: absolute;
+            right: 16px;
+            bottom: 18px;
+            font-size: 22px;
+            color: var(--gris);
+        }
+
+        /* CONTENT PANEL */
+        .content-panel {
+            background: var(--blanco);
+            border: 1px solid var(--borde);
+            border-radius: 15px;
+            margin-top: 18px;
+            padding: 30px;
+            display: none;
+        }
+
+        .content-panel.show {
+            display: block;
+            animation: appear .18s ease;
+        }
+
+        @keyframes appear {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 7px;
+        }
+
+        .panel-title .icon {
+            font-size: 28px;
+        }
+
+        .panel-title h2 {
+            font-size: 23px;
+        }
+
+        .panel-subtitle {
+            color: var(--gris);
+            font-size: 14px;
+            margin-left: 41px;
+            margin-bottom: 25px;
+        }
+
+        /* PERSONAL DATA */
+        .personal-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
 
-        .dato {
-            background: #f4f6f3;
-            padding: 15px;
-            border-radius: 9px;
-        }
-
-        .dato-label {
-            display: block;
-            font-size: 12px;
-            color: #777;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-
-        .dato-value {
-            font-weight: bold;
-            color: #285943;
-        }
-
-        .estado-activo {
-            color: #067647;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-        }
-
-        .icon {
-            font-size: 34px;
-            margin-bottom: 12px;
-        }
-
-        .card h2 {
-            color: #285943;
-            font-size: 20px;
-            margin-bottom: 8px;
-        }
-
-        .card p {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-
-        .error {
-            background: #fdecec;
-            color: #a33a32;
-            padding: 20px;
+        .personal-item {
+            background: #f7f9f8;
             border-radius: 10px;
-            margin-top: 20px;
+            padding: 14px 16px;
         }
 
-        footer {
-            margin-top: 60px;
-            background: #1d3d2c;
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
+        .personal-item span {
+            display: block;
+            font-size: 11px;
+            color: var(--gris);
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            margin-bottom: 6px;
         }
 
-        .pagos-panel {
-            background: white;
-            border-radius: 14px;
-            padding: 25px;
-            margin-top: 25px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        .personal-item strong {
+            font-size: 15px;
+            color: var(--verde);
         }
 
-        .panel-header {
+        /* FINANCE */
+        .finance-tabs {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
+            gap: 26px;
+            border-bottom: 1px solid var(--borde);
+            margin-bottom: 22px;
+        }
+
+        .finance-tab {
+            border: 0;
+            background: transparent;
+            padding: 0 2px 12px;
+            color: var(--gris);
+            font-size: 15px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .finance-tab.active {
+            color: var(--verde);
+            border-bottom-color: var(--verde);
+            font-weight: 700;
+        }
+
+        .finance-view {
+            display: none;
+        }
+
+        .finance-view.active {
+            display: block;
+        }
+
+        .summary-box {
+            background: #f7f9f8;
+            border-radius: 11px;
+            display: inline-block;
+            min-width: 190px;
+            padding: 15px 19px;
             margin-bottom: 20px;
         }
 
-        .panel-header h2 {
-            color: #285943;
-            margin-bottom: 5px;
-        }
-
-        .panel-header p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .total-pagos {
-            background: #f4f6f3;
-            border-radius: 10px;
-            padding: 12px 18px;
-            text-align: right;
-            min-width: 145px;
-        }
-
-        .total-pagos span {
+        .summary-box span {
             display: block;
-            color: #777;
+            color: var(--gris);
             font-size: 12px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
-        .total-pagos strong {
-            color: #285943;
-            font-size: 20px;
+        .summary-box strong {
+            color: var(--verde);
+            font-size: 25px;
         }
 
-        .panel-loading,
-        .panel-empty {
-            text-align: center;
-            color: #666;
-            padding: 25px 10px;
+        .summary-box.warning {
+            background: #fff8ed;
         }
 
-        .tabla-contenedor {
-            width: 100%;
+        .summary-box.warning strong {
+            color: #9b5b00;
+        }
+
+        .table-wrap {
             overflow-x: auto;
+            border: 1px solid var(--borde);
+            border-radius: 10px;
         }
 
-        .tabla-pagos {
+        table {
             width: 100%;
             border-collapse: collapse;
             min-width: 560px;
         }
 
-        .tabla-pagos th,
-        .tabla-pagos td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e5e8e5;
+        th, td {
+            padding: 13px 15px;
             text-align: left;
+            border-bottom: 1px solid var(--borde);
             font-size: 14px;
         }
 
-        .tabla-pagos th {
-            color: #285943;
-            background: #f4f6f3;
-            font-size: 12px;
+        th {
+            background: #f7f9f8;
+            color: var(--gris);
+            font-size: 11px;
             text-transform: uppercase;
+            letter-spacing: .4px;
         }
 
-        .tabla-pagos td:last-child {
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        td:last-child {
             text-align: right;
-            font-weight: bold;
-            color: #285943;
+            font-weight: 700;
+            color: var(--verde);
+        }
+
+        .empty,
+        .loading,
+        .panel-error {
+            padding: 22px 10px;
+            text-align: center;
+            color: var(--gris);
+            font-size: 14px;
         }
 
         .panel-error {
-            background: #fdecec;
             color: #a33a32;
-            padding: 15px;
+            background: #fdecec;
             border-radius: 9px;
-            margin-top: 10px;
         }
 
-        .multas-panel {
-            background: white;
-            border-radius: 14px;
-            padding: 25px;
-            margin-top: 25px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-        }
-
-        .total-multas {
-            background: #fff6e8;
-            border-radius: 10px;
-            padding: 12px 18px;
-            text-align: right;
-            min-width: 145px;
-        }
-
-        .total-multas span {
-            display: block;
-            color: #777;
+        .finance-note {
+            margin-top: 17px;
+            color: var(--gris);
             font-size: 12px;
-            margin-bottom: 4px;
+            line-height: 1.5;
         }
 
-        .total-multas strong {
-            color: #a15c00;
-            font-size: 20px;
+        /* SIMPLE INFORMATION PANELS */
+        .simple-message {
+            color: var(--gris);
+            font-size: 14px;
+            line-height: 1.6;
+            background: #f7f9f8;
+            border-radius: 10px;
+            padding: 17px;
         }
 
-        @media (max-width: 700px) {
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--borde);
+            background: white;
+            padding: 24px 20px;
+            color: var(--gris);
+        }
 
-            .header-content {
-                gap: 15px;
+        .footer-content {
+            width: min(1180px, calc(100% - 40px));
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* LOADING / ERROR */
+        .loading-screen {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gris);
+            font-size: 14px;
+        }
+
+        .error-screen {
+            width: min(600px, calc(100% - 40px));
+            margin: 70px auto;
+            background: white;
+            border: 1px solid var(--borde);
+            border-radius: 14px;
+            padding: 30px;
+            text-align: center;
+            color: #a33a32;
+        }
+
+        @media (max-width: 900px) {
+            .modules {
+                grid-template-columns: repeat(3, 1fr);
             }
 
-            .logo {
-                font-size: 17px;
-            }
-
-            .container {
-                margin-top: 25px;
+            .module {
+                min-height: 125px;
             }
 
             .welcome {
-                padding: 25px 20px;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            header {
+                height: 64px;
             }
 
-            .welcome-name {
+            .header-content,
+            .container,
+            .footer-content {
+                width: min(100% - 28px, 1180px);
+            }
+
+            .brand {
+                font-size: 15px;
+            }
+
+            .brand-mark {
                 font-size: 21px;
             }
 
-            .datos-personales {
-                grid-template-columns: 1fr 1fr;
+            .user-mini {
+                display: none;
             }
 
-            .cards {
+            .logout-button {
+                border-left: 0;
+                padding-left: 10px;
+            }
+
+            .container {
+                padding: 30px 0 45px;
+            }
+
+            .welcome {
+                margin-bottom: 23px;
+            }
+
+            .welcome h1 {
+                font-size: 27px;
+            }
+
+            .welcome p {
+                font-size: 14px;
+            }
+
+            .welcome-date {
+                display: none;
+            }
+
+            .modules {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .module {
+                min-height: 108px;
+                padding: 17px 14px;
+                border-radius: 11px;
+            }
+
+            .module-icon {
+                font-size: 23px;
+                margin-bottom: 12px;
+            }
+
+            .module h2 {
+                font-size: 14px;
+            }
+
+            .module-arrow {
+                right: 11px;
+                bottom: 10px;
+                font-size: 18px;
+            }
+
+            .content-panel {
+                margin-top: 12px;
+                padding: 20px 15px;
+                border-radius: 12px;
+            }
+
+            .panel-title h2 {
+                font-size: 19px;
+            }
+
+            .panel-subtitle {
+                margin-left: 0;
+                margin-top: 6px;
+                margin-bottom: 19px;
+            }
+
+            .personal-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 9px;
+            }
+
+            .personal-item {
+                padding: 12px;
+            }
+
+            .personal-item strong {
+                font-size: 13px;
+            }
+
+            .finance-tabs {
+                gap: 20px;
+            }
+
+            .finance-tab {
+                font-size: 14px;
+            }
+
+            .summary-box {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .modules {
                 grid-template-columns: 1fr;
             }
 
-            .total-multas {
-                text-align: left;
+            .module {
+                min-height: 82px;
             }
 
-            .pagos-panel {
-                padding: 20px 15px;
+            .module-icon {
+                display: inline-block;
+                margin: 0 10px 0 0;
             }
 
-            .panel-header {
-                flex-direction: column;
-                align-items: stretch;
+            .module h2 {
+                display: inline;
             }
-
-            .total-pagos {
-                text-align: left;
-            }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
 <header>
-
     <div class="header-content">
-
-        <div class="logo">
-            🌿 Comunidad de Apurí
+        <div class="brand">
+            <span class="brand-mark">🌿</span>
+            <span>Comunidad Campesina de Apurí</span>
         </div>
 
-        <button
-            class="logout-button"
-            id="logout-button">
+        <div class="user-header">
+            <div class="user-mini">
+                <strong id="header-nombre">Cargando...</strong>
+                <span id="header-codigo">---</span>
+            </div>
 
-            Cerrar sesión
-
-        </button>
-
+            <button class="logout-button" id="logout-button">
+                Salir
+            </button>
+        </div>
     </div>
-
 </header>
-
 
 <main class="container">
 
-
-    <div
-        id="loading"
-        class="loading">
-
+    <div id="loading" class="loading-screen">
         Verificando sesión...
-
     </div>
 
-
-    <div
-        id="dashboard"
-        style="display: none;">
-
+    <div id="dashboard" style="display:none;">
 
         <section class="welcome">
-
-            <h1>
-                Mi Portal Comunal
-            </h1>
-
-            <div
-                id="nombre-comunero"
-                class="welcome-name">
-
-                Cargando...
-
+            <div>
+                <div class="eyebrow">BIENVENIDO</div>
+                <h1 id="nombre-comunero">Cargando...</h1>
+                <p>Accede a la información y servicios de tu comunidad.</p>
             </div>
 
-            <p>
-                Bienvenido al Portal de Gestión y Transparencia
-                de la Comunidad Campesina de Apurí.
-            </p>
+            <div class="welcome-date" id="fecha-actual"></div>
+        </section>
 
-            <div class="datos-personales">
+        <section class="modules">
 
-                <div class="dato">
+            <button class="module" data-panel="informacion">
+                <div class="module-icon">👤</div>
+                <h2>Mi información</h2>
+                <span class="module-arrow">›</span>
+            </button>
 
-                    <span class="dato-label">
-                        Código
-                    </span>
+            <button class="module" data-panel="finanzas">
+                <div class="module-icon">💰</div>
+                <h2>Mi situación financiera</h2>
+                <span class="module-arrow">›</span>
+            </button>
 
-                    <span
-                        id="dato-codigo"
-                        class="dato-value">
-                        -
-                    </span>
+            <button class="module" data-panel="actividades">
+                <div class="module-icon">🤝</div>
+                <h2>Mis actividades</h2>
+                <span class="module-arrow">›</span>
+            </button>
 
-                </div>
+            <button class="module" data-panel="transparencia">
+                <div class="module-icon">📊</div>
+                <h2>Transparencia comunal</h2>
+                <span class="module-arrow">›</span>
+            </button>
 
-
-                <div class="dato">
-
-                    <span class="dato-label">
-                        DNI
-                    </span>
-
-                    <span
-                        id="dato-dni"
-                        class="dato-value">
-                        -
-                    </span>
-
-                </div>
-
-
-                <div class="dato">
-
-                    <span class="dato-label">
-                        Centro poblado
-                    </span>
-
-                    <span
-                        id="dato-centro"
-                        class="dato-value">
-                        -
-                    </span>
-
-                </div>
-
-
-                <div class="dato">
-
-                    <span class="dato-label">
-                        Celular
-                    </span>
-
-                    <span
-                        id="dato-celular"
-                        class="dato-value">
-                        -
-                    </span>
-
-                </div>
-
-
-                <div class="dato">
-
-                    <span class="dato-label">
-                        Estado
-                    </span>
-
-                    <span
-                        id="dato-estado"
-                        class="dato-value estado-activo">
-                        -
-                    </span>
-
-                </div>
-
-            </div>
+            <button class="module" data-panel="comunidad">
+                <div class="module-icon">🏘️</div>
+                <h2>Datos de mi comunidad</h2>
+                <span class="module-arrow">›</span>
+            </button>
 
         </section>
 
-
-        <section class="cards">
-
-
-            <div class="card">
-
-                <div class="icon">
-                    👤
-                </div>
-
-                <h2>
-                    Mis datos
-                </h2>
-
-                <p>
-                    Consulta tu información como comunero.
-                </p>
-
+        <!-- MI INFORMACIÓN -->
+        <section class="content-panel" id="panel-informacion">
+            <div class="panel-title">
+                <span class="icon">👤</span>
+                <h2>Mi información</h2>
             </div>
+            <p class="panel-subtitle">Datos registrados en el padrón comunal.</p>
 
-
-            <div class="card">
-
-                <div class="icon">
-                    💰
+            <div class="personal-grid">
+                <div class="personal-item">
+                    <span>Código</span>
+                    <strong id="dato-codigo">-</strong>
                 </div>
 
-                <h2>
-                    Mis pagos
-                </h2>
+                <div class="personal-item">
+                    <span>DNI</span>
+                    <strong id="dato-dni">-</strong>
+                </div>
 
-                <p>
-                    Consulta tus aportes y pagos realizados.
-                </p>
+                <div class="personal-item">
+                    <span>Nombres</span>
+                    <strong id="dato-nombres">-</strong>
+                </div>
 
+                <div class="personal-item">
+                    <span>Apellidos</span>
+                    <strong id="dato-apellidos">-</strong>
+                </div>
+
+                <div class="personal-item">
+                    <span>Centro poblado</span>
+                    <strong id="dato-centro">-</strong>
+                </div>
+
+                <div class="personal-item">
+                    <span>Celular</span>
+                    <strong id="dato-celular">-</strong>
+                </div>
+
+                <div class="personal-item">
+                    <span>Estado</span>
+                    <strong id="dato-estado">-</strong>
+                </div>
             </div>
+        </section>
 
-
-            <div class="card">
-
-                <div class="icon">
-                    🤝
-                </div>
-
-                <h2>
-                    Mis actividades
-                </h2>
-
-                <p>
-                    Consulta tus faenas, reuniones y asistencias.
-                </p>
-
+        <!-- SITUACIÓN FINANCIERA -->
+        <section class="content-panel" id="panel-finanzas">
+            <div class="panel-title">
+                <span class="icon">💰</span>
+                <h2>Mi situación financiera</h2>
             </div>
+            <p class="panel-subtitle">Consulta tus aportes y multas registradas.</p>
 
-
-            <div class="card">
-
-                <div class="icon">
-                    ⚠️
-                </div>
-
-                <h2>
+            <div class="finance-tabs">
+                <button class="finance-tab active" data-finance="aportes">
+                    Mis aportes
+                </button>
+                <button class="finance-tab" data-finance="multas">
                     Mis multas
-                </h2>
-
-                <p>
-                    Consulta las multas registradas a tu nombre.
-                </p>
-
+                </button>
             </div>
 
-
-            <div class="card">
-
-                <div class="icon">
-                    📊
-                </div>
-
-                <h2>
-                    Transparencia comunal
-                </h2>
-
-                <p>
-                    Consulta los ingresos y gastos de la comunidad.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="icon">
-                    🏘️
-                </div>
-
-                <h2>
-                    Datos de mi comunidad
-                </h2>
-
-                <p>
-                    Consulta información y autoridades de la comunidad.
-                </p>
-
-            </div>
-
-
-        </section>
-
-        <section class="pagos-panel">
-            <div class="panel-header">
-                <div>
-                    <h2>💰 Mis pagos</h2>
-                    <p>Consulta tus aportes y pagos registrados.</p>
-                </div>
-                <div class="total-pagos">
-                    <span>Total registrado</span>
+            <div class="finance-view active" id="finance-aportes">
+                <div class="summary-box">
+                    <span>Total aportado</span>
                     <strong id="total-pagos">S/ 0.00</strong>
                 </div>
-            </div>
 
-            <div id="pagos-loading" class="panel-loading">
-                Cargando pagos...
-            </div>
-
-            <div id="pagos-vacio" class="panel-empty" style="display:none;">
-                No tienes pagos registrados.
-            </div>
-
-            <div class="tabla-contenedor" id="tabla-pagos-contenedor" style="display:none;">
-                <table class="tabla-pagos">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Concepto</th>
-                            <th>Medio</th>
-                            <th>Monto</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-pagos-body"></tbody>
-                </table>
-            </div>
-
-            <div id="pagos-error" class="panel-error" style="display:none;">
-                No se pudieron cargar tus pagos.
-            </div>
-        </section>
-
-    </div>
-
-
-        <section class="multas-panel">
-            <div class="panel-header">
-                <div>
-                    <h2>⚠️ Mis multas</h2>
-                    <p>Consulta las multas pendientes registradas a tu nombre.</p>
+                <div id="pagos-loading" class="loading">
+                    Cargando aportes...
                 </div>
-                <div class="total-multas">
+
+                <div id="pagos-vacio" class="empty" style="display:none;">
+                    No tienes aportes registrados.
+                </div>
+
+                <div id="tabla-pagos-contenedor" class="table-wrap" style="display:none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Concepto</th>
+                                <th>Medio</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-pagos-body"></tbody>
+                    </table>
+                </div>
+
+                <div id="pagos-error" class="panel-error" style="display:none;">
+                    No se pudieron cargar tus aportes.
+                </div>
+
+                <p class="finance-note">
+                    Los aportes y pagos se realizan directamente al tesorero de la comunidad
+                    para su registro en el sistema.
+                </p>
+            </div>
+
+            <div class="finance-view" id="finance-multas">
+                <div class="summary-box warning">
                     <span>Total pendiente</span>
                     <strong id="total-multas">S/ 0.00</strong>
                 </div>
-            </div>
 
-            <div id="multas-loading" class="panel-loading">
-                Cargando multas...
-            </div>
+                <div id="multas-loading" class="loading">
+                    Cargando multas...
+                </div>
 
-            <div id="multas-vacio" class="panel-empty" style="display:none;">
-                No tienes multas pendientes. 🎉
-            </div>
+                <div id="multas-vacio" class="empty" style="display:none;">
+                    No tienes multas pendientes. 🎉
+                </div>
 
-            <div class="tabla-contenedor" id="tabla-multas-contenedor" style="display:none;">
-                <table class="tabla-pagos">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Concepto</th>
-                            <th>Estado</th>
-                            <th>Monto</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-multas-body"></tbody>
-                </table>
-            </div>
+                <div id="tabla-multas-contenedor" class="table-wrap" style="display:none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Concepto</th>
+                                <th>Estado</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-multas-body"></tbody>
+                    </table>
+                </div>
 
-            <div id="multas-error" class="panel-error" style="display:none;">
-                No se pudieron cargar tus multas.
+                <div id="multas-error" class="panel-error" style="display:none;">
+                    No se pudieron cargar tus multas.
+                </div>
             </div>
         </section>
 
-    <div
-        id="error"
-        class="error"
-        style="display: none;">
+        <!-- ACTIVIDADES -->
+        <section class="content-panel" id="panel-actividades">
+            <div class="panel-title">
+                <span class="icon">🤝</span>
+                <h2>Mis actividades</h2>
+            </div>
+            <p class="panel-subtitle">Consulta tus faenas, reuniones y asistencias.</p>
 
-        No se pudo verificar la sesión.
+            <div class="simple-message">
+                Aquí se mostrarán tus actividades comunales, fechas, lugares,
+                asistencia y, cuando corresponda, la multa generada por inasistencia.
+            </div>
+        </section>
+
+        <!-- TRANSPARENCIA -->
+        <section class="content-panel" id="panel-transparencia">
+            <div class="panel-title">
+                <span class="icon">📊</span>
+                <h2>Transparencia comunal</h2>
+            </div>
+            <p class="panel-subtitle">Consulta los ingresos y gastos de la comunidad.</p>
+
+            <div class="simple-message">
+                Aquí se mostrará el movimiento económico de la comunidad,
+                con filtros por fecha, mes y año, además del saldo de caja.
+            </div>
+        </section>
+
+        <!-- COMUNIDAD -->
+        <section class="content-panel" id="panel-comunidad">
+            <div class="panel-title">
+                <span class="icon">🏘️</span>
+                <h2>Datos de mi comunidad</h2>
+            </div>
+            <p class="panel-subtitle">Información general y autoridades de la comunidad.</p>
+
+            <div class="simple-message">
+                Aquí se mostrará la información de la Comunidad Campesina de Apurí
+                y los integrantes de su directiva.
+            </div>
+        </section>
 
     </div>
 
+    <div id="error" class="error-screen" style="display:none;">
+        No se pudieron cargar sus datos comunales.
+    </div>
 
 </main>
 
-
 <footer>
-
-    <strong>
-        Comunidad Campesina de Apurí
-    </strong>
-
-    <p style="margin-top: 10px;">
-        Portal de Gestión y Transparencia Comunal
-    </p>
-
+    <div class="footer-content">
+        <div>
+            <strong>© 2026 Comunidad Campesina de Apurí</strong><br>
+            Portal de Gestión y Transparencia Comunal
+        </div>
+        <div>
+            Nuestra tierra, nuestra gente
+        </div>
+    </div>
 </footer>
-
 
 <script>
 
+    function mostrarPanel(nombre) {
+        const panel = document.getElementById("panel-" + nombre);
+        const boton = document.querySelector(
+            '.module[data-panel="' + nombre + '"]'
+        );
+
+        const yaAbierto = panel.classList.contains("show");
+
+        document.querySelectorAll(".content-panel")
+            .forEach(p => p.classList.remove("show"));
+
+        document.querySelectorAll(".module")
+            .forEach(b => b.classList.remove("active"));
+
+        if (!yaAbierto) {
+            panel.classList.add("show");
+            boton.classList.add("active");
+
+            setTimeout(() => {
+                panel.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }, 30);
+        }
+    }
+
+
+    document.querySelectorAll(".module").forEach(boton => {
+        boton.addEventListener("click", () => {
+            mostrarPanel(boton.dataset.panel);
+        });
+    });
+
+
+    document.querySelectorAll(".finance-tab").forEach(tab => {
+        tab.addEventListener("click", () => {
+
+            document.querySelectorAll(".finance-tab")
+                .forEach(t => t.classList.remove("active"));
+
+            document.querySelectorAll(".finance-view")
+                .forEach(v => v.classList.remove("active"));
+
+            tab.classList.add("active");
+
+            document.getElementById(
+                "finance-" + tab.dataset.finance
+            ).classList.add("active");
+        });
+    });
+
+
+    function mostrarFecha() {
+        const fecha = new Date();
+
+        const texto = fecha.toLocaleDateString("es-PE", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+
+        document.getElementById("fecha-actual").textContent =
+            texto.charAt(0).toUpperCase() + texto.slice(1);
+    }
+
+
     async function verificarSesion() {
 
-        const loading =
-            document.getElementById("loading");
-
-        const dashboard =
-            document.getElementById("dashboard");
-
-        const error =
-            document.getElementById("error");
-
-
-        /*
-         * Primero comprobamos que exista
-         * una sesión válida.
-         */
+        const loading = document.getElementById("loading");
+        const dashboard = document.getElementById("dashboard");
+        const error = document.getElementById("error");
 
         const {
             data,
             error: sessionError
         } = await supabaseClient.auth.getSession();
 
-
-        if (
-            sessionError ||
-            !data.session
-        ) {
-
+        if (sessionError || !data.session) {
             window.location.href = "login.html";
-
             return;
         }
-
-
-        /*
-         * Ahora obtenemos los datos del
-         * comunero correspondiente a esta sesión.
-         */
 
         const {
             data: comunero,
@@ -759,157 +952,131 @@
             "obtener_mi_comunero"
         );
 
-
         if (
             comuneroError ||
             !comunero ||
             comunero.length === 0
         ) {
-
             console.error(
                 "Error obteniendo datos del comunero:",
                 comuneroError
             );
 
             loading.style.display = "none";
-
             error.style.display = "block";
-
-            error.textContent =
-                "No se pudieron cargar sus datos comunales.";
-
             return;
         }
-
 
         const datos = comunero[0];
 
-
-        /*
-         * Si por alguna razón el comunero
-         * está inactivo, cerramos la sesión.
-         */
-
         if (datos.estado !== "ACTIVO") {
-
             await supabaseClient.auth.signOut();
-
             window.location.href = "login.html";
-
             return;
         }
 
-
-        /*
-         * Mostrar datos reales.
-         */
-
-        document.getElementById(
-            "nombre-comunero"
-        ).textContent =
+        const nombreCompleto =
             datos.nombres + " " + datos.apellidos;
 
+        document.getElementById("nombre-comunero").textContent =
+            nombreCompleto;
 
-        document.getElementById(
-            "dato-codigo"
-        ).textContent =
+        document.getElementById("header-nombre").textContent =
+            nombreCompleto;
+
+        document.getElementById("header-codigo").textContent =
             datos.codigo;
 
+        document.getElementById("dato-codigo").textContent =
+            datos.codigo;
 
-        document.getElementById(
-            "dato-dni"
-        ).textContent =
+        document.getElementById("dato-dni").textContent =
             datos.dni;
 
+        document.getElementById("dato-nombres").textContent =
+            datos.nombres;
 
-        document.getElementById(
-            "dato-centro"
-        ).textContent =
+        document.getElementById("dato-apellidos").textContent =
+            datos.apellidos;
+
+        document.getElementById("dato-centro").textContent =
             datos.centro_poblado || "No registrado";
 
-
-        document.getElementById(
-            "dato-celular"
-        ).textContent =
+        document.getElementById("dato-celular").textContent =
             datos.celular || "No registrado";
 
-
-        document.getElementById(
-            "dato-estado"
-        ).textContent =
+        document.getElementById("dato-estado").textContent =
             datos.estado;
 
+        mostrarFecha();
 
         loading.style.display = "none";
-
         dashboard.style.display = "block";
 
+        // Las consultas financieras se cargan, pero permanecen ocultas
+        // hasta que el usuario entre a "Mi situación financiera".
+        cargarMisPagos();
+        cargarMisMultas();
     }
 
 
     async function cargarMisPagos() {
 
-        const loadingPagos =
-            document.getElementById("pagos-loading");
-
-        const vacioPagos =
-            document.getElementById("pagos-vacio");
-
-        const tablaContenedor =
-            document.getElementById("tabla-pagos-contenedor");
-
-        const tablaBody =
-            document.getElementById("tabla-pagos-body");
-
-        const errorPagos =
-            document.getElementById("pagos-error");
-
-        const totalPagos =
-            document.getElementById("total-pagos");
+        const loading = document.getElementById("pagos-loading");
+        const vacio = document.getElementById("pagos-vacio");
+        const tabla = document.getElementById("tabla-pagos-contenedor");
+        const body = document.getElementById("tabla-pagos-body");
+        const error = document.getElementById("pagos-error");
+        const totalElemento = document.getElementById("total-pagos");
 
         const {
             data: pagos,
-            error
+            error: rpcError
         } = await supabaseClient.rpc("obtener_mis_pagos");
 
-        loadingPagos.style.display = "none";
+        loading.style.display = "none";
 
-        if (error) {
-            console.error("Error obteniendo pagos:", error);
-            errorPagos.style.display = "block";
+        if (rpcError) {
+            console.error("Error obteniendo pagos:", rpcError);
+            error.style.display = "block";
             return;
         }
 
         if (!pagos || pagos.length === 0) {
-            vacioPagos.style.display = "block";
+            vacio.style.display = "block";
             return;
         }
 
         let total = 0;
-        tablaBody.innerHTML = "";
+        body.innerHTML = "";
 
         pagos.forEach(pago => {
 
-            total += Number(pago.monto || 0);
+            const monto = Number(pago.monto || 0);
+            total += monto;
 
             const fila = document.createElement("tr");
 
             const fecha = pago.fecha
-                ? new Date(pago.fecha + "T00:00:00").toLocaleDateString("es-PE")
+                ? new Date(
+                    pago.fecha + "T00:00:00"
+                  ).toLocaleDateString("es-PE")
                 : "-";
 
             fila.innerHTML = `
                 <td>${fecha}</td>
                 <td>${pago.concepto || "-"}</td>
                 <td>${pago.medio || "-"}</td>
-                <td>S/ ${Number(pago.monto || 0).toFixed(2)}</td>
+                <td>S/ ${monto.toFixed(2)}</td>
             `;
 
-            tablaBody.appendChild(fila);
+            body.appendChild(fila);
         });
 
-        totalPagos.textContent = "S/ " + total.toFixed(2);
-        tablaContenedor.style.display = "block";
+        totalElemento.textContent =
+            "S/ " + total.toFixed(2);
+
+        tabla.style.display = "block";
     }
 
 
@@ -944,12 +1111,16 @@
         body.innerHTML = "";
 
         multas.forEach(multa => {
+
             const monto = Number(multa.monto || 0);
             total += monto;
 
             const fila = document.createElement("tr");
+
             const fecha = multa.fecha
-                ? new Date(multa.fecha + "T00:00:00").toLocaleDateString("es-PE")
+                ? new Date(
+                    multa.fecha + "T00:00:00"
+                  ).toLocaleDateString("es-PE")
                 : "-";
 
             fila.innerHTML = `
@@ -962,31 +1133,27 @@
             body.appendChild(fila);
         });
 
-        totalElemento.textContent = "S/ " + total.toFixed(2);
+        totalElemento.textContent =
+            "S/ " + total.toFixed(2);
+
         tabla.style.display = "block";
     }
 
 
     async function cerrarSesion() {
 
-        const {
-            error
-        } = await supabaseClient.auth.signOut();
-
+        const { error } =
+            await supabaseClient.auth.signOut();
 
         if (error) {
-
             console.error(
                 "Error al cerrar sesión:",
                 error
             );
-
             return;
         }
 
-
         window.location.href = "login.html";
-
     }
 
 
@@ -999,12 +1166,8 @@
 
 
     verificarSesion();
-    cargarMisPagos();
-    cargarMisMultas();
 
 </script>
 
-
 </body>
-
 </html>
