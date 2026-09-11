@@ -58,8 +58,8 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <div class="field full"><div id="personaA" class="result hide"></div></div>
 <div class="field"><label>Fecha *</label><input type="date" id="fechaA" required></div>
 <div class="field"><label>Monto (S/) *</label><input type="number" id="montoA" min=".01" step=".01" required></div>
-<div class="field"><label>Fondo *</label><select id="fondoA"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
-<div class="field"><label>Medio</label><select id="medioA"><option>EFECTIVO</option><option>TRANSFERENCIA</option><option>DEPOSITO</option><option>OTRO</option></select></div>
+<div class="field"><label>¿Dónde queda el dinero? *</label><select id="fondoA"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
+<div class="field"><label>Forma de pago</label><select id="medioA"><option value="EFECTIVO">💵 Efectivo</option><option value="TRANSFERENCIA">🔄 Transferencia</option><option value="DEPOSITO">🏦 Depósito</option><option value="YAPE">📱 Yape</option><option value="OTRO">Otro</option></select></div>
 <div class="field"><label>Referencia / comprobante</label><input id="refA" maxlength="150"></div>
 <div class="field"><label>Observación</label><input id="obsA" maxlength="300"></div>
 </div>
@@ -80,8 +80,8 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <div class="field"><label>Multa seleccionada</label><input id="multaSel" readonly></div>
 <div class="field"><label>Saldo pendiente</label><input id="saldoM" readonly></div>
 <div class="field"><label>Monto a pagar (S/) *</label><input type="number" id="montoM" min=".01" step=".01"></div>
-<div class="field"><label>Fondo *</label><select id="fondoM"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
-<div class="field"><label>Medio</label><select id="medioM"><option>EFECTIVO</option><option>TRANSFERENCIA</option><option>DEPOSITO</option><option>OTRO</option></select></div>
+<div class="field"><label>¿Dónde queda el dinero? *</label><select id="fondoM"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
+<div class="field"><label>Forma de pago</label><select id="medioM"><option value="EFECTIVO">💵 Efectivo</option><option value="TRANSFERENCIA">🔄 Transferencia</option><option value="DEPOSITO">🏦 Depósito</option><option value="YAPE">📱 Yape</option><option value="OTRO">Otro</option></select></div>
 <div class="field"><label>Referencia</label><input id="refM" maxlength="150"></div>
 </div>
 <div class="actions"><button class="btn primary" id="guardarM">Registrar pago de multa</button></div>
@@ -97,8 +97,8 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <div class="field full"><label>Razón social / nombre *</label><input id="nombreE" maxlength="200" required></div>
 <div class="field"><label>Fecha *</label><input type="date" id="fechaE" required></div>
 <div class="field"><label>Monto (S/) *</label><input type="number" id="montoE" min=".01" step=".01" required></div>
-<div class="field"><label>Fondo *</label><select id="fondoE"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
-<div class="field"><label>Medio</label><select id="medioE"><option>EFECTIVO</option><option>TRANSFERENCIA</option><option>DEPOSITO</option><option>OTRO</option></select></div>
+<div class="field"><label>¿Dónde queda el dinero? *</label><select id="fondoE"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
+<div class="field"><label>Forma de pago</label><select id="medioE"><option value="EFECTIVO">💵 Efectivo</option><option value="TRANSFERENCIA">🔄 Transferencia</option><option value="DEPOSITO">🏦 Depósito</option><option value="YAPE">📱 Yape</option><option value="OTRO">Otro</option></select></div>
 <div class="field"><label>Referencia / comprobante</label><input id="refE" maxlength="150"></div>
 <div class="field"><label>Observación</label><input id="obsE" maxlength="300"></div>
 </div>
@@ -112,8 +112,8 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <div class="grid">
 <div class="field"><label>Fecha *</label><input type="date" id="fechaG" required></div>
 <div class="field"><label>Monto (S/) *</label><input type="number" id="montoG" min=".01" step=".01" required></div>
-<div class="field"><label>Fondo *</label><select id="fondoG"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
-<div class="field"><label>Medio</label><select id="medioG"><option>EFECTIVO</option><option>TRANSFERENCIA</option><option>DEPOSITO</option><option>OTRO</option></select></div>
+<div class="field"><label>¿De dónde sale el dinero? *</label><select id="fondoG"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
+<div class="field"><label>Forma de pago</label><select id="medioG"><option value="EFECTIVO">💵 Efectivo</option><option value="TRANSFERENCIA">🔄 Transferencia</option><option value="DEPOSITO">🏦 Depósito</option><option value="YAPE">📱 Yape</option><option value="OTRO">Otro</option></select></div>
 <div class="field full"><label>Concepto *</label><input id="conceptoG" maxlength="250" placeholder="Ej.: Compra de materiales" required></div>
 <div class="field"><label>Comprobante</label><input id="refG" maxlength="150"></div>
 <div class="field"><label>Observación</label><input id="obsG" maxlength="300"></div>
@@ -129,7 +129,7 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <div class="field"><label>Hasta</label><input type="date" id="hasta"></div>
 <div class="actions" style="margin:0"><button class="btn primary" id="filtrar">Filtrar</button><button class="btn secondary" id="todo">Todo</button><button class="btn secondary" id="csv">Exportar CSV</button></div>
 </div>
-<div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>Fondo</th><th>Medio</th><th>Monto</th><th>Comprobante</th><th>Observación</th></tr></thead><tbody id="tabla"><tr><td colspan="8" class="empty">Cargando...</td></tr></tbody></table></div>
+<div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>¿Dónde queda el dinero?</th><th>Forma de pago</th><th>Monto</th><th>Comprobante</th><th>Observación</th></tr></thead><tbody id="tabla"><tr><td colspan="8" class="empty">Cargando...</td></tr></tbody></table></div>
 </section>
 </main>
 
@@ -225,7 +225,7 @@ async function cargar(){
  $('tabla').innerHTML=movimientos.length?movimientos.map(m=>`<tr><td>${m.fecha||''}</td><td class="${m.tipo==='INGRESO'?'in':'out'}">${m.tipo}</td><td>${esc(m.concepto)}</td><td>${esc(m.fondo||'-')}</td><td>${esc(m.medio||'-')}</td><td class="${m.tipo==='INGRESO'?'in':'out'}">${m.tipo==='INGRESO'?'+':'-'} ${money(m.monto)}</td><td>${esc(m.comprobante||'-')}</td><td>${esc(m.observacion||'-')}</td></tr>`).join(''):'<tr><td colspan="8" class="empty">No hay movimientos en el periodo seleccionado.</td></tr>'
 }
 $('filtrar').onclick=cargar;$('todo').onclick=()=>{$('desde').value='';$('hasta').value='';cargar()};
-$('csv').onclick=()=>{if(!movimientos.length){msg('No hay movimientos para exportar.',true);return}const rows=[['Fecha','Tipo','Concepto','Fondo','Medio','Monto','Comprobante','Observación'],...movimientos.map(m=>[m.fecha,m.tipo,m.concepto,m.fondo||'',m.medio||'',m.monto,m.comprobante||'',m.observacion||''])];const csv=rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='movimientos_tesoreria.csv';a.click()};
+$('csv').onclick=()=>{if(!movimientos.length){msg('No hay movimientos para exportar.',true);return}const rows=[['Fecha','Tipo','Concepto','¿Dónde queda el dinero?','Forma de pago','Monto','Comprobante','Observación'],...movimientos.map(m=>[m.fecha,m.tipo,m.concepto,m.fondo||'',m.medio||'',m.monto,m.comprobante||'',m.observacion||''])];const csv=rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='movimientos_tesoreria.csv';a.click()};
 document.querySelectorAll('.tab[data-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab[data-open]').forEach(x=>x.classList.remove('active'));b.classList.add('active');['aporte','multa','empresa','egreso','historial'].forEach(id=>$(id).classList.add('hide'));$(b.dataset.open).classList.remove('hide');if(b.dataset.open==='historial')cargar()});
 $('salir').onclick=async()=>{await sb.auth.signOut();location.href='login.html'};
 dates();
