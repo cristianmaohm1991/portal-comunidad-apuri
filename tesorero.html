@@ -19,8 +19,8 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 .result{margin-top:14px;border:1px solid var(--bor);border-radius:10px;padding:14px;background:#f8faf8}.person{font-weight:800;font-size:17px}.small{font-size:13px;color:var(--mut);margin-top:4px}
 .multa{border:1px solid var(--bor);border-radius:10px;padding:13px;margin-top:10px;cursor:pointer}.multa.sel{border:2px solid var(--p);background:#f0fdf4}.multa-head{display:flex;justify-content:space-between;gap:10px}.saldo{font-weight:800;color:var(--red)}
 .filters{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
-.tablewrap{overflow:auto;margin-top:17px}table{width:100%;border-collapse:collapse;font-size:13px;min-width:900px}th,td{padding:10px 8px;border-bottom:1px solid #e8eee9;text-align:left}th{background:#f7faf8;color:#536158}.in{color:#166534;font-weight:700}.out{color:#b91c1c;font-weight:700}.empty{text-align:center;color:var(--mut);padding:25px}.estado{display:inline-block;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}.estado-activo{background:#dcfce7;color:#166534}.estado-anulado{background:#fee2e2;color:#991b1b}.anulado-row{opacity:.78}.btn-anular{padding:7px 10px;font-size:12px}
-@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}.grid,.filters{grid-template-columns:1fr}.full{grid-column:auto}.head{align-items:flex-start;flex-direction:column}.user{text-align:left}}
+.tablewrap{overflow:auto;margin-top:17px}table{width:100%;border-collapse:collapse;font-size:13px;min-width:900px}th,td{padding:10px 8px;border-bottom:1px solid #e8eee9;text-align:left}th{background:#f7faf8;color:#536158}.in{color:#166534;font-weight:700}.out{color:#b91c1c;font-weight:700}.empty{text-align:center;color:var(--mut);padding:25px}.estado{display:inline-block;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}.estado-activo{background:#dcfce7;color:#166534}.estado-anulado{background:#fee2e2;color:#991b1b}.anulado-row{opacity:.78}.btn-anular{padding:7px 10px;font-size:12px}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.summary-card{background:#f8faf8;border:1px solid var(--bor);border-radius:12px;padding:14px}.summary-card b{display:block;font-size:20px;margin-top:4px}.report-total{font-size:18px;font-weight:800;margin-top:15px}.benef-search{display:flex;gap:8px;align-items:end}.benef-search button{white-space:nowrap}
+@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}.grid,.filters,.summary-grid{grid-template-columns:1fr}.full{grid-column:auto}.head{align-items:flex-start;flex-direction:column}.user{text-align:left}}
 @media(max-width:500px){.cards{grid-template-columns:1fr}.panel{padding:15px}h1{font-size:21px}}
 </style>
 </head>
@@ -47,6 +47,7 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <button class="tab" data-open="empresa">🏢 Empresa / tercero</button>
 <button class="tab" data-open="egreso">➖ Egreso</button>
 <button class="tab" data-open="historial">📋 Historial</button>
+<button class="tab" data-open="reportes">📊 Reportes</button>
 <button class="tab" data-open="actividades">📅 Actividades</button>
 </div>
 
@@ -111,15 +112,19 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <h2>Registrar egreso</h2>
 <form id="formEgreso">
 <div class="grid">
+<div class="field"><label>Tipo de documento *</label><select id="tipoG"><option value="DNI">DNI</option><option value="RUC">RUC</option><option value="OTRO">Otro documento</option></select></div>
+<div class="field"><label>N.° de documento *</label><input id="docG" maxlength="20" inputmode="numeric" placeholder="Ej.: 47409588" required></div>
+<div class="field full"><label>Beneficiario / receptor *</label><input id="nombreG" maxlength="200" placeholder="Ej.: Juan Pérez" required></div>
 <div class="field"><label>Fecha *</label><input type="date" id="fechaG" required></div>
 <div class="field"><label>Monto (S/) *</label><input type="number" id="montoG" min=".01" step=".01" required></div>
 <div class="field"><label>Fondo *</label><select id="fondoG"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
 <div class="field"><label>Medio</label><select id="medioG"><option>EFECTIVO</option><option>TRANSFERENCIA</option><option>DEPOSITO</option><option>OTRO</option></select></div>
-<div class="field full"><label>Concepto *</label><input id="conceptoG" maxlength="250" placeholder="Ej.: Compra de materiales" required></div>
+<div class="field full"><label>Concepto *</label><input id="conceptoG" maxlength="250" placeholder="Ej.: Viáticos" required></div>
 <div class="field"><label>Comprobante</label><input id="refG" maxlength="150"></div>
 <div class="field"><label>Observación</label><input id="obsG" maxlength="300"></div>
 </div>
-<div class="actions"><button class="btn primary" id="guardarG">Registrar egreso</button></div>
+<div id="benefResult" class="result hide"></div>
+<div class="actions"><button class="btn secondary" type="button" id="buscarBenef">🔎 Buscar beneficiario</button><button class="btn primary" id="guardarG">Registrar egreso</button></div>
 </form>
 </section>
 
@@ -130,7 +135,22 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <div class="field"><label>Hasta</label><input type="date" id="hasta"></div>
 <div class="actions" style="margin:0"><button class="btn primary" id="filtrar">Filtrar</button><button class="btn secondary" id="todo">Todo</button><button class="btn secondary" id="csv">Exportar CSV</button></div>
 </div>
-<div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>Fondo</th><th>Medio</th><th>Monto</th><th>Comprobante</th><th>Observación</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="tabla"><tr><td colspan="10" class="empty">Cargando...</td></tr></tbody></table></div>
+<div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Beneficiario</th><th>Documento</th><th>Concepto</th><th>Fondo</th><th>Medio</th><th>Monto</th><th>Comprobante</th><th>Observación</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="tabla"><tr><td colspan="12" class="empty">Cargando...</td></tr></tbody></table></div>
+</section>
+
+<section id="reportes" class="panel hide">
+<h2>📊 Reporte de egresos</h2>
+<div class="result">Aquí puedes consultar cuánto se entregó a cada persona o empresa. El agrupamiento se realiza por DNI/RUC y solo considera egresos activos.</div>
+<div class="grid" style="margin-top:15px">
+<div class="field"><label>Desde</label><input type="date" id="repDesde"></div>
+<div class="field"><label>Hasta</label><input type="date" id="repHasta"></div>
+<div class="field"><label>Tipo documento</label><select id="repTipo"><option value="">Todos</option><option value="DNI">DNI</option><option value="RUC">RUC</option><option value="OTRO">Otro</option></select></div>
+<div class="field"><label>N.° documento</label><input id="repDoc" maxlength="20" inputmode="numeric" placeholder="Opcional"></div>
+</div>
+<div class="actions"><button class="btn primary" id="generarReporte">📊 Generar reporte</button><button class="btn secondary" id="exportarReporte">📥 Exportar CSV</button></div>
+<div id="resumenReporte"></div>
+<div class="tablewrap"><table style="min-width:1000px"><thead><tr><th>Documento</th><th>Beneficiario</th><th>Operaciones</th><th>Total entregado</th></tr></thead><tbody id="tablaReporte"><tr><td colspan="4" class="empty">Genera el reporte para consultar.</td></tr></tbody></table></div>
+<div class="tablewrap"><h3>Detalle</h3><table style="min-width:1050px"><thead><tr><th>Fecha</th><th>Documento</th><th>Beneficiario</th><th>Concepto</th><th>Fondo</th><th>Medio</th><th>Monto</th><th>Comprobante</th></tr></thead><tbody id="tablaReporteDetalle"><tr><td colspan="8" class="empty">Sin datos.</td></tr></tbody></table></div>
 </section>
 
 <section id="actividades" class="panel hide">
@@ -172,7 +192,7 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 
 <script>
 const sb=supabaseClient;
-let comuneroA=null, comuneroM=null, multaSeleccionada=null, movimientos=[];
+let comuneroA=null, comuneroM=null, multaSeleccionada=null, movimientos=[], reporteEgresos=[], beneficiarioActual=null;
 let actividades=[], actividadSeleccionada=null, asistenciaActual=[];
 
 const $=id=>document.getElementById(id);
@@ -180,7 +200,7 @@ const money=n=>'S/ '+Number(n||0).toLocaleString('es-PE',{minimumFractionDigits:
 function msg(t,e=false){const x=$('msg');x.textContent=t;x.className='msg'+(e?' err':'');setTimeout(()=>x.classList.add('hide'),5500)}
 function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[s]))}
 function hoy(){return new Date().toISOString().slice(0,10)}
-function dates(){['fechaA','fechaE','fechaG'].forEach(x=>$(x).value=hoy());$('fechaAct').value=hoy()}
+function dates(){['fechaA','fechaE','fechaG'].forEach(x=>$(x).value=hoy());$('fechaAct').value=hoy();$('repDesde').value='';$('repHasta').value=''}
 
 async function acceso(){
  const {data:{session},error:sessionError}=await sb.auth.getSession();
@@ -362,17 +382,45 @@ $('formEmpresa').onsubmit=async e=>{
   b.textContent='Registrar ingreso';
  }
 }
+$('buscarBenef').onclick=async()=>{
+ const tipo=$('tipoG').value, doc=$('docG').value.trim();
+ if(!doc){msg('Ingresa el número de documento.',true);return}
+ const {data,error}=await sb.rpc('buscar_beneficiario_egreso_tesoreria',{p_tipo_documento:tipo,p_numero_documento:doc});
+ if(error){msg(error.message,true);return}
+ const b=data?.[0]||null;
+ if(b){
+  beneficiarioActual=b;
+  $('nombreG').value=b.nombre;
+  $('benefResult').innerHTML=`<div class="person">${esc(b.nombre)}</div><div class="small">${esc(b.tipo_documento)}: ${esc(b.numero_documento)} · Beneficiario registrado</div>`;
+  $('benefResult').classList.remove('hide');
+  msg('Beneficiario encontrado.');
+ }else{
+  beneficiarioActual=null;
+  $('benefResult').innerHTML='<div class="small">No existe todavía. Al registrar el egreso se creará automáticamente.</div>';
+  $('benefResult').classList.remove('hide');
+ }
+}
+$('docG').addEventListener('change',()=>{beneficiarioActual=null;$('benefResult').classList.add('hide')});
+$('tipoG').addEventListener('change',()=>{beneficiarioActual=null;$('benefResult').classList.add('hide')});
 $('formEgreso').onsubmit=async e=>{
- e.preventDefault();const b=$('guardarG');b.disabled=true;b.textContent='Registrando...';
- const {error}=await sb.rpc('registrar_movimiento_tesoreria',{p_tipo:'EGRESO',p_fecha:$('fechaG').value,p_concepto:$('conceptoG').value.trim(),p_monto:Number($('montoG').value),p_fondo:$('fondoG').value,p_medio:$('medioG').value,p_comprobante:$('refG').value.trim()||null,p_observacion:$('obsG').value.trim()||null});
- b.disabled=false;b.textContent='Registrar egreso';if(error){msg(error.message,true);return}msg('Egreso registrado correctamente.');$('formEgreso').reset();dates();await fondos();await cargar()
+ e.preventDefault();
+ const tipo=$('tipoG').value, doc=$('docG').value.trim(), nombre=$('nombreG').value.trim(), monto=Number($('montoG').value);
+ if(!doc){msg('Debe indicar el número de documento del beneficiario.',true);return}
+ if(!nombre){msg('Debe indicar el nombre del beneficiario.',true);return}
+ const b=$('guardarG');b.disabled=true;b.textContent='Registrando...';
+ try{
+  const {error}=await sb.rpc('registrar_egreso_tesoreria',{p_tipo_documento:tipo,p_numero_documento:doc,p_nombre:nombre,p_fecha:$('fechaG').value,p_monto:monto,p_fondo:$('fondoG').value,p_medio:$('medioG').value,p_concepto:$('conceptoG').value.trim(),p_comprobante:$('refG').value.trim()||null,p_observacion:$('obsG').value.trim()||null});
+  if(error)throw error;
+  msg('Egreso registrado correctamente.');
+  $('formEgreso').reset();beneficiarioActual=null;$('benefResult').classList.add('hide');dates();await fondos();await cargar();
+ }catch(e){msg('No se pudo registrar el egreso: '+e.message,true)}finally{b.disabled=false;b.textContent='Registrar egreso'}
 }
 async function cargar(){
- const {data,error}=await sb.rpc('obtener_historial_tesoreria',{p_fecha_inicio:$('desde').value||null,p_fecha_fin:$('hasta').value||null});
+ const {data,error}=await sb.rpc('obtener_historial_tesoreria_v2',{p_fecha_inicio:$('desde').value||null,p_fecha_fin:$('hasta').value||null});
  if(error){msg('Error al cargar historial: '+error.message,true);return}movimientos=data||[];
  $('tabla').innerHTML=movimientos.length?movimientos.map(m=>{
  const anulado=m.estado==='ANULADO';
- return `<tr class="${anulado?'anulado-row':''}"><td>${m.fecha||''}</td><td class="${m.tipo==='INGRESO'?'in':'out'}">${m.tipo}</td><td>${esc(m.concepto)}</td><td>${esc(m.fondo||'-')}</td><td>${esc(m.medio||'-')}</td><td class="${m.tipo==='INGRESO'?'in':'out'}">${m.tipo==='INGRESO'?'+':'-'} ${money(m.monto)}</td><td>${esc(m.comprobante||'-')}</td><td>${esc(m.observacion||'-')}${anulado&&m.motivo_anulacion?`<div class="small">Motivo: ${esc(m.motivo_anulacion)}</div>`:''}</td><td><span class="estado ${anulado?'estado-anulado':'estado-activo'}">${anulado?'ANULADO':'ACTIVO'}</span></td><td>${anulado?'<span class="small">Sin acción</span>':`<button class="btn danger btn-anular" data-id="${m.id}">Anular</button>`}</td></tr>`}).join(''):'<tr><td colspan="10" class="empty">No hay movimientos en el periodo seleccionado.</td></tr>';
+ return `<tr class="${anulado?'anulado-row':''}"><td>${m.fecha||''}</td><td class="${m.tipo==='INGRESO'?'in':'out'}">${m.tipo}</td><td>${esc(m.beneficiario_nombre||'-')}</td><td>${m.beneficiario_documento?`${esc(m.beneficiario_tipo)}: ${esc(m.beneficiario_documento)}`:'-'}</td><td>${esc(m.concepto)}</td><td>${esc(m.fondo||'-')}</td><td>${esc(m.medio||'-')}</td><td class="${m.tipo==='INGRESO'?'in':'out'}">${m.tipo==='INGRESO'?'+':'-'} ${money(m.monto)}</td><td>${esc(m.comprobante||'-')}</td><td>${esc(m.observacion||'-')}${anulado&&m.motivo_anulacion?`<div class="small">Motivo: ${esc(m.motivo_anulacion)}</div>`:''}</td><td><span class="estado ${anulado?'estado-anulado':'estado-activo'}">${anulado?'ANULADO':'ACTIVO'}</span></td><td>${anulado?'<span class="small">Sin acción</span>':`<button class="btn danger btn-anular" data-id="${m.id}">Anular</button>`}</td></tr>`}).join(''):'<tr><td colspan="12" class="empty">No hay movimientos en el periodo seleccionado.</td></tr>';
  document.querySelectorAll('.btn-anular').forEach(b=>b.onclick=()=>anularMovimiento(b.dataset.id));
 }
 async function anularMovimiento(id){
@@ -392,8 +440,28 @@ async function anularMovimiento(id){
 }
 
 $('filtrar').onclick=cargar;$('todo').onclick=()=>{$('desde').value='';$('hasta').value='';cargar()};
-$('csv').onclick=()=>{if(!movimientos.length){msg('No hay movimientos para exportar.',true);return}const rows=[['Fecha','Tipo','Concepto','Fondo','Medio','Monto','Comprobante','Observación','Estado','Motivo anulación'],...movimientos.map(m=>[m.fecha,m.tipo,m.concepto,m.fondo||'',m.medio||'',m.monto,m.comprobante||'',m.observacion||'',m.estado||'ACTIVO',m.motivo_anulacion||''])];const csv=rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='movimientos_tesoreria.csv';a.click()};
-document.querySelectorAll('.tab[data-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab[data-open]').forEach(x=>x.classList.remove('active'));b.classList.add('active');['aporte','multa','empresa','egreso','historial','actividades'].forEach(id=>$(id).classList.add('hide'));$(b.dataset.open).classList.remove('hide');if(b.dataset.open==='historial')cargar();if(b.dataset.open==='actividades')cargarActividades()});
+$('csv').onclick=()=>{if(!movimientos.length){msg('No hay movimientos para exportar.',true);return}const rows=[['Fecha','Tipo','Tipo documento','Documento','Beneficiario','Concepto','Fondo','Medio','Monto','Comprobante','Observación','Estado','Motivo anulación'],...movimientos.map(m=>[m.fecha,m.tipo,m.beneficiario_tipo||'',m.beneficiario_documento||'',m.beneficiario_nombre||'',m.concepto,m.fondo||'',m.medio||'',m.monto,m.comprobante||'',m.observacion||'',m.estado||'ACTIVO',m.motivo_anulacion||''])];const csv=rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='movimientos_tesoreria.csv';a.click()};
+async function generarReporte(){
+ const {data,error}=await sb.rpc('obtener_reporte_egresos_tesoreria',{p_fecha_inicio:$('repDesde').value||null,p_fecha_fin:$('repHasta').value||null,p_tipo_documento:$('repTipo').value||null,p_numero_documento:$('repDoc').value.trim()||null});
+ if(error){msg('Error al generar reporte: '+error.message,true);return}
+ reporteEgresos=data||[];
+ const grupos={};
+ reporteEgresos.forEach(r=>{const key=`${r.tipo_documento}|${r.numero_documento}`;if(!grupos[key])grupos[key]={tipo:r.tipo_documento,doc:r.numero_documento,nombre:r.beneficiario,ops:0,total:0};grupos[key].ops++;grupos[key].total+=Number(r.monto||0)});
+ const arr=Object.values(grupos).sort((a,b)=>b.total-a.total);
+ $('tablaReporte').innerHTML=arr.length?arr.map(x=>`<tr><td>${esc(x.tipo)}: ${esc(x.doc)}</td><td><b>${esc(x.nombre)}</b></td><td>${x.ops}</td><td><b>${money(x.total)}</b></td></tr>`).join(''):'<tr><td colspan="4" class="empty">No hay egresos con los filtros seleccionados.</td></tr>';
+ const total=reporteEgresos.reduce((s,x)=>s+Number(x.monto||0),0);
+ $('resumenReporte').innerHTML=`<div class="summary-grid"><div class="summary-card"><div class="lab">Beneficiarios</div><b>${arr.length}</b></div><div class="summary-card"><div class="lab">Operaciones</div><b>${reporteEgresos.length}</b></div><div class="summary-card"><div class="lab">Total egresado</div><b>${money(total)}</b></div></div>`;
+ $('tablaReporteDetalle').innerHTML=reporteEgresos.length?reporteEgresos.map(r=>`<tr><td>${esc(r.fecha)}</td><td>${esc(r.tipo_documento)}: ${esc(r.numero_documento)}</td><td>${esc(r.beneficiario)}</td><td>${esc(r.concepto)}</td><td>${esc(r.fondo||'-')}</td><td>${esc(r.medio||'-')}</td><td>${money(r.monto)}</td><td>${esc(r.comprobante||'-')}</td></tr>`).join(''):'<tr><td colspan="8" class="empty">Sin datos.</td></tr>';
+}
+$('generarReporte').onclick=generarReporte;
+$('exportarReporte').onclick=()=>{
+ if(!reporteEgresos.length){msg('Genera primero el reporte para exportarlo.',true);return}
+ const rows=[['Fecha','Tipo documento','Documento','Beneficiario','Concepto','Fondo','Medio','Monto','Comprobante','Observación'],...reporteEgresos.map(r=>[r.fecha,r.tipo_documento,r.numero_documento,r.beneficiario,r.concepto,r.fondo||'',r.medio||'',r.monto,r.comprobante||'',r.observacion||''])];
+ const csv=rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='reporte_egresos.csv';a.click();
+};
+
+document.querySelectorAll('.tab[data-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab[data-open]').forEach(x=>x.classList.remove('active'));b.classList.add('active');['aporte','multa','empresa','egreso','historial','reportes','actividades'].forEach(id=>$(id).classList.add('hide'));$(b.dataset.open).classList.remove('hide');if(b.dataset.open==='historial')cargar();if(b.dataset.open==='reportes')generarReporte();if(b.dataset.open==='actividades')cargarActividades()});
 $('salir').onclick=async()=>{await sb.auth.signOut();location.href='login.html'};
 dates();
 (async()=>{if(await acceso()){await fondos();await cargar();await cargarActividades()}})();
