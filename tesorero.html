@@ -9,18 +9,19 @@
 <style>
 :root{--p:#14532d;--p2:#166534;--bg:#f4f7f5;--card:#fff;--txt:#17211b;--mut:#68756d;--bor:#dfe7e1;--red:#b91c1c;--blue:#1d4ed8;--purple:#7e22ce}
 *{box-sizing:border-box}body{display:none;margin:0;background:var(--bg);color:var(--txt);font-family:Arial,Helvetica,sans-serif}
-header{background:linear-gradient(135deg,var(--p),var(--p2));color:white;padding:22px 16px}.head{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:15px;align-items:center}
+header{background:linear-gradient(135deg,var(--p),var(--p2));color:white;padding:22px 16px}.head{max-width:1240px;margin:auto;display:flex;justify-content:space-between;gap:15px;align-items:center}
 h1{margin:0 0 5px;font-size:24px}.sub{font-size:14px;opacity:.88}.user{text-align:right;font-size:13px}.user strong{display:block;font-size:14px;margin-bottom:8px}
-main{max-width:1180px;margin:22px auto;padding:0 15px}.msg{padding:12px 15px;border-radius:10px;margin-bottom:16px;background:#ecfdf5;color:#166534;border:1px solid #bbf7d0}.msg.err{background:#fef2f2;color:#991b1b;border-color:#fecaca}.hide{display:none!important}
+main{max-width:1240px;margin:22px auto;padding:0 15px}.msg{padding:12px 15px;border-radius:10px;margin-bottom:16px;background:#ecfdf5;color:#166534;border:1px solid #bbf7d0}.msg.err{background:#fef2f2;color:#991b1b;border-color:#fecaca}.hide{display:none!important}
 h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:22px}.card{background:#fff;border:1px solid var(--bor);border-radius:15px;padding:17px;box-shadow:0 3px 12px rgba(0,0,0,.04)}.card b{display:block;font-size:26px;margin-top:5px}.lab{font-size:13px;color:var(--mut)}.cash{border-top:4px solid var(--p)}.bank{border-top:4px solid var(--blue)}.yape{border-top:4px solid var(--purple)}.tot{border-top:4px solid #111827}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:17px}.tab{border:0;border-radius:10px;padding:11px 15px;background:#e9efeb;color:#294034;font-weight:700;cursor:pointer}.tab.active,.primary{background:var(--p);color:#fff}
-.panel{background:#fff;border:1px solid var(--bor);border-radius:15px;padding:20px;margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.full{grid-column:1/-1}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #cfd9d1;border-radius:9px;background:#fff;font-size:14px}.field textarea{min-height:80px;resize:vertical}
+.operation-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}.panel{background:#fff;border:1px solid var(--bor);border-radius:15px;padding:20px;margin-bottom:20px}.income-panel{border-top:5px solid var(--p)}.expense-panel{border-top:5px solid var(--red)}
+.panel-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}.panel-title h2{margin:0}.tag{font-size:12px;font-weight:800;padding:6px 9px;border-radius:999px;background:#eef6f0;color:var(--p)}.tag.out{background:#fef2f2;color:var(--red)}
+.utility-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 17px}.tab{border:0;border-radius:10px;padding:11px 15px;background:#e9efeb;color:#294034;font-weight:700;cursor:pointer}.tab.active,.primary{background:var(--p);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.full{grid-column:1/-1}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #cfd9d1;border-radius:9px;background:#fff;font-size:14px}.field textarea{min-height:80px;resize:vertical}
 .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}button{font-family:inherit}.btn{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer}.btn:disabled{opacity:.55;cursor:not-allowed}.danger{background:#fee2e2;color:#991b1b}.secondary{background:#eef2ef;color:#33443a}
-.result{margin-top:14px;border:1px solid var(--bor);border-radius:10px;padding:14px;background:#f8faf8}.person{font-weight:800;font-size:17px}.small{font-size:13px;color:var(--mut);margin-top:4px}
-.multa{border:1px solid var(--bor);border-radius:10px;padding:13px;margin-top:10px;cursor:pointer}.multa.sel{border:2px solid var(--p);background:#f0fdf4}.multa-head{display:flex;justify-content:space-between;gap:10px}.saldo{font-weight:800;color:var(--red)}
-.filters{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
-.tablewrap{overflow:auto;margin-top:17px}table{width:100%;border-collapse:collapse;font-size:13px;min-width:900px}th,td{padding:10px 8px;border-bottom:1px solid #e8eee9;text-align:left}th{background:#f7faf8;color:#536158}.in{color:#166534;font-weight:700}.out{color:#b91c1c;font-weight:700}.empty{text-align:center;color:var(--mut);padding:25px}.estado{display:inline-block;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}.estado-activo{background:#dcfce7;color:#166534}.estado-anulado{background:#fee2e2;color:#991b1b}.anulado-row{opacity:.78}.btn-anular{padding:7px 10px;font-size:12px}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.summary-card{background:#f8faf8;border:1px solid var(--bor);border-radius:12px;padding:14px}.summary-card b{display:block;font-size:20px;margin-top:4px}.report-total{font-size:18px;font-weight:800;margin-top:15px}.benef-search{display:flex;gap:8px;align-items:end}.benef-search button{white-space:nowrap}
-@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}.grid,.filters,.summary-grid{grid-template-columns:1fr}.full{grid-column:auto}.head{align-items:flex-start;flex-direction:column}.user{text-align:left}}
+.result{margin-top:14px;border:1px solid var(--bor);border-radius:10px;padding:14px;background:#f8faf8}.person{font-weight:800;font-size:17px}.small{font-size:13px;color:var(--mut);margin-top:4px}.multa{border:1px solid var(--bor);border-radius:10px;padding:13px;margin-top:10px;cursor:pointer}.multa.sel{border:2px solid var(--p);background:#f0fdf4}.multa-head{display:flex;justify-content:space-between;gap:10px}.saldo{font-weight:800;color:var(--red)}
+.filters{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}.tablewrap{overflow:auto;margin-top:17px}table{width:100%;border-collapse:collapse;font-size:13px;min-width:900px}th,td{padding:10px 8px;border-bottom:1px solid #e8eee9;text-align:left}th{background:#f7faf8;color:#536158}.in{color:#166534;font-weight:700}.out{color:#b91c1c;font-weight:700}.empty{text-align:center;color:var(--mut);padding:25px}.estado{display:inline-block;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}.estado-activo{background:#dcfce7;color:#166534}.estado-anulado{background:#fee2e2;color:#991b1b}.anulado-row{opacity:.78}.btn-anular{padding:7px 10px;font-size:12px}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.summary-card{background:#f8faf8;border:1px solid var(--bor);border-radius:12px;padding:14px}.summary-card b{display:block;font-size:20px;margin-top:4px}
+@media(max-width:900px){.operation-grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){.grid,.filters,.summary-grid{grid-template-columns:1fr}.full{grid-column:auto}.head{align-items:flex-start;flex-direction:column}.user{text-align:left}}
 @media(max-width:500px){.cards{grid-template-columns:1fr}.panel{padding:15px}h1{font-size:21px}}
 </style>
 </head>
@@ -29,10 +30,8 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <div><h1>Panel de Tesorería</h1><div class="sub">Comunidad Campesina de Apurí</div></div>
 <div class="user"><strong id="userName">Verificando acceso...</strong><span id="userRole"></span><br><button class="btn secondary" id="salir">Cerrar sesión</button></div>
 </div></header>
-
 <main>
 <div id="msg" class="msg hide"></div>
-
 <h2>Situación actual de los fondos</h2>
 <div class="cards">
 <div class="card cash"><div class="lab">💵 Efectivo</div><b id="efectivo">S/ 0.00</b></div>
@@ -41,80 +40,35 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <div class="card tot"><div class="lab">💰 Total disponible</div><b id="total">S/ 0.00</b></div>
 </div>
 
-<div class="tabs">
-<button class="tab active" data-open="aporte">➕ Aporte</button>
-<button class="tab" data-open="multa">🔴 Pago de multa</button>
-<button class="tab" data-open="empresa">🏢 Empresa / tercero</button>
-<button class="tab" data-open="egreso">➖ Egreso</button>
-<button class="tab" data-open="historial">📋 Historial</button>
-<button class="tab" data-open="reportes">📊 Reportes</button>
-<button class="tab" data-open="actividades">📅 Actividades</button>
-</div>
-
-<section id="aporte" class="panel">
-<h2>Registrar aporte de comunero</h2>
-<form id="formAporte">
+<div class="operation-grid">
+<section class="panel income-panel">
+<div class="panel-title"><h2>💰 Registrar ingreso</h2><span class="tag">DINERO QUE ENTRA</span></div>
+<form id="formIngreso">
 <div class="grid">
-<div class="field"><label>DNI del comunero *</label><input id="dniA" maxlength="8" inputmode="numeric" placeholder="Ej.: 47409588" required></div>
-<div class="field" style="display:flex;align-items:end"><button class="btn secondary" type="button" id="buscarA">🔎 Buscar comunero</button></div>
-<div class="field full"><div id="personaA" class="result hide"></div></div>
-<div class="field"><label>Fecha *</label><input type="date" id="fechaA" required></div>
-<div class="field"><label>Monto (S/) *</label><input type="number" id="montoA" min=".01" step=".01" required></div>
-<div class="field"><label>Fondo *</label><select id="fondoA"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
-<div class="field"><label>Medio</label><select id="medioA"><option>EFECTIVO</option><option>TRANSFERENCIA</option><option>DEPOSITO</option><option>OTRO</option></select></div>
-<div class="field"><label>Referencia / comprobante</label><input id="refA" maxlength="150"></div>
-<div class="field"><label>Observación</label><input id="obsA" maxlength="300"></div>
+<div class="field full"><label>¿Quién realiza el ingreso? *</label><select id="tipoIngreso"><option value="COMUNERO">🧑 Comunero</option><option value="EMPRESA">🏢 Empresa</option><option value="TERCERO">👤 Tercero</option></select></div>
+<div class="field"><label id="docLabelI">DNI del comunero *</label><input id="docI" maxlength="20" inputmode="numeric" placeholder="Ej.: 47409588" required></div>
+<div class="field" id="buscarIBox" style="display:flex;align-items:end"><button class="btn secondary" type="button" id="buscarI">🔎 Buscar comunero</button></div>
+<div class="field full"><label id="nombreLabelI">Comunero</label><input id="nombreI" maxlength="200" placeholder="Se completará al buscar" required></div>
+<div class="field"><label>Fecha *</label><input type="date" id="fechaI" required></div>
+<div class="field"><label>Monto (S/) *</label><input type="number" id="montoI" min=".01" step=".01" required></div>
+<div class="field"><label>Fondo *</label><select id="fondoI"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
+<div class="field"><label>Medio</label><select id="medioI"><option>EFECTIVO</option><option>TRANSFERENCIA</option><option>DEPOSITO</option><option>OTRO</option></select></div>
+<div class="field"><label>Referencia / comprobante</label><input id="refI" maxlength="150"></div>
+<div class="field"><label>Observación</label><input id="obsI" maxlength="300"></div>
 </div>
-<div class="actions"><button class="btn primary" type="submit" id="guardarA">Registrar aporte</button></div>
+<div id="personaI" class="result hide"></div>
+<div class="actions"><button class="btn primary" type="submit" id="guardarI">Registrar ingreso</button></div>
 </form>
 </section>
 
-<section id="multa" class="panel hide">
-<h2>Registrar pago de multa</h2>
-<div class="grid">
-<div class="field"><label>DNI del comunero *</label><input id="dniM" maxlength="8" inputmode="numeric" placeholder="Ej.: 47409588"></div>
-<div class="field" style="display:flex;align-items:end"><button class="btn secondary" type="button" id="buscarM">🔎 Buscar y ver multas</button></div>
-</div>
-<div id="personaM" class="result hide"></div>
-<div id="multasM" class="hide" style="margin-top:15px"></div>
-<div id="pagoM" class="panel hide" style="margin-top:15px;background:#f8faf8">
-<div class="grid">
-<div class="field"><label>Multa seleccionada</label><input id="multaSel" readonly></div>
-<div class="field"><label>Saldo pendiente</label><input id="saldoM" readonly></div>
-<div class="field"><label>Monto a pagar (S/) *</label><input type="number" id="montoM" min=".01" step=".01"></div>
-<div class="field"><label>Fondo *</label><select id="fondoM"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
-<div class="field"><label>Medio</label><select id="medioM"><option>EFECTIVO</option><option>TRANSFERENCIA</option><option>DEPOSITO</option><option>OTRO</option></select></div>
-<div class="field"><label>Referencia</label><input id="refM" maxlength="150"></div>
-</div>
-<div class="actions"><button class="btn primary" id="guardarM">Registrar pago de multa</button></div>
-</div>
-</section>
-
-<section id="empresa" class="panel hide">
-<h2>Registrar ingreso de empresa / institución / tercero</h2>
-<form id="formEmpresa">
-<div class="grid">
-<div class="field"><label>Tipo *</label><select id="tipoE"><option value="EMPRESA">Empresa</option><option value="INSTITUCION">Institución</option><option value="TERCERO">Tercero</option></select></div>
-<div class="field"><label>RUC / Documento</label><input id="docE" maxlength="20" placeholder="Ej.: 20601234567"></div>
-<div class="field full"><label>Razón social / nombre *</label><input id="nombreE" maxlength="200" required></div>
-<div class="field"><label>Fecha *</label><input type="date" id="fechaE" required></div>
-<div class="field"><label>Monto (S/) *</label><input type="number" id="montoE" min=".01" step=".01" required></div>
-<div class="field"><label>Fondo *</label><select id="fondoE"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
-<div class="field"><label>Medio</label><select id="medioE"><option>EFECTIVO</option><option>TRANSFERENCIA</option><option>DEPOSITO</option><option>OTRO</option></select></div>
-<div class="field"><label>Referencia / comprobante</label><input id="refE" maxlength="150"></div>
-<div class="field"><label>Observación</label><input id="obsE" maxlength="300"></div>
-</div>
-<div class="actions"><button class="btn primary" id="guardarE">Registrar ingreso</button></div>
-</form>
-</section>
-
-<section id="egreso" class="panel hide">
-<h2>Registrar egreso</h2>
+<section class="panel expense-panel">
+<div class="panel-title"><h2>💸 Registrar egreso</h2><span class="tag out">DINERO QUE SALE</span></div>
 <form id="formEgreso">
 <div class="grid">
 <div class="field"><label>Tipo de documento *</label><select id="tipoG"><option value="DNI">DNI</option><option value="RUC">RUC</option><option value="OTRO">Otro documento</option></select></div>
 <div class="field"><label>N.° de documento *</label><input id="docG" maxlength="20" inputmode="numeric" placeholder="Ej.: 47409588" required></div>
 <div class="field full"><label>Beneficiario / receptor *</label><input id="nombreG" maxlength="200" placeholder="Ej.: Juan Pérez" required></div>
+<div class="field full"><button class="btn secondary" type="button" id="buscarBenef">🔎 Buscar beneficiario</button></div>
 <div class="field"><label>Fecha *</label><input type="date" id="fechaG" required></div>
 <div class="field"><label>Monto (S/) *</label><input type="number" id="montoG" min=".01" step=".01" required></div>
 <div class="field"><label>Fondo *</label><select id="fondoG"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
@@ -124,84 +78,63 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
 <div class="field"><label>Observación</label><input id="obsG" maxlength="300"></div>
 </div>
 <div id="benefResult" class="result hide"></div>
-<div class="actions"><button class="btn secondary" type="button" id="buscarBenef">🔎 Buscar beneficiario</button><button class="btn primary" id="guardarG">Registrar egreso</button></div>
+<div class="actions"><button class="btn primary" id="guardarG">Registrar egreso</button></div>
 </form>
+</section>
+</div>
+
+<div class="utility-tabs">
+<button class="tab active" data-open="multa">🔴 Pago de multa</button>
+<button class="tab" data-open="historial">📋 Historial</button>
+<button class="tab" data-open="reportes">📊 Reportes</button>
+</div>
+
+<section id="multa" class="panel">
+<h2>🔴 Registrar pago de multa</h2>
+<div class="grid">
+<div class="field"><label>DNI del comunero *</label><input id="dniM" maxlength="8" inputmode="numeric" placeholder="Ej.: 47409588"></div>
+<div class="field" style="display:flex;align-items:end"><button class="btn secondary" type="button" id="buscarM">🔎 Buscar y ver multas</button></div>
+</div>
+<div id="personaM" class="result hide"></div><div id="multasM" class="hide" style="margin-top:15px"></div>
+<div id="pagoM" class="panel hide" style="margin-top:15px;background:#f8faf8"><div class="grid">
+<div class="field"><label>Multa seleccionada</label><input id="multaSel" readonly></div><div class="field"><label>Saldo pendiente</label><input id="saldoM" readonly></div>
+<div class="field"><label>Monto a pagar (S/) *</label><input type="number" id="montoM" min=".01" step=".01"></div>
+<div class="field"><label>Fondo *</label><select id="fondoM"><option value="EFECTIVO">💵 Efectivo</option><option value="BANCO">🏦 Banco</option><option value="YAPE">📱 Yape</option></select></div>
+<div class="field"><label>Medio</label><select id="medioM"><option>EFECTIVO</option><option>TRANSFERENCIA</option><option>DEPOSITO</option><option>OTRO</option></select></div><div class="field"><label>Referencia</label><input id="refM" maxlength="150"></div>
+</div><div class="actions"><button class="btn primary" id="guardarM">Registrar pago de multa</button></div></div>
 </section>
 
 <section id="historial" class="panel hide">
-<h2>Historial de movimientos</h2>
-<div class="filters">
-<div class="field"><label>Desde</label><input type="date" id="desde"></div>
-<div class="field"><label>Hasta</label><input type="date" id="hasta"></div>
-<div class="actions" style="margin:0"><button class="btn primary" id="filtrar">Filtrar</button><button class="btn secondary" id="todo">Todo</button><button class="btn secondary" id="csv">Exportar CSV</button></div>
-</div>
+<h2>📋 Historial de movimientos</h2>
+<div class="filters"><div class="field"><label>Desde</label><input type="date" id="desde"></div><div class="field"><label>Hasta</label><input type="date" id="hasta"></div><div class="actions" style="margin:0"><button class="btn primary" id="filtrar">Filtrar</button><button class="btn secondary" id="todo">Todo</button><button class="btn secondary" id="csv">Exportar CSV</button></div></div>
 <div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Beneficiario</th><th>Documento</th><th>Concepto</th><th>Fondo</th><th>Medio</th><th>Monto</th><th>Comprobante</th><th>Observación</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="tabla"><tr><td colspan="12" class="empty">Cargando...</td></tr></tbody></table></div>
 </section>
 
 <section id="reportes" class="panel hide">
-<h2>📊 Reporte de egresos</h2>
-<div class="result">Aquí puedes consultar cuánto se entregó a cada persona o empresa. El agrupamiento se realiza por DNI/RUC y solo considera egresos activos.</div>
+<h2>📊 Reportes de tesorería</h2>
 <div class="grid" style="margin-top:15px">
+<div class="field"><label>Tipo de reporte *</label><select id="tipoReporte"><option value="INGRESOS">💰 Ingresos</option><option value="EGRESOS">💸 Egresos</option></select></div>
 <div class="field"><label>Desde</label><input type="date" id="repDesde"></div>
 <div class="field"><label>Hasta</label><input type="date" id="repHasta"></div>
-<div class="field"><label>Tipo documento</label><select id="repTipo"><option value="">Todos</option><option value="DNI">DNI</option><option value="RUC">RUC</option><option value="OTRO">Otro</option></select></div>
+<div class="field"><label>Tipo de documento</label><select id="repTipo"><option value="">Todos</option><option value="DNI">DNI</option><option value="RUC">RUC</option><option value="OTRO">Otro</option></select></div>
 <div class="field"><label>N.° documento</label><input id="repDoc" maxlength="20" inputmode="numeric" placeholder="Opcional"></div>
+<div class="field"><label>Tipo de ingreso</label><select id="repTipoIngreso"><option value="">Todos</option><option value="COMUNERO">Comunero</option><option value="EMPRESA">Empresa</option><option value="TERCERO">Tercero</option></select></div>
 </div>
 <div class="actions"><button class="btn primary" id="generarReporte">📊 Generar reporte</button><button class="btn secondary" id="exportarReporte">📥 Exportar CSV</button></div>
 <div id="resumenReporte"></div>
-<div class="tablewrap"><table style="min-width:1000px"><thead><tr><th>Documento</th><th>Beneficiario</th><th>Operaciones</th><th>Total entregado</th></tr></thead><tbody id="tablaReporte"><tr><td colspan="4" class="empty">Genera el reporte para consultar.</td></tr></tbody></table></div>
-<div class="tablewrap"><h3>Detalle</h3><table style="min-width:1050px"><thead><tr><th>Fecha</th><th>Documento</th><th>Beneficiario</th><th>Concepto</th><th>Fondo</th><th>Medio</th><th>Monto</th><th>Comprobante</th></tr></thead><tbody id="tablaReporteDetalle"><tr><td colspan="8" class="empty">Sin datos.</td></tr></tbody></table></div>
-</section>
-
-<section id="actividades" class="panel hide">
-<h2>📅 Actividades y asistencia</h2>
-<div class="result" style="margin-bottom:16px">
-  <b>Flujo:</b> crear actividad → registrar asistencia → cerrar actividad → generar multas automáticamente.
-</div>
-
-<div class="grid">
-<div class="field full"><label>Título de la actividad *</label><input id="tituloAct" maxlength="200" placeholder="Ej.: Faena de limpieza" required></div>
-<div class="field"><label>Tipo *</label><select id="tipoAct"><option value="FAENA">🔨 Faena</option><option value="REUNION">👥 Reunión</option></select></div>
-<div class="field"><label>Fecha *</label><input type="date" id="fechaAct" required></div>
-<div class="field"><label>Lugar</label><input id="lugarAct" maxlength="200" placeholder="Ej.: Centro poblado San Jerónimo"></div>
-<div class="field"><label>Multa por inasistencia (S/) *</label><input type="number" id="multaAct" min="0" step="0.01" value="0"></div>
-<div class="field full"><label>Descripción</label><textarea id="descripcionAct" maxlength="500" placeholder="Detalle de la actividad"></textarea></div>
-</div>
-<div class="actions"><button class="btn primary" id="crearAct">➕ Crear actividad</button><button class="btn secondary" id="refrescarAct">🔄 Actualizar</button></div>
-
-<div class="tablewrap">
-<table style="min-width:850px">
-<thead><tr><th>Fecha</th><th>Actividad</th><th>Tipo</th><th>Lugar</th><th>Multa</th><th>Estado</th><th>Acción</th></tr></thead>
-<tbody id="tablaActividades"><tr><td colspan="7" class="empty">Cargando...</td></tr></tbody>
-</table>
-</div>
-
-<div id="asistenciaBox" class="panel hide" style="margin-top:20px;background:#f8faf8">
-<h2 id="tituloAsistencia">Registrar asistencia</h2>
-<div id="infoActividad" class="small"></div>
-<div class="tablewrap">
-<table style="min-width:700px">
-<thead><tr><th>Código</th><th>Comunero</th><th>DNI</th><th>Asistencia</th><th>Observación</th></tr></thead>
-<tbody id="tablaAsistencia"></tbody>
-</table>
-</div>
-<div class="actions"><button class="btn primary" id="guardarAsistencias">💾 Guardar asistencia</button><button class="btn secondary" id="cerrarAct">🔒 Cerrar actividad y generar multas</button></div>
-</div>
+<div class="tablewrap"><table><thead><tr><th>Documento</th><th>Persona / entidad</th><th>Operaciones</th><th>Total</th></tr></thead><tbody id="tablaReporte"><tr><td colspan="4" class="empty">Genera el reporte para consultar.</td></tr></tbody></table></div>
+<div class="tablewrap"><h3>Detalle</h3><table style="min-width:1100px"><thead><tr><th>Fecha</th><th>Documento</th><th>Persona / entidad</th><th>Concepto</th><th>Fondo</th><th>Medio</th><th>Monto</th><th>Comprobante</th></tr></thead><tbody id="tablaReporteDetalle"><tr><td colspan="8" class="empty">Sin datos.</td></tr></tbody></table></div>
 </section>
 </main>
-
 <script>
 const sb=supabaseClient;
-let comuneroA=null, comuneroM=null, multaSeleccionada=null, movimientos=[], reporteEgresos=[], beneficiarioActual=null;
-let actividades=[], actividadSeleccionada=null, asistenciaActual=[];
-
+let comuneroIngreso=null,comuneroM=null,multaSeleccionada=null,movimientos=[],reporteDatos=[],beneficiarioActual=null;
 const $=id=>document.getElementById(id);
 const money=n=>'S/ '+Number(n||0).toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
 function msg(t,e=false){const x=$('msg');x.textContent=t;x.className='msg'+(e?' err':'');setTimeout(()=>x.classList.add('hide'),5500)}
 function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[s]))}
 function hoy(){return new Date().toISOString().slice(0,10)}
-function dates(){['fechaA','fechaE','fechaG'].forEach(x=>$(x).value=hoy());$('fechaAct').value=hoy();$('repDesde').value='';$('repHasta').value=''}
-
+function dates(){['fechaI','fechaG'].forEach(x=>$(x).value=hoy())}
 async function acceso(){
  const {data:{session},error:sessionError}=await sb.auth.getSession();
  if(sessionError){console.error('getSession:',sessionError);await sb.auth.signOut();location.href='login.html';return false}
@@ -210,261 +143,48 @@ async function acceso(){
  if(error){console.error('obtener_mi_perfil:',error);await sb.auth.signOut();location.href='login.html';return false}
  if(!data?.length){alert('Acceso no autorizado. No existe un perfil asociado a este usuario.');await sb.auth.signOut();location.href='login.html';return false}
  const p=data[0];
- if(!['TESORERO','ADMINISTRADOR'].includes(p.rol)){
-  alert('Acceso no autorizado. Esta sección es exclusiva para TESORERO y ADMINISTRADOR.');
-  await sb.auth.signOut();
-  location.href='login.html';
-  return false
- }
- $('userName').textContent=p.nombre_completo||'Usuario';
- $('userRole').textContent=p.rol;
- document.body.style.display='block';
- return true
+ if(!['TESORERO','ADMINISTRADOR'].includes(p.rol)){alert('Acceso no autorizado. Esta sección es exclusiva para TESORERO y ADMINISTRADOR.');await sb.auth.signOut();location.href='login.html';return false}
+ $('userName').textContent=p.nombre_completo||'Usuario';$('userRole').textContent=p.rol;document.body.style.display='block';return true
 }
-async function fondos(){
- const {data,error}=await sb.rpc('obtener_situacion_fondos');
- if(error){msg('Error al cargar fondos: '+error.message,true);return}
- const f=data?.[0]||{};$('efectivo').textContent=money(f.efectivo);$('banco').textContent=money(f.banco);$('yape').textContent=money(f.yape);$('total').textContent=money(f.total)
-}
-async function buscarDNI(dni){
- const {data,error}=await sb.rpc('buscar_comunero_tesoreria',{p_dni:dni});
- if(error)throw error;
- return data?.[0]||null
-}
+async function fondos(){const {data,error}=await sb.rpc('obtener_situacion_fondos');if(error){msg('Error al cargar fondos: '+error.message,true);return}const f=data?.[0]||{};$('efectivo').textContent=money(f.efectivo);$('banco').textContent=money(f.banco);$('yape').textContent=money(f.yape);$('total').textContent=money(f.total)}
+async function buscarDNI(dni){const {data,error}=await sb.rpc('buscar_comunero_tesoreria',{p_dni:dni});if(error)throw error;return data?.[0]||null}
 
-async function cargarActividades(){
- const {data,error}=await sb.rpc('obtener_actividades_tesoreria');
- if(error){msg('Error al cargar actividades: '+error.message,true);return}
- actividades=data||[];
- $('tablaActividades').innerHTML=actividades.length?actividades.map(a=>{
-   const cerrada=a.estado==='CERRADA', anulada=a.estado==='ANULADA';
-   return `<tr><td>${esc(a.fecha)}</td><td><b>${esc(a.titulo)}</b>${a.descripcion?`<div class="small">${esc(a.descripcion)}</div>`:''}</td><td>${esc(a.tipo)}</td><td>${esc(a.lugar||'-')}</td><td>${money(a.multa_inasistencia)}</td><td><span class="estado ${cerrada?'estado-activo':anulada?'estado-anulado':'estado-activo'}">${esc(a.estado)}</span></td><td><button class="btn secondary btn-asistencia" data-id="${a.id}">👥 ${cerrada?'Ver asistencia':'Asistencia'}</button></td></tr>`
- }).join(''):'<tr><td colspan="7" class="empty">No hay actividades registradas.</td></tr>';
- document.querySelectorAll('.btn-asistencia').forEach(b=>b.onclick=()=>abrirAsistencia(b.dataset.id));
+function actualizarIngreso(){
+ const tipo=$('tipoIngreso').value;
+ const comunero=tipo==='COMUNERO';
+ $('docLabelI').textContent=comunero?'DNI del comunero *':tipo==='EMPRESA'?'RUC *':'DNI *';
+ $('docI').placeholder=comunero?'Ej.: 47409588':tipo==='EMPRESA'?'Ej.: 20601234567':'Ej.: 12345678';
+ $('nombreLabelI').textContent=tipo==='EMPRESA'?'Razón social *':tipo==='TERCERO'?'Nombre del tercero *':'Comunero';
+ $('nombreI').placeholder=comunero?'Se completará al buscar':tipo==='EMPRESA'?'Ej.: Empresa XYZ S.A.C.':'Ej.: Juan Pérez';
+ $('nombreI').readOnly=comunero;
+ $('buscarIBox').style.display=comunero?'flex':'none';
+ comuneroIngreso=null;$('personaI').classList.add('hide');
 }
-async function abrirAsistencia(id){
- const a=actividades.find(x=>x.id===id); if(!a)return;
- actividadSeleccionada=a;
- $('tituloAsistencia').textContent='Asistencia: '+a.titulo;
- $('infoActividad').textContent=`${a.fecha} · ${a.tipo} · Multa por inasistencia: ${money(a.multa_inasistencia)} · Estado: ${a.estado}`;
- const {data,error}=await sb.rpc('obtener_asistencia_actividad',{p_actividad_id:id});
- if(error){msg('Error al cargar asistencia: '+error.message,true);return}
- asistenciaActual=data||[];
- $('tablaAsistencia').innerHTML=asistenciaActual.map((x,i)=>`<tr><td>${esc(x.codigo)}</td><td><b>${esc(x.nombre_completo)}</b></td><td>${esc(x.dni)}</td><td><select class="asis-select" data-index="${i}" ${a.estado!=='PROGRAMADA'?'disabled':''}><option value="">Seleccionar</option><option value="PRESENTE" ${x.asistencia==='PRESENTE'?'selected':''}>🟢 Presente</option><option value="AUSENTE" ${x.asistencia==='AUSENTE'?'selected':''}>🔴 Ausente</option><option value="JUSTIFICADO" ${x.asistencia==='JUSTIFICADO'?'selected':''}>🟡 Justificado</option></select></td><td><input class="asis-obs" data-index="${i}" value="${esc(x.observacion||'')}" maxlength="200" ${a.estado!=='PROGRAMADA'?'disabled':''}></td></tr>`).join('');
- $('guardarAsistencias').disabled=a.estado!=='PROGRAMADA';
- $('cerrarAct').disabled=a.estado!=='PROGRAMADA';
- $('asistenciaBox').classList.remove('hide');
- $('asistenciaBox').scrollIntoView({behavior:'smooth',block:'start'});
-}
-$('crearAct').onclick=async()=>{
- const titulo=$('tituloAct').value.trim();
- const fecha=$('fechaAct').value;
- const multa=Number($('multaAct').value);
- if(!titulo||!fecha||Number.isNaN(multa)||multa<0){msg('Completa título, fecha y una multa válida.',true);return}
- const b=$('crearAct');b.disabled=true;b.textContent='Creando...';
- const {data,error}=await sb.rpc('crear_actividad_tesoreria',{p_titulo:titulo,p_tipo:$('tipoAct').value,p_descripcion:$('descripcionAct').value.trim()||null,p_fecha:fecha,p_lugar:$('lugarAct').value.trim()||null,p_multa:multa});
- b.disabled=false;b.textContent='➕ Crear actividad';
- if(error){msg('No se pudo crear: '+error.message,true);return}
- msg('Actividad creada correctamente.');
- $('tituloAct').value='';$('descripcionAct').value='';$('lugarAct').value='';$('multaAct').value='0';$('tipoAct').value='FAENA';$('fechaAct').value=hoy();
- await cargarActividades();
-}
-$('refrescarAct').onclick=cargarActividades;
-$('guardarAsistencias').onclick=async()=>{
- if(!actividadSeleccionada||actividadSeleccionada.estado!=='PROGRAMADA')return;
- const selects=document.querySelectorAll('.asis-select');
- const obs=document.querySelectorAll('.asis-obs');
- const faltantes=[];
- for(let i=0;i<asistenciaActual.length;i++){
-   const estado=selects[i].value;
-   if(!estado)faltantes.push(asistenciaActual[i].nombre_completo);
- }
- if(faltantes.length){msg(`Falta registrar asistencia de ${faltantes.length} comunero(s).`,true);return}
- const b=$('guardarAsistencias');b.disabled=true;b.textContent='Guardando...';
- try{
-   for(let i=0;i<asistenciaActual.length;i++){
-     const {error}=await sb.rpc('guardar_asistencia_actividad',{p_actividad_id:actividadSeleccionada.id,p_comunero_id:asistenciaActual[i].comunero_id,p_asistencia:selects[i].value,p_observacion:obs[i].value.trim()||null});
-     if(error)throw error;
-   }
-   msg('Asistencias guardadas correctamente.');
-   await abrirAsistencia(actividadSeleccionada.id);
- }catch(e){msg('No se pudieron guardar las asistencias: '+e.message,true)}finally{b.disabled=false;b.textContent='💾 Guardar asistencia'}
-}
-$('cerrarAct').onclick=async()=>{
- if(!actividadSeleccionada||actividadSeleccionada.estado!=='PROGRAMADA')return;
- const ok=confirm(`¿Cerrar la actividad "${actividadSeleccionada.titulo}"?\n\nAl cerrar se generarán automáticamente las multas de los ausentes. Esta acción no debe repetirse.`);
- if(!ok)return;
- const b=$('cerrarAct');b.disabled=true;b.textContent='Cerrando...';
- const {error}=await sb.rpc('cerrar_actividad',{p_actividad_id:actividadSeleccionada.id});
- if(error){msg('No se pudo cerrar: '+error.message,true);b.disabled=false;b.textContent='🔒 Cerrar actividad y generar multas';return}
- msg('Actividad cerrada y multas generadas correctamente.');
- await fondos();await cargarActividades();await abrirAsistencia(actividadSeleccionada.id);
-}
-$('buscarA').onclick=async()=>{
- const dni=$('dniA').value.trim(); if(!dni){msg('Ingresa un DNI.',true);return}
- try{const p=await buscarDNI(dni);comuneroA=p;if(!p){$('personaA').classList.add('hide');msg('No se encontró un comunero con ese DNI.',true);return}
- $('personaA').innerHTML=`<div class="person">${esc(p.nombre_completo)}</div><div class="small">DNI: ${esc(p.dni)} · Código: ${esc(p.codigo)} · Centro poblado: ${esc(p.centro_poblado||'-')} · Estado: ${esc(p.estado)}</div>`;$('personaA').classList.remove('hide')
- }catch(e){msg(e.message,true)}
-}
-$('formAporte').onsubmit=async e=>{
- e.preventDefault();if(!comuneroA){msg('Primero busca y selecciona un comunero.',true);return}
- const b=$('guardarA');b.disabled=true;b.textContent='Registrando...';
- const {error}=await sb.rpc('registrar_aporte',{p_comunero_id:comuneroA.id,p_aportante_id:null,p_monto:Number($('montoA').value),p_fecha:$('fechaA').value,p_fondo:$('fondoA').value,p_medio:$('medioA').value,p_referencia:$('refA').value.trim()||null,p_observacion:$('obsA').value.trim()||null});
- b.disabled=false;b.textContent='Registrar aporte';if(error){msg(error.message,true);return}
- msg('Aporte registrado correctamente.');$('formAporte').reset();comuneroA=null;$('personaA').classList.add('hide');dates();await fondos();await cargar()
-}
-$('buscarM').onclick=async()=>{
- const dni=$('dniM').value.trim();if(!dni){msg('Ingresa un DNI.',true);return}
- try{const p=await buscarDNI(dni);comuneroM=p;multaSeleccionada=null;$('pagoM').classList.add('hide');
- if(!p){$('personaM').classList.add('hide');$('multasM').classList.add('hide');msg('No se encontró el comunero.',true);return}
- $('personaM').innerHTML=`<div class="person">${esc(p.nombre_completo)}</div><div class="small">DNI: ${esc(p.dni)} · Centro poblado: ${esc(p.centro_poblado||'-')}</div>`;$('personaM').classList.remove('hide');
- const {data,error}=await sb.rpc('obtener_multas_tesoreria',{p_comunero_id:p.id});if(error)throw error;
- const arr=data||[];$('multasM').classList.remove('hide');
- if(!arr.length){$('multasM').innerHTML='<div class="result">✅ Este comunero no tiene multas pendientes.</div>';return}
- $('multasM').innerHTML='<b>Multas pendientes:</b>'+arr.map(m=>`<div class="multa" data-id="${m.id}" data-concepto="${esc(m.concepto)}" data-saldo="${m.saldo_pendiente}"><div class="multa-head"><span>${esc(m.concepto)}</span><span class="saldo">${money(m.saldo_pendiente)}</span></div><div class="small">${m.fecha} · Multa: ${money(m.monto_multa)} · Pagado: ${money(m.monto_pagado)}</div></div>`).join('');
- document.querySelectorAll('.multa').forEach(x=>x.onclick=()=>{document.querySelectorAll('.multa').forEach(y=>y.classList.remove('sel'));x.classList.add('sel');multaSeleccionada={id:x.dataset.id,concepto:x.dataset.concepto,saldo:Number(x.dataset.saldo)};$('multaSel').value=x.dataset.concepto;$('saldoM').value=money(multaSeleccionada.saldo);$('montoM').value=multaSeleccionada.saldo.toFixed(2);$('pagoM').classList.remove('hide')})
- }catch(e){msg(e.message,true)}
-}
-$('guardarM').onclick=async()=>{
- if(!comuneroM||!multaSeleccionada){msg('Selecciona una multa pendiente.',true);return}
- const monto=Number($('montoM').value);if(!monto||monto<=0||monto>multaSeleccionada.saldo){msg('El monto no puede superar el saldo pendiente.',true);return}
- const b=$('guardarM');b.disabled=true;b.textContent='Registrando...';
- const {error}=await sb.rpc('registrar_pago_multa_tesoreria',{p_comunero_id:comuneroM.id,p_cargo_id:multaSeleccionada.id,p_monto:monto,p_fecha:hoy(),p_fondo:$('fondoM').value,p_medio:$('medioM').value,p_referencia:$('refM').value.trim()||null});
- b.disabled=false;b.textContent='Registrar pago de multa';if(error){msg(error.message,true);return}
- msg('Pago de multa registrado correctamente.');$('dniM').value='';$('personaM').classList.add('hide');$('multasM').classList.add('hide');$('pagoM').classList.add('hide');comuneroM=null;multaSeleccionada=null;await fondos();await cargar()
-}
-$('formEmpresa').onsubmit=async e=>{
- e.preventDefault();
+$('tipoIngreso').onchange=actualizarIngreso;
+$('buscarI').onclick=async()=>{const dni=$('docI').value.trim();if(!dni){msg('Ingresa el DNI del comunero.',true);return}try{const p=await buscarDNI(dni);comuneroIngreso=p;if(!p){$('personaI').classList.add('hide');msg('No se encontró un comunero con ese DNI.',true);return}$('nombreI').value=p.nombre_completo;$('personaI').innerHTML=`<div class="person">${esc(p.nombre_completo)}</div><div class="small">DNI: ${esc(p.dni)} · Código: ${esc(p.codigo)} · Estado: ${esc(p.estado)}</div>`;$('personaI').classList.remove('hide')}catch(e){msg(e.message,true)}};
+$('docI').addEventListener('input',()=>{if($('tipoIngreso').value==='COMUNERO'){comuneroIngreso=null;$('nombreI').value='';$('personaI').classList.add('hide')}});
+$('formIngreso').onsubmit=async e=>{e.preventDefault();const tipo=$('tipoIngreso').value,doc=$('docI').value.trim(),nombre=$('nombreI').value.trim(),monto=Number($('montoI').value);if(tipo==='COMUNERO'&&!comuneroIngreso){msg('Primero busca y selecciona el comunero.',true);return}if(!doc||!nombre||!monto||monto<=0){msg('Completa documento, nombre y un monto válido.',true);return}const b=$('guardarI');b.disabled=true;b.textContent='Registrando...';try{const {error}=await sb.rpc('registrar_ingreso_tesoreria',{p_tipo:tipo,p_comunero_id:tipo==='COMUNERO'?comuneroIngreso.id:null,p_documento:doc,p_nombre:nombre,p_monto:monto,p_fecha:$('fechaI').value,p_fondo:$('fondoI').value,p_medio:$('medioI').value,p_referencia:$('refI').value.trim()||null,p_observacion:$('obsI').value.trim()||null});if(error)throw error;msg('Ingreso registrado correctamente.');$('formIngreso').reset();comuneroIngreso=null;$('personaI').classList.add('hide');actualizarIngreso();dates();await fondos();await cargar()}catch(e){msg('No se pudo registrar el ingreso: '+e.message,true)}finally{b.disabled=false;b.textContent='Registrar ingreso'}};
 
- const tipo=$('tipoE').value;
- const documento=$('docE').value.trim()||null;
- const nombre=$('nombreE').value.trim();
- const monto=Number($('montoE').value);
- const fecha=$('fechaE').value;
- const fondo=$('fondoE').value;
- const medio=$('medioE').value;
- const referencia=$('refE').value.trim()||null;
- const observacion=$('obsE').value.trim()||null;
+$('buscarM').onclick=async()=>{const dni=$('dniM').value.trim();if(!dni){msg('Ingresa un DNI.',true);return}try{const p=await buscarDNI(dni);comuneroM=p;multaSeleccionada=null;$('pagoM').classList.add('hide');if(!p){$('personaM').classList.add('hide');$('multasM').classList.add('hide');msg('No se encontró el comunero.',true);return}$('personaM').innerHTML=`<div class="person">${esc(p.nombre_completo)}</div><div class="small">DNI: ${esc(p.dni)} · Centro poblado: ${esc(p.centro_poblado||'-')}</div>`;$('personaM').classList.remove('hide');const {data,error}=await sb.rpc('obtener_multas_tesoreria',{p_comunero_id:p.id});if(error)throw error;const arr=data||[];$('multasM').classList.remove('hide');if(!arr.length){$('multasM').innerHTML='<div class="result">✅ Este comunero no tiene multas pendientes.</div>';return}$('multasM').innerHTML='<b>Multas pendientes:</b>'+arr.map(m=>`<div class="multa" data-id="${m.id}" data-concepto="${esc(m.concepto)}" data-saldo="${m.saldo_pendiente}"><div class="multa-head"><span>${esc(m.concepto)}</span><span class="saldo">${money(m.saldo_pendiente)}</span></div><div class="small">${m.fecha} · Multa: ${money(m.monto_multa)} · Pagado: ${money(m.monto_pagado)}</div></div>`).join('');document.querySelectorAll('.multa').forEach(x=>x.onclick=()=>{document.querySelectorAll('.multa').forEach(y=>y.classList.remove('sel'));x.classList.add('sel');multaSeleccionada={id:x.dataset.id,concepto:x.dataset.concepto,saldo:Number(x.dataset.saldo)};$('multaSel').value=x.dataset.concepto;$('saldoM').value=money(multaSeleccionada.saldo);$('montoM').value=multaSeleccionada.saldo.toFixed(2);$('pagoM').classList.remove('hide')})}catch(e){msg(e.message,true)}};
+$('guardarM').onclick=async()=>{if(!comuneroM||!multaSeleccionada){msg('Selecciona una multa pendiente.',true);return}const monto=Number($('montoM').value);if(!monto||monto<=0||monto>multaSeleccionada.saldo){msg('El monto no puede superar el saldo pendiente.',true);return}const b=$('guardarM');b.disabled=true;b.textContent='Registrando...';const {error}=await sb.rpc('registrar_pago_multa_tesoreria',{p_comunero_id:comuneroM.id,p_cargo_id:multaSeleccionada.id,p_monto:monto,p_fecha:hoy(),p_fondo:$('fondoM').value,p_medio:$('medioM').value,p_referencia:$('refM').value.trim()||null});b.disabled=false;b.textContent='Registrar pago de multa';if(error){msg(error.message,true);return}msg('Pago de multa registrado correctamente.');$('dniM').value='';$('personaM').classList.add('hide');$('multasM').classList.add('hide');$('pagoM').classList.add('hide');comuneroM=null;multaSeleccionada=null;await fondos();await cargar()};
 
- if(!nombre){msg('Debe indicar la razón social o nombre.',true);return}
- if(!fecha){msg('Debe indicar la fecha.',true);return}
- if(!monto||monto<=0){msg('El monto debe ser mayor que cero.',true);return}
+$('buscarBenef').onclick=async()=>{const tipo=$('tipoG').value,doc=$('docG').value.trim();if(!doc){msg('Ingresa el número de documento.',true);return}const {data,error}=await sb.rpc('buscar_beneficiario_egreso_tesoreria',{p_tipo_documento:tipo,p_numero_documento:doc});if(error){msg(error.message,true);return}const b=data?.[0]||null;if(b){beneficiarioActual=b;$('nombreG').value=b.nombre;$('benefResult').innerHTML=`<div class="person">${esc(b.nombre)}</div><div class="small">${esc(b.tipo_documento)}: ${esc(b.numero_documento)} · Beneficiario registrado</div>`;$('benefResult').classList.remove('hide');msg('Beneficiario encontrado.')}else{beneficiarioActual=null;$('benefResult').innerHTML='<div class="small">No existe todavía. Al registrar el egreso se creará automáticamente.</div>';$('benefResult').classList.remove('hide')}};
+$('docG').addEventListener('change',()=>{beneficiarioActual=null;$('benefResult').classList.add('hide')});$('tipoG').addEventListener('change',()=>{beneficiarioActual=null;$('benefResult').classList.add('hide')});
+$('formEgreso').onsubmit=async e=>{e.preventDefault();const tipo=$('tipoG').value,doc=$('docG').value.trim(),nombre=$('nombreG').value.trim(),monto=Number($('montoG').value);if(!doc||!nombre){msg('Debe indicar documento y nombre del beneficiario.',true);return}const b=$('guardarG');b.disabled=true;b.textContent='Registrando...';try{const {error}=await sb.rpc('registrar_egreso_tesoreria',{p_tipo_documento:tipo,p_numero_documento:doc,p_nombre:nombre,p_fecha:$('fechaG').value,p_monto:monto,p_fondo:$('fondoG').value,p_medio:$('medioG').value,p_concepto:$('conceptoG').value.trim(),p_comprobante:$('refG').value.trim()||null,p_observacion:$('obsG').value.trim()||null});if(error)throw error;msg('Egreso registrado correctamente.');$('formEgreso').reset();beneficiarioActual=null;$('benefResult').classList.add('hide');dates();await fondos();await cargar()}catch(e){msg('No se pudo registrar el egreso: '+e.message,true)}finally{b.disabled=false;b.textContent='Registrar egreso'}};
 
- const b=$('guardarE');
- b.disabled=true;
- b.textContent='Registrando...';
-
- try{
-  const {error}=await sb.rpc('registrar_ingreso_tercero',{
-   p_tipo:tipo,
-   p_documento:documento,
-   p_nombre:nombre,
-   p_monto:monto,
-   p_fecha:fecha,
-   p_fondo:fondo,
-   p_medio:medio,
-   p_referencia:referencia,
-   p_observacion:observacion
-  });
-
-  if(error)throw error;
-
-  msg('Ingreso de empresa/tercero registrado correctamente.');
-  $('formEmpresa').reset();
-  dates();
-  await fondos();
-  await cargar();
-
- }catch(e){
-  msg('No se pudo registrar el ingreso: '+e.message,true);
- }finally{
-  b.disabled=false;
-  b.textContent='Registrar ingreso';
- }
-}
-$('buscarBenef').onclick=async()=>{
- const tipo=$('tipoG').value, doc=$('docG').value.trim();
- if(!doc){msg('Ingresa el número de documento.',true);return}
- const {data,error}=await sb.rpc('buscar_beneficiario_egreso_tesoreria',{p_tipo_documento:tipo,p_numero_documento:doc});
- if(error){msg(error.message,true);return}
- const b=data?.[0]||null;
- if(b){
-  beneficiarioActual=b;
-  $('nombreG').value=b.nombre;
-  $('benefResult').innerHTML=`<div class="person">${esc(b.nombre)}</div><div class="small">${esc(b.tipo_documento)}: ${esc(b.numero_documento)} · Beneficiario registrado</div>`;
-  $('benefResult').classList.remove('hide');
-  msg('Beneficiario encontrado.');
- }else{
-  beneficiarioActual=null;
-  $('benefResult').innerHTML='<div class="small">No existe todavía. Al registrar el egreso se creará automáticamente.</div>';
-  $('benefResult').classList.remove('hide');
- }
-}
-$('docG').addEventListener('change',()=>{beneficiarioActual=null;$('benefResult').classList.add('hide')});
-$('tipoG').addEventListener('change',()=>{beneficiarioActual=null;$('benefResult').classList.add('hide')});
-$('formEgreso').onsubmit=async e=>{
- e.preventDefault();
- const tipo=$('tipoG').value, doc=$('docG').value.trim(), nombre=$('nombreG').value.trim(), monto=Number($('montoG').value);
- if(!doc){msg('Debe indicar el número de documento del beneficiario.',true);return}
- if(!nombre){msg('Debe indicar el nombre del beneficiario.',true);return}
- const b=$('guardarG');b.disabled=true;b.textContent='Registrando...';
- try{
-  const {error}=await sb.rpc('registrar_egreso_tesoreria',{p_tipo_documento:tipo,p_numero_documento:doc,p_nombre:nombre,p_fecha:$('fechaG').value,p_monto:monto,p_fondo:$('fondoG').value,p_medio:$('medioG').value,p_concepto:$('conceptoG').value.trim(),p_comprobante:$('refG').value.trim()||null,p_observacion:$('obsG').value.trim()||null});
-  if(error)throw error;
-  msg('Egreso registrado correctamente.');
-  $('formEgreso').reset();beneficiarioActual=null;$('benefResult').classList.add('hide');dates();await fondos();await cargar();
- }catch(e){msg('No se pudo registrar el egreso: '+e.message,true)}finally{b.disabled=false;b.textContent='Registrar egreso'}
-}
-async function cargar(){
- const {data,error}=await sb.rpc('obtener_historial_tesoreria_v2',{p_fecha_inicio:$('desde').value||null,p_fecha_fin:$('hasta').value||null});
- if(error){msg('Error al cargar historial: '+error.message,true);return}movimientos=data||[];
- $('tabla').innerHTML=movimientos.length?movimientos.map(m=>{
- const anulado=m.estado==='ANULADO';
- return `<tr class="${anulado?'anulado-row':''}"><td>${m.fecha||''}</td><td class="${m.tipo==='INGRESO'?'in':'out'}">${m.tipo}</td><td>${esc(m.beneficiario_nombre||'-')}</td><td>${m.beneficiario_documento?`${esc(m.beneficiario_tipo)}: ${esc(m.beneficiario_documento)}`:'-'}</td><td>${esc(m.concepto)}</td><td>${esc(m.fondo||'-')}</td><td>${esc(m.medio||'-')}</td><td class="${m.tipo==='INGRESO'?'in':'out'}">${m.tipo==='INGRESO'?'+':'-'} ${money(m.monto)}</td><td>${esc(m.comprobante||'-')}</td><td>${esc(m.observacion||'-')}${anulado&&m.motivo_anulacion?`<div class="small">Motivo: ${esc(m.motivo_anulacion)}</div>`:''}</td><td><span class="estado ${anulado?'estado-anulado':'estado-activo'}">${anulado?'ANULADO':'ACTIVO'}</span></td><td>${anulado?'<span class="small">Sin acción</span>':`<button class="btn danger btn-anular" data-id="${m.id}">Anular</button>`}</td></tr>`}).join(''):'<tr><td colspan="12" class="empty">No hay movimientos en el periodo seleccionado.</td></tr>';
- document.querySelectorAll('.btn-anular').forEach(b=>b.onclick=()=>anularMovimiento(b.dataset.id));
-}
-async function anularMovimiento(id){
- const movimiento=movimientos.find(x=>x.id===id);
- if(!movimiento)return;
- if(movimiento.estado==='ANULADO'){msg('Este movimiento ya está anulado.',true);return}
- const ok=confirm(`¿Seguro que deseas ANULAR este movimiento?\n\n${movimiento.tipo}: ${movimiento.concepto}\nMonto: ${money(movimiento.monto)}\n\nEsta acción no se puede deshacer desde el sistema.`);
- if(!ok)return;
- const motivo=prompt('Escribe el motivo de la anulación:');
- if(motivo===null)return;
- if(!motivo.trim()){msg('Debe indicar el motivo de la anulación.',true);return}
- const {error}=await sb.rpc('anular_movimiento_tesoreria',{p_movimiento_id:id,p_motivo:motivo.trim()});
- if(error){msg('No se pudo anular: '+error.message,true);return}
- msg('Movimiento anulado correctamente.');
- await fondos();
- await cargar();
-}
-
+async function cargar(){const {data,error}=await sb.rpc('obtener_historial_tesoreria_v2',{p_fecha_inicio:$('desde').value||null,p_fecha_fin:$('hasta').value||null});if(error){msg('Error al cargar historial: '+error.message,true);return}movimientos=data||[];$('tabla').innerHTML=movimientos.length?movimientos.map(m=>{const anulado=m.estado==='ANULADO';return `<tr class="${anulado?'anulado-row':''}"><td>${m.fecha||''}</td><td class="${m.tipo==='INGRESO'?'in':'out'}">${m.tipo}</td><td>${esc(m.beneficiario_nombre||'-')}</td><td>${m.beneficiario_documento?`${esc(m.beneficiario_tipo)}: ${esc(m.beneficiario_documento)}`:'-'}</td><td>${esc(m.concepto)}</td><td>${esc(m.fondo||'-')}</td><td>${esc(m.medio||'-')}</td><td class="${m.tipo==='INGRESO'?'in':'out'}">${m.tipo==='INGRESO'?'+':'-'} ${money(m.monto)}</td><td>${esc(m.comprobante||'-')}</td><td>${esc(m.observacion||'-')}${anulado&&m.motivo_anulacion?`<div class="small">Motivo: ${esc(m.motivo_anulacion)}</div>`:''}</td><td><span class="estado ${anulado?'estado-anulado':'estado-activo'}">${anulado?'ANULADO':'ACTIVO'}</span></td><td>${anulado?'<span class="small">Sin acción</span>':`<button class="btn danger btn-anular" data-id="${m.id}">Anular</button>`}</td></tr>`}).join(''):'<tr><td colspan="12" class="empty">No hay movimientos en el periodo seleccionado.</td></tr>';document.querySelectorAll('.btn-anular').forEach(b=>b.onclick=()=>anularMovimiento(b.dataset.id))}
+async function anularMovimiento(id){const movimiento=movimientos.find(x=>x.id===id);if(!movimiento)return;if(movimiento.estado==='ANULADO'){msg('Este movimiento ya está anulado.',true);return}if(!confirm(`¿Seguro que deseas ANULAR este movimiento?\n\n${movimiento.tipo}: ${movimiento.concepto}\nMonto: ${money(movimiento.monto)}\n\nEsta acción no se puede deshacer desde el sistema.`))return;const motivo=prompt('Escribe el motivo de la anulación:');if(motivo===null)return;if(!motivo.trim()){msg('Debe indicar el motivo de la anulación.',true);return}const {error}=await sb.rpc('anular_movimiento_tesoreria',{p_movimiento_id:id,p_motivo:motivo.trim()});if(error){msg('No se pudo anular: '+error.message,true);return}msg('Movimiento anulado correctamente.');await fondos();await cargar()}
 $('filtrar').onclick=cargar;$('todo').onclick=()=>{$('desde').value='';$('hasta').value='';cargar()};
 $('csv').onclick=()=>{if(!movimientos.length){msg('No hay movimientos para exportar.',true);return}const rows=[['Fecha','Tipo','Tipo documento','Documento','Beneficiario','Concepto','Fondo','Medio','Monto','Comprobante','Observación','Estado','Motivo anulación'],...movimientos.map(m=>[m.fecha,m.tipo,m.beneficiario_tipo||'',m.beneficiario_documento||'',m.beneficiario_nombre||'',m.concepto,m.fondo||'',m.medio||'',m.monto,m.comprobante||'',m.observacion||'',m.estado||'ACTIVO',m.motivo_anulacion||''])];const csv=rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='movimientos_tesoreria.csv';a.click()};
-async function generarReporte(){
- const {data,error}=await sb.rpc('obtener_reporte_egresos_tesoreria',{p_fecha_inicio:$('repDesde').value||null,p_fecha_fin:$('repHasta').value||null,p_tipo_documento:$('repTipo').value||null,p_numero_documento:$('repDoc').value.trim()||null});
- if(error){msg('Error al generar reporte: '+error.message,true);return}
- reporteEgresos=data||[];
- const grupos={};
- reporteEgresos.forEach(r=>{const key=`${r.tipo_documento}|${r.numero_documento}`;if(!grupos[key])grupos[key]={tipo:r.tipo_documento,doc:r.numero_documento,nombre:r.beneficiario,ops:0,total:0};grupos[key].ops++;grupos[key].total+=Number(r.monto||0)});
- const arr=Object.values(grupos).sort((a,b)=>b.total-a.total);
- $('tablaReporte').innerHTML=arr.length?arr.map(x=>`<tr><td>${esc(x.tipo)}: ${esc(x.doc)}</td><td><b>${esc(x.nombre)}</b></td><td>${x.ops}</td><td><b>${money(x.total)}</b></td></tr>`).join(''):'<tr><td colspan="4" class="empty">No hay egresos con los filtros seleccionados.</td></tr>';
- const total=reporteEgresos.reduce((s,x)=>s+Number(x.monto||0),0);
- $('resumenReporte').innerHTML=`<div class="summary-grid"><div class="summary-card"><div class="lab">Beneficiarios</div><b>${arr.length}</b></div><div class="summary-card"><div class="lab">Operaciones</div><b>${reporteEgresos.length}</b></div><div class="summary-card"><div class="lab">Total egresado</div><b>${money(total)}</b></div></div>`;
- $('tablaReporteDetalle').innerHTML=reporteEgresos.length?reporteEgresos.map(r=>`<tr><td>${esc(r.fecha)}</td><td>${esc(r.tipo_documento)}: ${esc(r.numero_documento)}</td><td>${esc(r.beneficiario)}</td><td>${esc(r.concepto)}</td><td>${esc(r.fondo||'-')}</td><td>${esc(r.medio||'-')}</td><td>${money(r.monto)}</td><td>${esc(r.comprobante||'-')}</td></tr>`).join(''):'<tr><td colspan="8" class="empty">Sin datos.</td></tr>';
-}
-$('generarReporte').onclick=generarReporte;
-$('exportarReporte').onclick=()=>{
- if(!reporteEgresos.length){msg('Genera primero el reporte para exportarlo.',true);return}
- const rows=[['Fecha','Tipo documento','Documento','Beneficiario','Concepto','Fondo','Medio','Monto','Comprobante','Observación'],...reporteEgresos.map(r=>[r.fecha,r.tipo_documento,r.numero_documento,r.beneficiario,r.concepto,r.fondo||'',r.medio||'',r.monto,r.comprobante||'',r.observacion||''])];
- const csv=rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
- const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='reporte_egresos.csv';a.click();
-};
 
-document.querySelectorAll('.tab[data-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab[data-open]').forEach(x=>x.classList.remove('active'));b.classList.add('active');['aporte','multa','empresa','egreso','historial','reportes','actividades'].forEach(id=>$(id).classList.add('hide'));$(b.dataset.open).classList.remove('hide');if(b.dataset.open==='historial')cargar();if(b.dataset.open==='reportes')generarReporte();if(b.dataset.open==='actividades')cargarActividades()});
+async function generarReporte(){const tipo=$('tipoReporte').value;const common={p_fecha_inicio:$('repDesde').value||null,p_fecha_fin:$('repHasta').value||null,p_tipo_documento:$('repTipo').value||null,p_numero_documento:$('repDoc').value.trim()||null};let data,error;if(tipo==='EGRESOS'){({data,error}=await sb.rpc('obtener_reporte_egresos_tesoreria',common))}else{({data,error}=await sb.rpc('obtener_reporte_ingresos_tesoreria',{...common,p_tipo_ingreso:$('repTipoIngreso').value||null}))}if(error){msg('Error al generar reporte: '+error.message,true);return}reporteDatos=data||[];const grupos={};reporteDatos.forEach(r=>{const key=`${r.tipo_documento}|${r.numero_documento}`;if(!grupos[key])grupos[key]={tipo:r.tipo_documento,doc:r.numero_documento,nombre:r.persona_entidad,ops:0,total:0};grupos[key].ops++;grupos[key].total+=Number(r.monto||0)});const arr=Object.values(grupos).sort((a,b)=>b.total-a.total);$('tablaReporte').innerHTML=arr.length?arr.map(x=>`<tr><td>${esc(x.tipo)}: ${esc(x.doc)}</td><td><b>${esc(x.nombre)}</b></td><td>${x.ops}</td><td><b>${money(x.total)}</b></td></tr>`).join(''):'<tr><td colspan="4" class="empty">No hay movimientos con los filtros seleccionados.</td></tr>';const total=reporteDatos.reduce((s,x)=>s+Number(x.monto||0),0);$('resumenReporte').innerHTML=`<div class="summary-grid"><div class="summary-card"><div class="lab">${tipo==='INGRESOS'?'Ingresantes':'Beneficiarios'}</div><b>${arr.length}</b></div><div class="summary-card"><div class="lab">Operaciones</div><b>${reporteDatos.length}</b></div><div class="summary-card"><div class="lab">${tipo==='INGRESOS'?'Total ingresado':'Total egresado'}</div><b>${money(total)}</b></div></div>`;$('tablaReporteDetalle').innerHTML=reporteDatos.length?reporteDatos.map(r=>`<tr><td>${esc(r.fecha)}</td><td>${esc(r.tipo_documento)}: ${esc(r.numero_documento)}</td><td>${esc(r.persona_entidad)}</td><td>${esc(r.concepto)}</td><td>${esc(r.fondo||'-')}</td><td>${esc(r.medio||'-')}</td><td>${money(r.monto)}</td><td>${esc(r.comprobante||'-')}</td></tr>`).join(''):'<tr><td colspan="8" class="empty">Sin datos.</td></tr>'}
+$('generarReporte').onclick=generarReporte;$('tipoReporte').onchange=()=>{const ingresos=$('tipoReporte').value==='INGRESOS';$('repTipoIngreso').disabled=!ingresos};
+$('exportarReporte').onclick=()=>{if(!reporteDatos.length){msg('Genera primero el reporte para exportarlo.',true);return}const tipo=$('tipoReporte').value;const rows=[['Fecha','Tipo documento','Documento','Persona / entidad','Concepto','Fondo','Medio','Monto','Comprobante','Observación'],...reporteDatos.map(r=>[r.fecha,r.tipo_documento,r.numero_documento,r.persona_entidad,r.concepto,r.fondo||'',r.medio||'',r.monto,r.comprobante||'',r.observacion||''])];const csv=rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download=(tipo==='INGRESOS'?'reporte_ingresos':'reporte_egresos')+'.csv';a.click()};
+
+document.querySelectorAll('.tab[data-open]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab[data-open]').forEach(x=>x.classList.remove('active'));b.classList.add('active');['multa','historial','reportes'].forEach(id=>$(id).classList.add('hide'));$(b.dataset.open).classList.remove('hide');if(b.dataset.open==='historial')cargar();if(b.dataset.open==='reportes')generarReporte()});
 $('salir').onclick=async()=>{await sb.auth.signOut();location.href='login.html'};
-dates();
-(async()=>{if(await acceso()){await fondos();await cargar();await cargarActividades()}})();
+dates();actualizarIngreso();$('tipoReporte').onchange();
+(async()=>{if(await acceso()){await fondos();await cargar()}})();
 </script>
 </body>
 </html>
