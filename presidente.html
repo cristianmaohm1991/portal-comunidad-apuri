@@ -901,18 +901,18 @@ async function guardarNuevaActividad() {
 
     try {
 
-        const { error } =
-            await supabaseClient.rpc(
-                "crear_actividad_tesoreria",
-                {
-                    p_titulo: titulo,
-                    p_tipo: tipo,
-                    p_descripcion: descripcion || null,
-                    p_fecha: fecha,
-                    p_lugar: lugar || null,
-                    p_multa_inasistencia: multa
-                }
-            );
+const { error } =
+    await supabaseClient.rpc(
+        "crear_actividad_tesoreria",
+        {
+            p_titulo: titulo,
+            p_tipo: tipo,
+            p_descripcion: descripcion || null,
+            p_fecha: fecha,
+            p_lugar: lugar || null,
+            p_multa: multa
+        }
+    );
 
         if (error) {
             throw error;
