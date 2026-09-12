@@ -8,7 +8,7 @@
 <script src="js/supabase.js"></script>
 <style>
 :root{--p:#14532d;--p2:#166534;--bg:#f4f7f5;--card:#fff;--txt:#17211b;--mut:#68756d;--bor:#dfe7e1;--red:#b91c1c;--blue:#1d4ed8;--purple:#7e22ce}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:Arial,Helvetica,sans-serif}
+*{box-sizing:border-box}body{display:none;margin:0;background:var(--bg);color:var(--txt);font-family:Arial,Helvetica,sans-serif}
 header{background:linear-gradient(135deg,var(--p),var(--p2));color:white;padding:22px 16px}.head{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:15px;align-items:center}
 h1{margin:0 0 5px;font-size:24px}.sub{font-size:14px;opacity:.88}.user{text-align:right;font-size:13px}.user strong{display:block;font-size:14px;margin-bottom:8px}
 main{max-width:1180px;margin:22px auto;padding:0 15px}.msg{padding:12px 15px;border-radius:10px;margin-bottom:16px;background:#ecfdf5;color:#166534;border:1px solid #bbf7d0}.msg.err{background:#fef2f2;color:#991b1b;border-color:#fecaca}.hide{display:none!important}
@@ -139,13 +139,6 @@ h2{font-size:19px;margin:0 0 14px}.cards{display:grid;grid-template-columns:repe
   <b>Flujo:</b> crear actividad → registrar asistencia → cerrar actividad → generar multas automáticamente.
 </div>
 
-<div class="result" style="margin-bottom:16px;border:1px solid #d9e4dc;background:#f7faf8">
-  <b>👥 Cuentas de comuneros</b>
-  <div class="small" style="margin:6px 0 10px">Crea las cuentas de acceso de los comuneros que todavía no tienen usuario. La contraseña inicial será su DNI.</div>
-  <button class="btn secondary" id="crearCuentasComuneros">⚙️ Crear cuentas faltantes</button>
-  <div id="resultadoCuentas" class="small hide" style="margin-top:10px;white-space:pre-line"></div>
-</div>
-
 <div class="grid">
 <div class="field full"><label>Título de la actividad *</label><input id="tituloAct" maxlength="200" placeholder="Ej.: Faena de limpieza" required></div>
 <div class="field"><label>Tipo *</label><select id="tipoAct"><option value="FAENA">🔨 Faena</option><option value="REUNION">👥 Reunión</option></select></div>
@@ -191,17 +184,22 @@ function dates(){['fechaA','fechaE','fechaG'].forEach(x=>$(x).value=hoy());$('fe
 
 async function acceso(){
  const {data:{session},error:sessionError}=await sb.auth.getSession();
- if(sessionError){msg('Error al verificar la sesión: '+sessionError.message,true);return false}
+ if(sessionError){console.error('getSession:',sessionError);await sb.auth.signOut();location.href='login.html';return false}
  if(!session){location.href='login.html';return false}
  const {data,error}=await sb.rpc('obtener_mi_perfil');
- if(error){console.error('obtener_mi_perfil:',error);msg('No se pudo verificar el perfil: '+error.message,true);return false}
- if(!data?.length){msg('No existe un perfil asociado a este usuario.',true);return false}
+ if(error){console.error('obtener_mi_perfil:',error);await sb.auth.signOut();location.href='login.html';return false}
+ if(!data?.length){alert('Acceso no autorizado. No existe un perfil asociado a este usuario.');await sb.auth.signOut();location.href='login.html';return false}
  const p=data[0];
  if(!['TESORERO','ADMINISTRADOR'].includes(p.rol)){
-   msg('No tiene permisos para acceder a Tesorería.',true);
-   setTimeout(()=>location.href='dashboard.html',1500);return false
+  alert('Acceso no autorizado. Esta sección es exclusiva para TESORERO y ADMINISTRADOR.');
+  await sb.auth.signOut();
+  location.href='login.html';
+  return false
  }
- $('userName').textContent=p.nombre_completo||'Usuario';$('userRole').textContent=p.rol;return true
+ $('userName').textContent=p.nombre_completo||'Usuario';
+ $('userRole').textContent=p.rol;
+ document.body.style.display='block';
+ return true
 }
 async function fondos(){
  const {data,error}=await sb.rpc('obtener_situacion_fondos');
@@ -252,32 +250,6 @@ $('crearAct').onclick=async()=>{
  await cargarActividades();
 }
 $('refrescarAct').onclick=cargarActividades;
-
-$('crearCuentasComuneros').onclick=async()=>{
- const b=$('crearCuentasComuneros');
- const resultado=$('resultadoCuentas');
- const ok=confirm('¿Crear las cuentas de acceso que todavía no existen?\n\nUsuario inicial = DNI\nContraseña inicial = DNI\n\nLas cuentas que ya existen no serán modificadas.');
- if(!ok)return;
- b.disabled=true;b.textContent='Creando cuentas...';
- resultado.classList.add('hide');resultado.textContent='';
- try{
-   const {data,error}=await sb.functions.invoke('crear-cuentas-comuneros',{body:{}});
-   if(error)throw error;
-   if(!data?.success)throw new Error(data?.message||'No fue posible completar el proceso.');
-   const lineas=(data.resultados||[]).map(x=>{
-     const estado=x.resultado==='CREADO'?'CREADO':x.resultado==='YA_EXISTE'?'YA EXISTE':'ERROR';
-     return `${x.codigo} · ${x.nombre} → ${estado}${x.detalle?' · '+x.detalle:''}`;
-   });
-   resultado.textContent=lineas.join('\n')||'No se encontraron comuneros para procesar.';
-   resultado.classList.remove('hide');
-   msg('Proceso de cuentas completado.');
- }catch(e){
-   console.error('crear-cuentas-comuneros:',e);
-   msg('No se pudieron crear las cuentas: '+(e.message||e),true);
- }finally{
-   b.disabled=false;b.textContent='⚙️ Crear cuentas faltantes';
- }
-};
 $('guardarAsistencias').onclick=async()=>{
  if(!actividadSeleccionada||actividadSeleccionada.estado!=='PROGRAMADA')return;
  const selects=document.querySelectorAll('.asis-select');
