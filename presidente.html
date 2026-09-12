@@ -1,1429 +1,953 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presidente - Comunidad Campesina de Apurí</title>
 
-    <title>Panel del Presidente - Comunidad Campesina de Apurí</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase.js"></script>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            color: #1f2937;
-        }
-
-        header {
-            background: #166534;
-            color: white;
-            padding: 18px 20px;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 21px;
-        }
-
-        header p {
-            margin: 5px 0 0;
-            font-size: 14px;
-            opacity: .9;
-        }
-
-        .contenedor {
-            max-width: 1100px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        .barra-superior {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .usuario {
-            font-size: 14px;
-            color: #4b5563;
-        }
-
-        button {
-            border: none;
-            border-radius: 7px;
-            padding: 10px 15px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-salir {
-            background: #dc2626;
-            color: white;
-        }
-
-        .btn-nueva {
-            background: #166534;
-            color: white;
-        }
-
-        .btn-asistencia {
-            background: #2563eb;
-            color: white;
-        }
-
-        .btn-cerrar {
-            background: #b91c1c;
-            color: white;
-        }
-
-        .btn-volver {
-            background: #6b7280;
-            color: white;
-        }
-
-        .tarjetas {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .tarjeta {
-            background: white;
-            border-radius: 10px;
-            padding: 18px;
-            box-shadow: 0 2px 8px rgba(0,0,0,.06);
-        }
-
-        .tarjeta .numero {
-            font-size: 28px;
-            font-weight: bold;
-            color: #166534;
-        }
-
-        .tarjeta .texto {
-            color: #6b7280;
-            margin-top: 5px;
-        }
-
-        .panel {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,.06);
-            margin-bottom: 20px;
-        }
-
-        .panel h2 {
-            margin-top: 0;
-            font-size: 19px;
-        }
-
-        .tabla-contenedor {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        th {
-            background: #f9fafb;
-        }
-
-        .estado {
-            display: inline-block;
-            padding: 5px 9px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .abierta {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .cerrada {
-            background: #e5e7eb;
-            color: #374151;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.5);
-            z-index: 1000;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .modal-contenido {
-            max-width: 850px;
-            margin: 30px auto;
-            background: white;
-            border-radius: 12px;
-            padding: 22px;
-        }
-
-        .formulario {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .campo {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .campo-completo {
-            grid-column: 1 / -1;
-        }
-
-        label {
-            font-size: 13px;
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 7px;
-            font-size: 14px;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .acciones {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .mensaje {
-            padding: 12px;
-            border-radius: 7px;
-            margin-bottom: 15px;
-            display: none;
-        }
-
-        .mensaje.error {
-            display: block;
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .mensaje.ok {
-            display: block;
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .asistencia-select {
-            min-width: 150px;
-        }
-
-        .resumen-asistencia {
-            margin: 15px 0;
-            padding: 12px;
-            background: #f9fafb;
-            border-radius: 8px;
-        }
-
-        .advertencia {
-            background: #fff7ed;
-            color: #9a3412;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 15px;
-        }
-
-        @media (max-width: 700px) {
-
-            .tarjetas {
-                grid-template-columns: 1fr;
-            }
-
-            .formulario {
-                grid-template-columns: 1fr;
-            }
-
-            .campo-completo {
-                grid-column: auto;
-            }
-
-            .contenedor {
-                padding: 12px;
-            }
-
-            .panel {
-                padding: 15px;
-            }
-        }
-    </style>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#172033}
+header{background:#064e2a;color:#fff;padding:18px 24px}
+header h1{margin:0;font-size:21px}
+header p{margin:5px 0 0;font-size:14px;opacity:.9}
+.contenedor{max-width:1100px;margin:auto;padding:20px}
+.barra{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.usuario{font-size:14px;color:#4b5563}
+button{border:0;border-radius:7px;padding:9px 12px;cursor:pointer;font-weight:700;font-size:13px}
+.btn-salir{background:#dc2626;color:#fff}
+.btn-nueva{background:#166534;color:#fff}
+.btn-editar{background:#2563eb;color:#fff}
+.btn-postergar{background:#d97706;color:#fff}
+.btn-reprogramar{background:#7c3aed;color:#fff}
+.btn-abrir{background:#0f766e;color:#fff}
+.btn-cerrar{background:#b91c1c;color:#fff}
+.btn-ver{background:#6b7280;color:#fff}
+.btn-volver{background:#6b7280;color:#fff}
+.btn-guardar{background:#2563eb;color:#fff}
+.tarjetas{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.tarjeta{background:#fff;border-radius:10px;padding:17px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.numero{font-size:27px;font-weight:700;color:#166534}
+.texto{margin-top:5px;color:#64748b;font-size:14px}
+.panel{background:#fff;border-radius:10px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.panel h2{margin:0 0 5px;font-size:19px}
+.subtitulo{margin:0 0 18px;color:#64748b;font-size:14px}
+.tabla{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px 9px;border-bottom:1px solid #e5e7eb;text-align:left;font-size:13px;vertical-align:middle}
+th{background:#f8fafc}
+.estado{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.programada{background:#dcfce7;color:#166534}
+.abierta{background:#dbeafe;color:#1d4ed8}
+.cerrada{background:#e5e7eb;color:#374151}
+.postergada{background:#ffedd5;color:#c2410c}
+.acciones{display:flex;gap:5px;flex-wrap:wrap}
+.mensaje{display:none;padding:11px 13px;border-radius:7px;margin-bottom:15px;font-size:14px}
+.mensaje.ok{display:block;background:#dcfce7;color:#166534}
+.mensaje.error{display:block;background:#fee2e2;color:#991b1b}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:1000;padding:18px;overflow-y:auto}
+.modal-contenido{max-width:850px;margin:20px auto;background:#fff;border-radius:12px;padding:22px}
+.modal-contenido h2{margin:0 0 18px}
+.formulario{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.campo{display:flex;flex-direction:column}
+.completo{grid-column:1/-1}
+label{font-size:13px;font-weight:700;margin-bottom:6px}
+input,select,textarea{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:7px;font-size:14px}
+textarea{min-height:80px;resize:vertical}
+.acciones-modal{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.info-actividad{background:#f8fafc;border-radius:8px;padding:13px;margin-bottom:15px;font-size:14px;line-height:1.7}
+.resumen{background:#f8fafc;padding:12px;border-radius:8px;margin:14px 0;font-size:14px}
+.advertencia{background:#fff7ed;color:#9a3412;padding:12px;border-radius:8px;margin-top:14px;font-size:14px}
+.nota{font-size:12px;color:#64748b;margin-top:8px}
+@media(max-width:800px){
+ .tarjetas{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+ .tarjetas{grid-template-columns:1fr 1fr}
+ .contenedor{padding:12px}
+ .panel{padding:14px}
+ .formulario{grid-template-columns:1fr}
+ .completo{grid-column:auto}
+ th,td{padding:10px 7px}
+}
+</style>
 </head>
 
 <body>
 
 <header>
-    <h1>🏛️ Comunidad Campesina de Apurí</h1>
-    <p>Panel del Presidente</p>
+  <h1>🏛️ Comunidad Campesina de Apurí</h1>
+  <p>Panel del Presidente / Administrador</p>
 </header>
 
 <div class="contenedor">
 
-    <div class="barra-superior">
-        <div class="usuario">
-            Usuario: <strong id="nombreUsuario">Cargando...</strong>
-        </div>
+  <div class="barra">
+    <div class="usuario">Usuario: <strong id="nombreUsuario">Cargando...</strong></div>
+    <button class="btn-salir" onclick="cerrarSesion()">Cerrar sesión</button>
+  </div>
 
-        <button class="btn-salir" onclick="cerrarSesion()">
-            Cerrar sesión
-        </button>
+  <div id="mensaje" class="mensaje"></div>
+
+  <div class="tarjetas">
+    <div class="tarjeta"><div class="numero" id="totalActividades">0</div><div class="texto">Actividades</div></div>
+    <div class="tarjeta"><div class="numero" id="actividadesProgramadas">0</div><div class="texto">Programadas</div></div>
+    <div class="tarjeta"><div class="numero" id="actividadesAbiertas">0</div><div class="texto">Abiertas</div></div>
+    <div class="tarjeta"><div class="numero" id="actividadesCerradas">0</div><div class="texto">Cerradas</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="barra">
+      <div>
+        <h2>📋 Actividades</h2>
+        <p class="subtitulo">Programe, edite, postergue y controle las actividades comunales.</p>
+      </div>
+      <button class="btn-nueva" onclick="abrirNuevaActividad()">➕ Nueva actividad</button>
     </div>
 
-    <div id="mensaje" class="mensaje"></div>
-
-    <!-- RESUMEN -->
-    <div class="tarjetas">
-
-        <div class="tarjeta">
-            <div class="numero" id="totalActividades">0</div>
-            <div class="texto">Actividades</div>
-        </div>
-
-        <div class="tarjeta">
-            <div class="numero" id="actividadesAbiertas">0</div>
-            <div class="texto">Actividades abiertas</div>
-        </div>
-
-        <div class="tarjeta">
-            <div class="numero" id="actividadesCerradas">0</div>
-            <div class="texto">Actividades cerradas</div>
-        </div>
-
+    <div class="tabla">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Actividad</th>
+            <th>Tipo</th>
+            <th>Lugar</th>
+            <th>Multa</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaActividades">
+          <tr><td colspan="7">Cargando actividades...</td></tr>
+        </tbody>
+      </table>
     </div>
-
-    <!-- ACTIVIDADES -->
-    <div class="panel">
-
-        <div class="barra-superior">
-
-            <div>
-                <h2>📋 Actividades</h2>
-                <p style="margin:0;color:#6b7280;font-size:14px;">
-                    Registre actividades y controle la asistencia.
-                </p>
-            </div>
-
-            <button class="btn-nueva" onclick="abrirNuevaActividad()">
-                ➕ Nueva actividad
-            </button>
-
-        </div>
-
-        <div class="tabla-contenedor">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Actividad</th>
-                        <th>Tipo</th>
-                        <th>Lugar</th>
-                        <th>Multa</th>
-                        <th>Estado</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-
-                <tbody id="tablaActividades">
-
-                    <tr>
-                        <td colspan="7">
-                            Cargando actividades...
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
+  </div>
 </div>
 
+<!-- NUEVA / EDITAR -->
+<div id="modalActividad" class="modal">
+  <div class="modal-contenido">
+    <h2 id="tituloModalActividad">➕ Nueva actividad</h2>
 
-<!-- MODAL NUEVA ACTIVIDAD -->
+    <div class="formulario">
+      <div class="campo completo">
+        <label>Título</label>
+        <input id="tituloActividad" type="text" placeholder="Ej.: Faena de limpieza">
+      </div>
 
-<div id="modalNuevaActividad" class="modal">
+      <div class="campo">
+        <label>Tipo</label>
+        <select id="tipoActividad">
+          <option value="FAENA">FAENA</option>
+          <option value="REUNION">REUNIÓN</option>
+        </select>
+      </div>
 
-    <div class="modal-contenido">
+      <div class="campo">
+        <label>Fecha</label>
+        <input id="fechaActividad" type="date">
+      </div>
 
-        <h2>➕ Nueva actividad</h2>
+      <div class="campo">
+        <label>Lugar</label>
+        <input id="lugarActividad" type="text" placeholder="Ej.: Local comunal">
+      </div>
 
-        <div class="formulario">
+      <div class="campo">
+        <label>Multa por inasistencia (S/)</label>
+        <input id="multaActividad" type="number" min="0" step="0.01" value="0">
+      </div>
 
-            <div class="campo campo-completo">
-                <label>Título</label>
-                <input
-                    type="text"
-                    id="tituloActividad"
-                    placeholder="Ej.: Faena de limpieza"
-                >
-            </div>
-
-            <div class="campo">
-                <label>Tipo</label>
-
-                <select id="tipoActividad">
-                    <option value="FAENA">FAENA</option>
-                    <option value="REUNION">REUNIÓN</option>
-                </select>
-
-            </div>
-
-            <div class="campo">
-                <label>Fecha</label>
-
-                <input
-                    type="date"
-                    id="fechaActividad"
-                >
-
-            </div>
-
-            <div class="campo">
-                <label>Lugar</label>
-
-                <input
-                    type="text"
-                    id="lugarActividad"
-                    placeholder="Ej.: Local comunal"
-                >
-
-            </div>
-
-            <div class="campo">
-                <label>Multa por inasistencia (S/)</label>
-
-                <input
-                    type="number"
-                    id="multaActividad"
-                    min="0"
-                    step="0.01"
-                    value="0"
-                >
-
-            </div>
-
-            <div class="campo campo-completo">
-                <label>Descripción</label>
-
-                <textarea
-                    id="descripcionActividad"
-                    placeholder="Descripción de la actividad..."
-                ></textarea>
-
-            </div>
-
-        </div>
-
-        <div class="acciones">
-
-            <button
-                class="btn-nueva"
-                onclick="guardarNuevaActividad()"
-            >
-                Guardar actividad
-            </button>
-
-            <button
-                class="btn-volver"
-                onclick="cerrarModalNuevaActividad()"
-            >
-                Cancelar
-            </button>
-
-        </div>
-
+      <div class="campo completo">
+        <label>Descripción</label>
+        <textarea id="descripcionActividad" placeholder="Descripción de la actividad"></textarea>
+      </div>
     </div>
 
+    <div class="acciones-modal">
+      <button class="btn-nueva" id="btnGuardarActividad" onclick="guardarActividad()">Guardar actividad</button>
+      <button class="btn-volver" onclick="cerrarModalActividad()">Cancelar</button>
+    </div>
+  </div>
 </div>
 
+<!-- POSTERGAR -->
+<div id="modalPostergar" class="modal">
+  <div class="modal-contenido">
+    <h2>⏰ Postergar actividad</h2>
 
-<!-- MODAL ASISTENCIA -->
+    <div id="infoPostergar" class="info-actividad"></div>
 
+    <div class="campo">
+      <label>Nueva fecha</label>
+      <input id="nuevaFechaPostergar" type="date">
+    </div>
+
+    <div class="campo" style="margin-top:14px">
+      <label>Motivo de la postergación</label>
+      <textarea id="motivoPostergar" placeholder="Ej.: Condiciones climáticas"></textarea>
+    </div>
+
+    <div class="acciones-modal">
+      <button class="btn-postergar" onclick="confirmarPostergacion()">⏰ Confirmar postergación</button>
+      <button class="btn-volver" onclick="cerrarModalPostergar()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- REPROGRAMAR -->
+<div id="modalReprogramar" class="modal">
+  <div class="modal-contenido">
+    <h2>🔄 Reprogramar actividad</h2>
+
+    <div id="infoReprogramar" class="info-actividad"></div>
+
+    <div class="campo">
+      <label>Nueva fecha</label>
+      <input id="nuevaFechaReprogramar" type="date">
+    </div>
+
+    <div class="acciones-modal">
+      <button class="btn-reprogramar" onclick="confirmarReprogramacion()">🔄 Reprogramar</button>
+      <button class="btn-volver" onclick="cerrarModalReprogramar()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ASISTENCIA -->
 <div id="modalAsistencia" class="modal">
+  <div class="modal-contenido">
+    <h2>👥 Control de asistencia</h2>
 
-    <div class="modal-contenido">
+    <div id="datosActividad" class="info-actividad"></div>
 
-        <h2>👥 Control de asistencia</h2>
+    <div class="resumen" id="resumenTexto">Cargando...</div>
 
-        <div id="datosActividad"></div>
-
-        <div class="resumen-asistencia">
-
-            <strong>Resumen:</strong>
-
-            <span id="resumenTexto">
-                Cargando...
-            </span>
-
-        </div>
-
-        <div class="tabla-contenedor">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>Comunero</th>
-                        <th>Centro poblado</th>
-                        <th>Asistencia</th>
-                    </tr>
-                </thead>
-
-                <tbody id="tablaAsistencia">
-
-                    <tr>
-                        <td colspan="3">
-                            Cargando...
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        <div id="advertenciaCierre"></div>
-
-        <div class="acciones">
-
-            <button
-                class="btn-asistencia"
-                onclick="guardarTodasAsistencias()"
-            >
-                💾 Guardar asistencia
-            </button>
-
-            <button
-                class="btn-cerrar"
-                id="btnCerrarActividad"
-                onclick="cerrarActividadActual()"
-            >
-                🔒 Cerrar actividad
-            </button>
-
-            <button
-                class="btn-volver"
-                onclick="cerrarModalAsistencia()"
-            >
-                Volver
-            </button>
-
-        </div>
-
+    <div class="tabla">
+      <table>
+        <thead>
+          <tr>
+            <th>Comunero</th>
+            <th>Centro poblado</th>
+            <th>Asistencia</th>
+          </tr>
+        </thead>
+        <tbody id="tablaAsistencia">
+          <tr><td colspan="3">Cargando...</td></tr>
+        </tbody>
+      </table>
     </div>
 
-</div>
+    <div id="advertenciaCierre"></div>
 
+    <div class="acciones-modal">
+      <button class="btn-guardar" id="btnGuardarAsistencia" onclick="guardarTodasAsistencias()">💾 Guardar asistencia</button>
+      <button class="btn-cerrar" id="btnCerrarActividad" onclick="cerrarActividadActual()">🔒 Cerrar actividad</button>
+      <button class="btn-volver" onclick="cerrarModalAsistencia()">Volver</button>
+    </div>
+  </div>
+</div>
 
 <script>
-
+let actividades = [];
 let actividadActual = null;
 let asistenciasActuales = [];
-
-
-/* =========================
-   UTILIDADES
-========================= */
-
-function mostrarMensaje(texto, tipo = "ok") {
-
-    const mensaje = document.getElementById("mensaje");
-
-    mensaje.textContent = texto;
-
-    mensaje.className = "mensaje " + tipo;
-
-    setTimeout(() => {
-        mensaje.className = "mensaje";
-    }, 5000);
-}
-
+let modoEdicion = false;
 
 function escapeHtml(texto) {
-
-    if (texto === null || texto === undefined) {
-        return "";
-    }
-
-    return String(texto)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+  if (texto === null || texto === undefined) return "";
+  return String(texto)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
+function fechaTexto(fecha) {
+  if (!fecha) return "";
+  const partes = String(fecha).split("-");
+  if (partes.length !== 3) return fecha;
+  return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
 
-/* =========================
-   INICIO
-========================= */
+function hoyISO() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+
+function mostrarMensaje(texto, tipo="ok") {
+  const el = document.getElementById("mensaje");
+  el.textContent = texto;
+  el.className = "mensaje " + tipo;
+  setTimeout(() => el.className = "mensaje", 5000);
+}
 
 async function iniciar() {
-
-    try {
-
-        const {
-            data: { user },
-            error
-        } = await supabaseClient.auth.getUser();
-
-        if (error || !user) {
-
-            window.location.href = "login.html";
-            return;
-        }
-
-        const { data: perfil, error: errorPerfil } =
-            await supabaseClient.rpc("obtener_mi_perfil");
-
-        if (errorPerfil) {
-            throw errorPerfil;
-        }
-
-        if (!perfil || perfil.length === 0) {
-
-            alert("No se encontró el perfil del usuario.");
-
-            await supabaseClient.auth.signOut();
-
-            window.location.href = "login.html";
-
-            return;
-        }
-
-        const p = perfil[0];
-
-        document.getElementById("nombreUsuario").textContent =
-            p.nombre_completo || "Usuario";
-
-        /*
-         * Solo PRESIDENTE y ADMINISTRADOR
-         * pueden ingresar a este panel.
-         */
-
-        if (
-            p.rol !== "PRESIDENTE" &&
-            p.rol !== "ADMINISTRADOR"
-        ) {
-
-            alert(
-                "No tiene permisos para acceder al Panel del Presidente."
-            );
-
-            window.location.href = "dashboard.html";
-
-            return;
-        }
-
-        await cargarActividades();
-
-    } catch (error) {
-
-        console.error(error);
-
-        mostrarMensaje(
-            error.message || "Error al iniciar el panel.",
-            "error"
-        );
+  try {
+    const {data:{user}, error} = await supabaseClient.auth.getUser();
+    if (error || !user) {
+      window.location.href = "login.html";
+      return;
     }
+
+    const {data:perfil, error:errorPerfil} =
+      await supabaseClient.rpc("obtener_mi_perfil");
+
+    if (errorPerfil) throw errorPerfil;
+
+    if (!perfil || !perfil.length) {
+      await supabaseClient.auth.signOut();
+      window.location.href = "login.html";
+      return;
+    }
+
+    const p = perfil[0];
+
+    document.getElementById("nombreUsuario").textContent =
+      p.nombre_completo || "Usuario";
+
+    if (p.rol !== "ADMINISTRADOR" && p.rol !== "PRESIDENTE") {
+      alert("No tiene permisos para acceder a este panel.");
+      window.location.href = "dashboard.html";
+      return;
+    }
+
+    await cargarActividades();
+
+  } catch (error) {
+    console.error(error);
+    mostrarMensaje(error.message || "Error al iniciar el panel.", "error");
+  }
 }
-
-
-/* =========================
-   ACTIVIDADES
-========================= */
 
 async function cargarActividades() {
+  const tbody = document.getElementById("tablaActividades");
+  tbody.innerHTML = `<tr><td colspan="7">Cargando actividades...</td></tr>`;
 
-    const tbody =
-        document.getElementById("tablaActividades");
+  try {
+    const {data, error} =
+      await supabaseClient.rpc("obtener_actividades_presidente");
 
-    tbody.innerHTML = `
-        <tr>
-            <td colspan="7">
-                Cargando actividades...
-            </td>
-        </tr>
-    `;
+    if (error) throw error;
 
-    try {
+    actividades = data || [];
 
-        const { data, error } =
-            await supabaseClient.rpc(
-                "obtener_actividades_tesoreria"
-            );
+    const programadas = actividades.filter(a => a.estado === "PROGRAMADA").length;
+    const abiertas = actividades.filter(a => a.estado === "ABIERTA").length;
+    const cerradas = actividades.filter(a => a.estado === "CERRADA").length;
 
-        if (error) {
-            throw error;
-        }
+    document.getElementById("totalActividades").textContent = actividades.length;
+    document.getElementById("actividadesProgramadas").textContent = programadas;
+    document.getElementById("actividadesAbiertas").textContent = abiertas;
+    document.getElementById("actividadesCerradas").textContent = cerradas;
 
-        const actividades = data || [];
-
-        document.getElementById("totalActividades").textContent =
-            actividades.length;
-
-        const abiertas =
-            actividades.filter(a => a.estado === "ABIERTA").length;
-
-        const cerradas =
-            actividades.filter(a => a.estado === "CERRADA").length;
-
-        document.getElementById("actividadesAbiertas").textContent =
-            abiertas;
-
-        document.getElementById("actividadesCerradas").textContent =
-            cerradas;
-
-
-        if (actividades.length === 0) {
-
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="7">
-                        No hay actividades registradas.
-                    </td>
-                </tr>
-            `;
-
-            return;
-        }
-
-
-        tbody.innerHTML = actividades.map(a => {
-
-            const fecha = a.fecha
-                ? new Date(a.fecha + "T00:00:00")
-                    .toLocaleDateString("es-PE")
-                : "";
-
-            const estadoClase =
-                a.estado === "ABIERTA"
-                    ? "abierta"
-                    : "cerrada";
-
-            let accion = "";
-
-            if (a.estado === "ABIERTA") {
-
-                accion = `
-                    <button
-                        class="btn-asistencia"
-                        onclick="abrirAsistencia('${a.id}')"
-                    >
-                        👥 Asistencia
-                    </button>
-                `;
-
-            } else {
-
-                accion = `
-                    <button
-                        class="btn-volver"
-                        onclick="abrirAsistencia('${a.id}')"
-                    >
-                        👁️ Ver
-                    </button>
-                `;
-
-            }
-
-            return `
-                <tr>
-
-                    <td>${fecha}</td>
-
-                    <td>
-                        <strong>${escapeHtml(a.titulo)}</strong>
-                    </td>
-
-                    <td>
-                        ${escapeHtml(a.tipo || "")}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(a.lugar || "")}
-                    </td>
-
-                    <td>
-                        S/ ${Number(a.multa_inasistencia || 0).toFixed(2)}
-                    </td>
-
-                    <td>
-                        <span class="estado ${estadoClase}">
-                            ${escapeHtml(a.estado)}
-                        </span>
-                    </td>
-
-                    <td>
-                        ${accion}
-                    </td>
-
-                </tr>
-            `;
-
-        }).join("");
-
-    } catch (error) {
-
-        console.error(error);
-
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="7">
-                    Error al cargar actividades.
-                </td>
-            </tr>
-        `;
-
-        mostrarMensaje(
-            error.message || "Error al cargar actividades.",
-            "error"
-        );
+    if (!actividades.length) {
+      tbody.innerHTML = `<tr><td colspan="7">No hay actividades registradas.</td></tr>`;
+      return;
     }
+
+    tbody.innerHTML = actividades.map(a => {
+      const clase =
+        a.estado === "PROGRAMADA" ? "programada" :
+        a.estado === "ABIERTA" ? "abierta" :
+        a.estado === "POSTERGADA" ? "postergada" : "cerrada";
+
+      let fechaMostrar = fechaTexto(a.fecha);
+
+      if (a.estado === "POSTERGADA" && a.fecha_reprogramada) {
+        fechaMostrar =
+          `${fechaTexto(a.fecha_reprogramada)}<br><span class="nota">Original: ${fechaTexto(a.fecha)}</span>`;
+      }
+
+      let acciones = "";
+
+      if (a.estado === "PROGRAMADA") {
+        acciones = `
+          <button class="btn-editar" onclick="abrirEditar('${a.id}')">✏️ Editar</button>
+          <button class="btn-postergar" onclick="abrirPostergar('${a.id}')">⏰ Postergar</button>
+          <button class="btn-abrir" onclick="abrirActividad('${a.id}')">▶️ Abrir</button>
+        `;
+      } else if (a.estado === "ABIERTA") {
+        acciones = `
+          <button class="btn-abrir" onclick="abrirAsistencia('${a.id}')">👥 Asistencia</button>
+        `;
+      } else if (a.estado === "POSTERGADA") {
+        acciones = `
+          <button class="btn-reprogramar" onclick="abrirReprogramar('${a.id}')">🔄 Reprogramar</button>
+          <button class="btn-ver" onclick="verActividad('${a.id}')">👁️ Ver</button>
+        `;
+      } else {
+        acciones = `
+          <button class="btn-ver" onclick="abrirAsistencia('${a.id}')">👁️ Ver</button>
+        `;
+      }
+
+      return `
+        <tr>
+          <td>${fechaMostrar}</td>
+          <td><strong>${escapeHtml(a.titulo)}</strong></td>
+          <td>${escapeHtml(a.tipo || "")}</td>
+          <td>${escapeHtml(a.lugar || "")}</td>
+          <td>S/ ${Number(a.multa_inasistencia || 0).toFixed(2)}</td>
+          <td><span class="estado ${clase}">${escapeHtml(a.estado)}</span></td>
+          <td><div class="acciones">${acciones}</div></td>
+        </tr>
+      `;
+    }).join("");
+
+  } catch (error) {
+    console.error(error);
+    tbody.innerHTML = `<tr><td colspan="7">Error al cargar actividades.</td></tr>`;
+    mostrarMensaje(error.message || "Error al cargar actividades.", "error");
+  }
 }
-
-
-/* =========================
-   NUEVA ACTIVIDAD
-========================= */
 
 function abrirNuevaActividad() {
+  modoEdicion = false;
+  actividadActual = null;
 
-    document.getElementById("modalNuevaActividad").style.display =
-        "block";
+  document.getElementById("tituloModalActividad").textContent = "➕ Nueva actividad";
+  document.getElementById("btnGuardarActividad").textContent = "Guardar actividad";
 
-    document.getElementById("tituloActividad").value = "";
+  document.getElementById("tituloActividad").value = "";
+  document.getElementById("tipoActividad").value = "FAENA";
+  document.getElementById("fechaActividad").value = hoyISO();
+  document.getElementById("lugarActividad").value = "";
+  document.getElementById("multaActividad").value = "0";
+  document.getElementById("descripcionActividad").value = "";
 
-    document.getElementById("tipoActividad").value = "FAENA";
-
-    document.getElementById("fechaActividad").value =
-        new Date().toISOString().split("T")[0];
-
-    document.getElementById("lugarActividad").value = "";
-
-    document.getElementById("multaActividad").value = "0";
-
-    document.getElementById("descripcionActividad").value = "";
+  document.getElementById("modalActividad").style.display = "block";
 }
 
+function abrirEditar(id) {
+  const a = actividades.find(x => x.id === id);
+  if (!a) return;
 
-function cerrarModalNuevaActividad() {
+  if (a.estado !== "PROGRAMADA") {
+    alert("Solo se pueden editar actividades PROGRAMADAS.");
+    return;
+  }
 
-    document.getElementById("modalNuevaActividad").style.display =
-        "none";
+  modoEdicion = true;
+  actividadActual = a;
+
+  document.getElementById("tituloModalActividad").textContent = "✏️ Editar actividad";
+  document.getElementById("btnGuardarActividad").textContent = "Guardar cambios";
+
+  document.getElementById("tituloActividad").value = a.titulo || "";
+  document.getElementById("tipoActividad").value = a.tipo || "FAENA";
+  document.getElementById("fechaActividad").value = a.fecha || "";
+  document.getElementById("lugarActividad").value = a.lugar || "";
+  document.getElementById("multaActividad").value = Number(a.multa_inasistencia || 0);
+  document.getElementById("descripcionActividad").value = a.descripcion || "";
+
+  document.getElementById("modalActividad").style.display = "block";
 }
 
+function cerrarModalActividad() {
+  document.getElementById("modalActividad").style.display = "none";
+  actividadActual = null;
+  modoEdicion = false;
+}
 
-async function guardarNuevaActividad() {
+async function guardarActividad() {
+  const titulo = document.getElementById("tituloActividad").value.trim();
+  const tipo = document.getElementById("tipoActividad").value;
+  const descripcion = document.getElementById("descripcionActividad").value.trim();
+  const fecha = document.getElementById("fechaActividad").value;
+  const lugar = document.getElementById("lugarActividad").value.trim();
+  const multa = Number(document.getElementById("multaActividad").value || 0);
 
-    const titulo =
-        document.getElementById("tituloActividad").value.trim();
+  if (!titulo) {
+    alert("Ingrese el título de la actividad.");
+    return;
+  }
 
-    const tipo =
-        document.getElementById("tipoActividad").value;
+  if (!fecha) {
+    alert("Seleccione la fecha.");
+    return;
+  }
 
-    const descripcion =
-        document.getElementById("descripcionActividad").value.trim();
+  if (multa < 0) {
+    alert("La multa no puede ser negativa.");
+    return;
+  }
 
-    const fecha =
-        document.getElementById("fechaActividad").value;
-
-    const lugar =
-        document.getElementById("lugarActividad").value.trim();
-
-    const multa =
-        Number(document.getElementById("multaActividad").value || 0);
-
-
-    if (!titulo) {
-
-        alert("Ingrese el título de la actividad.");
-        return;
-    }
-
-    if (!fecha) {
-
-        alert("Seleccione la fecha.");
-        return;
-    }
-
-    if (multa < 0) {
-
-        alert("La multa no puede ser negativa.");
-        return;
-    }
-
-
-    try {
-
-const { error } =
-    await supabaseClient.rpc(
+  try {
+    if (!modoEdicion) {
+      const {error} = await supabaseClient.rpc(
         "crear_actividad_tesoreria",
         {
-            p_titulo: titulo,
-            p_tipo: tipo,
-            p_descripcion: descripcion || null,
-            p_fecha: fecha,
-            p_lugar: lugar || null,
-            p_multa: multa
+          p_titulo: titulo,
+          p_tipo: tipo,
+          p_descripcion: descripcion || null,
+          p_fecha: fecha,
+          p_lugar: lugar || null,
+          p_multa: multa
         }
-    );
+      );
 
-        if (error) {
-            throw error;
-        }
+      if (error) throw error;
 
-        cerrarModalNuevaActividad();
-
-        mostrarMensaje(
-            "Actividad creada correctamente."
-        );
-
-        await cargarActividades();
-
-    } catch (error) {
-
-        console.error(error);
-
-        mostrarMensaje(
-            error.message || "No se pudo crear la actividad.",
-            "error"
-        );
-    }
-}
-
-
-/* =========================
-   ASISTENCIA
-========================= */
-
-async function abrirAsistencia(id) {
-
-    actividadActual = id;
-
-    document.getElementById("modalAsistencia").style.display =
-        "block";
-
-    document.getElementById("tablaAsistencia").innerHTML = `
-        <tr>
-            <td colspan="3">
-                Cargando comuneros...
-            </td>
-        </tr>
-    `;
-
-    document.getElementById("resumenTexto").textContent =
-        "Cargando...";
-
-    try {
-
-        const { data, error } =
-            await supabaseClient.rpc(
-                "obtener_asistencia_actividad",
-                {
-                    p_actividad_id: id
-                }
-            );
-
-        if (error) {
-            throw error;
-        }
-
-        asistenciasActuales = data || [];
-
-        renderizarAsistencia();
-
-    } catch (error) {
-
-        console.error(error);
-
-        mostrarMensaje(
-            error.message || "Error al cargar asistencia.",
-            "error"
-        );
-    }
-}
-
-
-function renderizarAsistencia() {
-
-    const tbody =
-        document.getElementById("tablaAsistencia");
-
-    if (asistenciasActuales.length === 0) {
-
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="3">
-                    No hay comuneros activos.
-                </td>
-            </tr>
-        `;
-
-        return;
-    }
-
-
-    const actividad =
-        asistenciasActuales[0];
-
-    document.getElementById("datosActividad").innerHTML = `
-        <p>
-            <strong>Actividad:</strong>
-            ${escapeHtml(actividad.titulo || "")}
-        </p>
-
-        <p>
-            <strong>Fecha:</strong>
-            ${actividad.fecha
-                ? new Date(
-                    actividad.fecha + "T00:00:00"
-                  ).toLocaleDateString("es-PE")
-                : ""}
-        </p>
-    `;
-
-
-    tbody.innerHTML =
-        asistenciasActuales.map((a, index) => {
-
-            const asistencia =
-                a.asistencia || "";
-
-            return `
-                <tr>
-
-                    <td>
-                        <strong>
-                            ${escapeHtml(a.nombre_completo || "")}
-                        </strong>
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                            a.centro_poblado || ""
-                        )}
-                    </td>
-
-                    <td>
-
-                        <select
-                            class="asistencia-select"
-                            id="asistencia_${index}"
-                            data-index="${index}"
-                            onchange="actualizarResumen()"
-                            ${a.estado_actividad === "CERRADA"
-                                ? "disabled"
-                                : ""}
-                        >
-
-                            <option value=""
-                                ${asistencia === ""
-                                    ? "selected"
-                                    : ""}>
-                                -- Seleccionar --
-                            </option>
-
-                            <option value="PRESENTE"
-                                ${asistencia === "PRESENTE"
-                                    ? "selected"
-                                    : ""}>
-                                PRESENTE
-                            </option>
-
-                            <option value="AUSENTE"
-                                ${asistencia === "AUSENTE"
-                                    ? "selected"
-                                    : ""}>
-                                AUSENTE
-                            </option>
-
-                            <option value="JUSTIFICADO"
-                                ${asistencia === "JUSTIFICADO"
-                                    ? "selected"
-                                    : ""}>
-                                JUSTIFICADO
-                            </option>
-
-                        </select>
-
-                    </td>
-
-                </tr>
-            `;
-
-        }).join("");
-
-
-    actualizarResumen();
-
-
-    const cerrada =
-        asistenciasActuales.some(
-            a => a.estado_actividad === "CERRADA"
-        );
-
-    document.getElementById("btnCerrarActividad").style.display =
-        cerrada ? "none" : "inline-block";
-}
-
-
-function actualizarResumen() {
-
-    let presentes = 0;
-    let ausentes = 0;
-    let justificados = 0;
-    let pendientes = 0;
-
-
-    asistenciasActuales.forEach((a, index) => {
-
-        const select =
-            document.getElementById(
-                "asistencia_" + index
-            );
-
-        const valor =
-            select
-                ? select.value
-                : a.asistencia || "";
-
-
-        if (valor === "PRESENTE") presentes++;
-
-        else if (valor === "AUSENTE") ausentes++;
-
-        else if (valor === "JUSTIFICADO") justificados++;
-
-        else pendientes++;
-
-    });
-
-
-    document.getElementById("resumenTexto").textContent =
-        `Presentes: ${presentes} | ` +
-        `Ausentes: ${ausentes} | ` +
-        `Justificados: ${justificados} | ` +
-        `Pendientes: ${pendientes}`;
-
-
-    const advertencia =
-        document.getElementById("advertenciaCierre");
-
-
-    if (pendientes > 0) {
-
-        advertencia.innerHTML = `
-            <div class="advertencia">
-                ⚠️ Hay ${pendientes} comunero(s)
-                sin asistencia registrada.
-                No se podrá cerrar la actividad hasta completar
-                la asistencia.
-            </div>
-        `;
+      mostrarMensaje("Actividad programada correctamente.");
 
     } else {
-
-        advertencia.innerHTML = "";
-
-    }
-}
-
-
-/* =========================
-   GUARDAR ASISTENCIA
-========================= */
-
-async function guardarTodasAsistencias() {
-
-    if (!actividadActual) {
-        return;
-    }
-
-
-    try {
-
-        for (
-            let index = 0;
-            index < asistenciasActuales.length;
-            index++
-        ) {
-
-            const select =
-                document.getElementById(
-                    "asistencia_" + index
-                );
-
-            if (!select || !select.value) {
-                continue;
-            }
-
-
-            const comunero =
-                asistenciasActuales[index];
-
-
-            const { error } =
-                await supabaseClient.rpc(
-                    "guardar_asistencia_actividad",
-                    {
-                        p_actividad_id:
-                            actividadActual,
-
-                        p_comunero_id:
-                            comunero.comunero_id,
-
-                        p_asistencia:
-                            select.value,
-
-                        p_observacion:
-                            null
-                    }
-                );
-
-
-            if (error) {
-                throw error;
-            }
+      const {error} = await supabaseClient.rpc(
+        "editar_actividad_presidente",
+        {
+          p_actividad_id: actividadActual.id,
+          p_titulo: titulo,
+          p_tipo: tipo,
+          p_descripcion: descripcion || null,
+          p_fecha: fecha,
+          p_lugar: lugar || null,
+          p_multa: multa
         }
+      );
 
+      if (error) throw error;
 
-        mostrarMensaje(
-            "Asistencia guardada correctamente."
-        );
-
-        await abrirAsistencia(actividadActual);
-
-    } catch (error) {
-
-        console.error(error);
-
-        mostrarMensaje(
-            error.message ||
-            "No se pudo guardar la asistencia.",
-            "error"
-        );
+      mostrarMensaje("Actividad actualizada correctamente.");
     }
+
+    cerrarModalActividad();
+    await cargarActividades();
+
+  } catch (error) {
+    console.error(error);
+    mostrarMensaje(error.message || "No se pudo guardar la actividad.", "error");
+  }
 }
 
+function abrirPostergar(id) {
+  const a = actividades.find(x => x.id === id);
+  if (!a) return;
 
-/* =========================
-   CERRAR ACTIVIDAD
-========================= */
+  if (a.estado !== "PROGRAMADA") {
+    alert("Solo se puede postergar una actividad PROGRAMADA.");
+    return;
+  }
 
-async function cerrarActividadActual() {
+  actividadActual = a;
 
-    if (!actividadActual) {
-        return;
-    }
+  document.getElementById("infoPostergar").innerHTML = `
+    <strong>${escapeHtml(a.titulo)}</strong><br>
+    Fecha actual: ${fechaTexto(a.fecha)}<br>
+    Lugar: ${escapeHtml(a.lugar || "No indicado")}
+  `;
 
+  document.getElementById("nuevaFechaPostergar").value = "";
+  document.getElementById("nuevaFechaPostergar").min = a.fecha;
+  document.getElementById("motivoPostergar").value = "";
 
-    const confirmacion = confirm(
-        "¿Está seguro de cerrar esta actividad?\n\n" +
-        "Al cerrarla se generarán automáticamente " +
-        "las multas correspondientes a los comuneros " +
-        "marcados como AUSENTE.\n\n" +
-        "Esta acción no debe realizarse hasta verificar " +
-        "que la asistencia esté correcta."
+  document.getElementById("modalPostergar").style.display = "block";
+}
+
+function cerrarModalPostergar() {
+  document.getElementById("modalPostergar").style.display = "none";
+  actividadActual = null;
+}
+
+async function confirmarPostergacion() {
+  if (!actividadActual) return;
+
+  const nuevaFecha =
+    document.getElementById("nuevaFechaPostergar").value;
+
+  const motivo =
+    document.getElementById("motivoPostergar").value.trim();
+
+  if (!nuevaFecha) {
+    alert("Seleccione la nueva fecha.");
+    return;
+  }
+
+  if (!motivo) {
+    alert("Indique el motivo de la postergación.");
+    return;
+  }
+
+  if (nuevaFecha <= actividadActual.fecha) {
+    alert("La nueva fecha debe ser posterior a la fecha actual.");
+    return;
+  }
+
+  if (!confirm(
+    `¿Confirmar postergación de "${actividadActual.titulo}"?\n\n` +
+    `Nueva fecha: ${fechaTexto(nuevaFecha)}\n` +
+    `Motivo: ${motivo}`
+  )) return;
+
+  try {
+    const {error} = await supabaseClient.rpc(
+      "postergar_actividad",
+      {
+        p_actividad_id: actividadActual.id,
+        p_nueva_fecha: nuevaFecha,
+        p_motivo: motivo
+      }
     );
 
+    if (error) throw error;
 
-    if (!confirmacion) {
-        return;
-    }
+    cerrarModalPostergar();
+    mostrarMensaje("Actividad postergada correctamente.");
+    await cargarActividades();
 
-
-    try {
-
-        /*
-         * Primero guardamos la asistencia.
-         */
-
-        for (
-            let index = 0;
-            index < asistenciasActuales.length;
-            index++
-        ) {
-
-            const select =
-                document.getElementById(
-                    "asistencia_" + index
-                );
-
-            if (!select || !select.value) {
-
-                alert(
-                    "Todos los comuneros deben tener " +
-                    "una asistencia registrada."
-                );
-
-                return;
-            }
-
-
-            const comunero =
-                asistenciasActuales[index];
-
-
-            const { error } =
-                await supabaseClient.rpc(
-                    "guardar_asistencia_actividad",
-                    {
-                        p_actividad_id:
-                            actividadActual,
-
-                        p_comunero_id:
-                            comunero.comunero_id,
-
-                        p_asistencia:
-                            select.value,
-
-                        p_observacion:
-                            null
-                    }
-                );
-
-
-            if (error) {
-                throw error;
-            }
-        }
-
-
-        /*
-         * Ahora cerramos la actividad.
-         */
-
-        const { data, error } =
-            await supabaseClient.rpc(
-                "cerrar_actividad",
-                {
-                    p_actividad_id:
-                        actividadActual
-                }
-            );
-
-
-        if (error) {
-            throw error;
-        }
-
-
-        let mensaje =
-            "Actividad cerrada correctamente.";
-
-        if (data && data.length > 0) {
-
-            const resultado = data[0];
-
-            if (
-                resultado.multas_generadas !== undefined
-            ) {
-
-                mensaje +=
-                    ` Multas generadas: ` +
-                    `${resultado.multas_generadas}.`;
-            }
-        }
-
-
-        mostrarMensaje(mensaje);
-
-
-        cerrarModalAsistencia();
-
-        await cargarActividades();
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        mostrarMensaje(
-            error.message ||
-            "No se pudo cerrar la actividad.",
-            "error"
-        );
-    }
+  } catch (error) {
+    console.error(error);
+    mostrarMensaje(error.message || "No se pudo postergar la actividad.", "error");
+  }
 }
 
+function abrirReprogramar(id) {
+  const a = actividades.find(x => x.id === id);
+  if (!a) return;
 
-/* =========================
-   CERRAR MODALES
-========================= */
+  if (a.estado !== "POSTERGADA") {
+    alert("La actividad no está postergada.");
+    return;
+  }
+
+  actividadActual = a;
+
+  document.getElementById("infoReprogramar").innerHTML = `
+    <strong>${escapeHtml(a.titulo)}</strong><br>
+    Fecha anterior: ${fechaTexto(a.fecha)}<br>
+    ${a.motivo_postergacion ? "Motivo: " + escapeHtml(a.motivo_postergacion) : ""}
+  `;
+
+  document.getElementById("nuevaFechaReprogramar").value =
+    a.fecha_reprogramada || "";
+
+  document.getElementById("nuevaFechaReprogramar").min = hoyISO();
+
+  document.getElementById("modalReprogramar").style.display = "block";
+}
+
+function cerrarModalReprogramar() {
+  document.getElementById("modalReprogramar").style.display = "none";
+  actividadActual = null;
+}
+
+async function confirmarReprogramacion() {
+  if (!actividadActual) return;
+
+  const nuevaFecha =
+    document.getElementById("nuevaFechaReprogramar").value;
+
+  if (!nuevaFecha) {
+    alert("Seleccione la nueva fecha.");
+    return;
+  }
+
+  if (!confirm(
+    `¿Reprogramar "${actividadActual.titulo}" para el ${fechaTexto(nuevaFecha)}?`
+  )) return;
+
+  try {
+    const {error} = await supabaseClient.rpc(
+      "reprogramar_actividad",
+      {
+        p_actividad_id: actividadActual.id,
+        p_nueva_fecha: nuevaFecha
+      }
+    );
+
+    if (error) throw error;
+
+    cerrarModalReprogramar();
+    mostrarMensaje("Actividad reprogramada correctamente.");
+    await cargarActividades();
+
+  } catch (error) {
+    console.error(error);
+    mostrarMensaje(error.message || "No se pudo reprogramar la actividad.", "error");
+  }
+}
+
+async function abrirActividad(id) {
+  const a = actividades.find(x => x.id === id);
+  if (!a) return;
+
+  if (a.estado !== "PROGRAMADA") {
+    alert("La actividad no está PROGRAMADA.");
+    return;
+  }
+
+  if (a.fecha > hoyISO()) {
+    alert(
+      "La actividad todavía no ha llegado a su fecha programada.\n\n" +
+      "Podrá abrirse el día " + fechaTexto(a.fecha) + "."
+    );
+    return;
+  }
+
+  if (!confirm(
+    `¿Abrir el control de asistencia de "${a.titulo}"?`
+  )) return;
+
+  try {
+    const {error} = await supabaseClient.rpc(
+      "abrir_actividad",
+      {p_actividad_id: id}
+    );
+
+    if (error) throw error;
+
+    mostrarMensaje("Actividad abierta. Ya puede registrar asistencia.");
+    await cargarActividades();
+    await abrirAsistencia(id);
+
+  } catch (error) {
+    console.error(error);
+    mostrarMensaje(error.message || "No se pudo abrir la actividad.", "error");
+  }
+}
+
+async function abrirAsistencia(id) {
+  actividadActual = actividades.find(x => x.id === id);
+
+  if (!actividadActual) {
+    await cargarActividades();
+    actividadActual = actividades.find(x => x.id === id);
+  }
+
+  document.getElementById("modalAsistencia").style.display = "block";
+  document.getElementById("tablaAsistencia").innerHTML =
+    `<tr><td colspan="3">Cargando comuneros...</td></tr>`;
+
+  document.getElementById("resumenTexto").textContent = "Cargando...";
+  document.getElementById("advertenciaCierre").innerHTML = "";
+
+  try {
+    const {data,error} = await supabaseClient.rpc(
+      "obtener_asistencia_actividad",
+      {p_actividad_id:id}
+    );
+
+    if (error) throw error;
+
+    asistenciasActuales = data || [];
+
+    mostrarDatosActividad();
+    renderizarAsistencia();
+
+  } catch(error) {
+    console.error(error);
+    mostrarMensaje(error.message || "Error al cargar asistencia.", "error");
+  }
+}
+
+function verActividad(id) {
+  abrirAsistencia(id);
+}
+
+function mostrarDatosActividad() {
+  if (!actividadActual) return;
+
+  document.getElementById("datosActividad").innerHTML = `
+    <strong>${escapeHtml(actividadActual.titulo)}</strong><br>
+    Fecha: ${fechaTexto(actividadActual.fecha)}<br>
+    Tipo: ${escapeHtml(actividadActual.tipo || "")}<br>
+    Lugar: ${escapeHtml(actividadActual.lugar || "No indicado")}<br>
+    Multa por inasistencia: S/ ${Number(actividadActual.multa_inasistencia || 0).toFixed(2)}
+  `;
+}
+
+function renderizarAsistencia() {
+  const tbody = document.getElementById("tablaAsistencia");
+
+  if (!asistenciasActuales.length) {
+    tbody.innerHTML = `<tr><td colspan="3">No hay comuneros activos.</td></tr>`;
+    return;
+  }
+
+  const cerrada = actividadActual && actividadActual.estado === "CERRADA";
+  const programada = actividadActual && actividadActual.estado === "PROGRAMADA";
+
+  tbody.innerHTML = asistenciasActuales.map((a,index) => {
+    const valor = a.asistencia || "";
+
+    return `
+      <tr>
+        <td><strong>${escapeHtml(a.nombre_completo || "")}</strong></td>
+        <td>${escapeHtml(a.centro_poblado || "")}</td>
+        <td>
+          <select
+            class="asistencia-select"
+            id="asistencia_${index}"
+            onchange="actualizarResumen()"
+            ${cerrada || programada ? "disabled" : ""}
+          >
+            <option value="" ${valor === "" ? "selected" : ""}>-- Seleccionar --</option>
+            <option value="PRESENTE" ${valor === "PRESENTE" ? "selected" : ""}>PRESENTE</option>
+            <option value="AUSENTE" ${valor === "AUSENTE" ? "selected" : ""}>AUSENTE</option>
+            <option value="JUSTIFICADO" ${valor === "JUSTIFICADO" ? "selected" : ""}>JUSTIFICADO</option>
+          </select>
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  document.getElementById("btnGuardarAsistencia").style.display =
+    (!cerrada && !programada) ? "inline-block" : "none";
+
+  document.getElementById("btnCerrarActividad").style.display =
+    (!cerrada && !programada) ? "inline-block" : "none";
+
+  actualizarResumen();
+}
+
+function actualizarResumen() {
+  let presentes=0, ausentes=0, justificados=0, pendientes=0;
+
+  asistenciasActuales.forEach((a,index) => {
+    const select = document.getElementById("asistencia_" + index);
+    const valor = select ? select.value : (a.asistencia || "");
+
+    if (valor === "PRESENTE") presentes++;
+    else if (valor === "AUSENTE") ausentes++;
+    else if (valor === "JUSTIFICADO") justificados++;
+    else pendientes++;
+  });
+
+  document.getElementById("resumenTexto").textContent =
+    `Presentes: ${presentes} | Ausentes: ${ausentes} | ` +
+    `Justificados: ${justificados} | Pendientes: ${pendientes}`;
+
+  if (pendientes > 0 && actividadActual && actividadActual.estado === "ABIERTA") {
+    document.getElementById("advertenciaCierre").innerHTML = `
+      <div class="advertencia">
+        ⚠️ Hay ${pendientes} comunero(s) sin asistencia registrada.
+        No se podrá cerrar la actividad hasta completar la asistencia.
+      </div>
+    `;
+  } else if (actividadActual && actividadActual.estado === "CERRADA") {
+    document.getElementById("advertenciaCierre").innerHTML = `
+      <div class="nota">Actividad cerrada. La asistencia es de solo lectura.</div>
+    `;
+  } else {
+    document.getElementById("advertenciaCierre").innerHTML = "";
+  }
+}
+
+async function guardarTodasAsistencias() {
+  if (!actividadActual) return;
+
+  try {
+    for (let index=0; index<asistenciasActuales.length; index++) {
+      const select = document.getElementById("asistencia_" + index);
+
+      if (!select || !select.value) {
+        alert("Todos los comuneros deben tener una asistencia registrada.");
+        return;
+      }
+
+      const comunero = asistenciasActuales[index];
+
+      const {error} = await supabaseClient.rpc(
+        "guardar_asistencia_actividad",
+        {
+          p_actividad_id: actividadActual.id,
+          p_comunero_id: comunero.comunero_id,
+          p_asistencia: select.value,
+          p_observacion: null
+        }
+      );
+
+      if (error) throw error;
+    }
+
+    mostrarMensaje("Asistencia guardada correctamente.");
+    await abrirAsistencia(actividadActual.id);
+
+  } catch(error) {
+    console.error(error);
+    mostrarMensaje(error.message || "No se pudo guardar la asistencia.", "error");
+  }
+}
+
+async function cerrarActividadActual() {
+  if (!actividadActual) return;
+
+  const pendientes = asistenciasActuales.filter((a,index) => {
+    const select = document.getElementById("asistencia_" + index);
+    return !select || !select.value;
+  }).length;
+
+  if (pendientes > 0) {
+    alert("Todos los comuneros deben tener una asistencia registrada.");
+    return;
+  }
+
+  if (!confirm(
+    "¿Está seguro de cerrar esta actividad?\n\n" +
+    "Los comuneros marcados como AUSENTE generarán automáticamente " +
+    "la multa establecida para la actividad.\n\n" +
+    "Verifique la asistencia antes de continuar."
+  )) return;
+
+  try {
+    for (let index=0; index<asistenciasActuales.length; index++) {
+      const select = document.getElementById("asistencia_" + index);
+      const comunero = asistenciasActuales[index];
+
+      const {error} = await supabaseClient.rpc(
+        "guardar_asistencia_actividad",
+        {
+          p_actividad_id: actividadActual.id,
+          p_comunero_id: comunero.comunero_id,
+          p_asistencia: select.value,
+          p_observacion: null
+        }
+      );
+
+      if (error) throw error;
+    }
+
+    const {data,error} = await supabaseClient.rpc(
+      "cerrar_actividad",
+      {p_actividad_id: actividadActual.id}
+    );
+
+    if (error) throw error;
+
+    let mensaje = "Actividad cerrada correctamente.";
+
+    if (data && data.length && data[0].multas_generadas !== undefined) {
+      mensaje += ` Multas generadas: ${data[0].multas_generadas}.`;
+    }
+
+    cerrarModalAsistencia();
+    mostrarMensaje(mensaje);
+    await cargarActividades();
+
+  } catch(error) {
+    console.error(error);
+    mostrarMensaje(error.message || "No se pudo cerrar la actividad.", "error");
+  }
+}
 
 function cerrarModalAsistencia() {
-
-    document.getElementById("modalAsistencia").style.display =
-        "none";
-
-    actividadActual = null;
+  document.getElementById("modalAsistencia").style.display = "none";
+  actividadActual = null;
+  asistenciasActuales = [];
 }
-
-
-/* =========================
-   CERRAR SESIÓN
-========================= */
 
 async function cerrarSesion() {
-
-    await supabaseClient.auth.signOut();
-
-    window.location.href = "login.html";
+  await supabaseClient.auth.signOut();
+  window.location.href = "login.html";
 }
 
-
-/* =========================
-   ARRANQUE
-========================= */
-
 iniciar();
-
 </script>
 
 </body>
