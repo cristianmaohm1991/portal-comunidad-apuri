@@ -22,6 +22,10 @@
       color: #1f2937;
     }
 
+    /* =========================
+       CABECERA
+    ========================= */
+
     .header {
       background: #14532d;
       color: white;
@@ -52,12 +56,16 @@
       display: inline-block;
       background: #166534;
       border: 1px solid rgba(255,255,255,.25);
-      padding: 5px 9px;
+      padding: 5px 10px;
       border-radius: 20px;
       margin-top: 5px;
       font-size: 11px;
       font-weight: bold;
     }
+
+    /* =========================
+       CONTENEDOR
+    ========================= */
 
     .container {
       max-width: 1400px;
@@ -83,6 +91,10 @@
       color: #6b7280;
       font-size: 14px;
     }
+
+    /* =========================
+       TARJETAS
+    ========================= */
 
     .cards {
       display: grid;
@@ -115,6 +127,10 @@
       margin-top: 4px;
     }
 
+    /* =========================
+       SECCIONES
+    ========================= */
+
     .section {
       background: white;
       border-radius: 12px;
@@ -137,33 +153,9 @@
       font-size: 18px;
     }
 
-    .toolbar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 15px;
-    }
-
-    input,
-    select {
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 14px;
-      background: white;
-      outline: none;
-    }
-
-    input:focus,
-    select:focus {
-      border-color: #16a34a;
-      box-shadow: 0 0 0 2px rgba(22,163,74,.12);
-    }
-
-    .search {
-      flex: 1;
-      min-width: 230px;
-    }
+    /* =========================
+       BOTONES
+    ========================= */
 
     button {
       border: none;
@@ -176,8 +168,14 @@
     }
 
     button:hover {
+      opacity: .92;
       transform: translateY(-1px);
-      opacity: .93;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .btn-primary {
@@ -209,6 +207,42 @@
       padding: 7px 9px;
       font-size: 11px;
     }
+
+    /* =========================
+       BÚSQUEDA
+    ========================= */
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    input,
+    select {
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+      background: white;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #16a34a;
+      box-shadow: 0 0 0 2px rgba(22,163,74,.12);
+    }
+
+    .search {
+      flex: 1;
+      min-width: 230px;
+    }
+
+    /* =========================
+       TABLA
+    ========================= */
 
     .table-wrapper {
       overflow-x: auto;
@@ -247,6 +281,16 @@
       background: #fafafa;
     }
 
+    .actions {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    /* =========================
+       BADGES
+    ========================= */
+
     .badge {
       display: inline-block;
       padding: 5px 8px;
@@ -266,44 +310,50 @@
       color: #991b1b;
     }
 
-    .badge-admin {
-      background: #ede9fe;
-      color: #5b21b6;
+    /* =========================
+       MENÚ ADMIN
+    ========================= */
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
     }
 
-    .badge-tesorero {
-      background: #dbeafe;
-      color: #1d4ed8;
+    .menu-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 18px;
+      background: #fff;
+      cursor: pointer;
+      transition: .2s;
     }
 
-    .badge-presidente {
-      background: #fef3c7;
-      color: #92400e;
+    .menu-item:hover {
+      border-color: #16a34a;
+      background: #f0fdf4;
     }
 
-    .badge-comunero {
-      background: #f3f4f6;
-      color: #374151;
+    .menu-item .mi {
+      font-size: 25px;
+      margin-bottom: 8px;
     }
 
-    .actions {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 30px;
-      color: #6b7280;
+    .menu-item strong {
+      display: block;
       font-size: 14px;
+      color: #14532d;
+      margin-bottom: 4px;
     }
 
-    .loading {
-      text-align: center;
-      padding: 25px;
+    .menu-item span {
+      font-size: 11px;
       color: #6b7280;
     }
+
+    /* =========================
+       MENSAJES
+    ========================= */
 
     .message {
       padding: 12px 15px;
@@ -324,6 +374,33 @@
       background: #fee2e2;
       color: #991b1b;
     }
+
+    .loading {
+      text-align: center;
+      padding: 25px;
+      color: #6b7280;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .info-box {
+      background: #f0fdf4;
+      border-left: 4px solid #16a34a;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-size: 12px;
+      color: #166534;
+    }
+
+    /* =========================
+       MODALES
+    ========================= */
 
     .modal {
       position: fixed;
@@ -374,6 +451,18 @@
       padding: 20px;
     }
 
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 15px 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* =========================
+       FORMULARIO
+    ========================= */
+
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -396,60 +485,9 @@
       color: #374151;
     }
 
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      padding: 15px 20px;
-      border-top: 1px solid #e5e7eb;
-    }
-
-    .info-box {
-      background: #f0fdf4;
-      border-left: 4px solid #16a34a;
-      padding: 12px;
-      border-radius: 6px;
-      margin-bottom: 15px;
-      font-size: 12px;
-      color: #166534;
-    }
-
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .menu-item {
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 18px;
-      background: #fff;
-      cursor: pointer;
-      transition: .2s;
-    }
-
-    .menu-item:hover {
-      border-color: #16a34a;
-      background: #f0fdf4;
-    }
-
-    .menu-item .mi {
-      font-size: 25px;
-      margin-bottom: 8px;
-    }
-
-    .menu-item strong {
-      display: block;
-      font-size: 14px;
-      color: #14532d;
-      margin-bottom: 4px;
-    }
-
-    .menu-item span {
-      font-size: 11px;
-      color: #6b7280;
-    }
+    /* =========================
+       FOOTER
+    ========================= */
 
     .footer {
       text-align: center;
@@ -458,7 +496,12 @@
       font-size: 11px;
     }
 
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
     @media (max-width: 1000px) {
+
       .cards {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -469,6 +512,7 @@
     }
 
     @media (max-width: 650px) {
+
       .header {
         flex-direction: column;
         align-items: flex-start;
@@ -512,106 +556,276 @@
 
 <body>
 
+  <!-- =====================================================
+       CABECERA
+  ====================================================== -->
+
   <header class="header">
+
     <div class="header-left">
+
       <h1>🏛️ Comunidad Campesina de Apurí</h1>
-      <p>Panel de Administración</p>
+
+      <p>
+        Panel de Administración
+      </p>
+
     </div>
 
     <div class="user-box">
-      <div id="usuarioNombre">Verificando acceso...</div>
-      <span class="role">ADMINISTRADOR</span>
+
+      <div id="usuarioNombre">
+        Administrador
+      </div>
+
+      <span class="role">
+        ADMINISTRADOR
+      </span>
+
     </div>
+
   </header>
+
 
   <main class="container">
 
+    <!-- =====================================================
+         BIENVENIDA
+    ====================================================== -->
+
     <section class="welcome">
-      <h2>Panel de Administración</h2>
+
+      <h2>
+        Panel de Administración
+      </h2>
+
       <p>
-        Administración general de comuneros, usuarios, roles e información
-        institucional de la Comunidad Campesina de Apurí.
+        Administración general de comuneros, usuarios,
+        roles e información institucional de la
+        Comunidad Campesina de Apurí.
       </p>
+
     </section>
+
+
+    <!-- MENSAJES -->
 
     <div id="mensaje" class="message"></div>
 
-    <!-- RESUMEN -->
+
+    <!-- =====================================================
+         RESUMEN
+    ====================================================== -->
+
     <section class="cards">
 
       <div class="card">
-        <div class="icon">👥</div>
-        <div class="number" id="totalComuneros">-</div>
-        <div class="label">Total comuneros</div>
+
+        <div class="icon">
+          👥
+        </div>
+
+        <div
+          class="number"
+          id="totalComuneros"
+        >
+          -
+        </div>
+
+        <div class="label">
+          Total comuneros
+        </div>
+
       </div>
 
-      <div class="card">
-        <div class="icon">🟢</div>
-        <div class="number" id="totalActivos">-</div>
-        <div class="label">Comuneros activos</div>
-      </div>
 
       <div class="card">
-        <div class="icon">🔴</div>
-        <div class="number" id="totalInactivos">-</div>
-        <div class="label">Comuneros inactivos</div>
+
+        <div class="icon">
+          🟢
+        </div>
+
+        <div
+          class="number"
+          id="totalActivos"
+        >
+          -
+        </div>
+
+        <div class="label">
+          Comuneros activos
+        </div>
+
       </div>
 
+
       <div class="card">
-        <div class="icon">🔐</div>
-        <div class="number" id="totalUsuarios">-</div>
-        <div class="label">Usuarios con acceso</div>
+
+        <div class="icon">
+          🔴
+        </div>
+
+        <div
+          class="number"
+          id="totalInactivos"
+        >
+          -
+        </div>
+
+        <div class="label">
+          Comuneros inactivos
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="icon">
+          🔐
+        </div>
+
+        <div
+          class="number"
+          id="totalUsuarios"
+        >
+          -
+        </div>
+
+        <div class="label">
+          Usuarios con acceso
+        </div>
+
       </div>
 
     </section>
 
-    <!-- ACCESOS RÁPIDOS -->
+
+    <!-- =====================================================
+         ADMINISTRACIÓN
+    ====================================================== -->
+
     <section class="section">
 
       <div class="section-title">
-        <h3>Administración</h3>
+
+        <h3>
+          Administración
+        </h3>
+
       </div>
+
 
       <div class="menu-grid">
 
-        <div class="menu-item" onclick="irAComuneros()">
-          <div class="mi">👥</div>
-          <strong>Comuneros</strong>
-          <span>Registrar, editar y administrar comuneros.</span>
+        <div
+          class="menu-item"
+          onclick="irAComuneros()"
+        >
+
+          <div class="mi">
+            👥
+          </div>
+
+          <strong>
+            Comuneros
+          </strong>
+
+          <span>
+            Registrar, editar y administrar comuneros.
+          </span>
+
         </div>
 
-        <div class="menu-item" onclick="irAUsuarios()">
-          <div class="mi">🔐</div>
-          <strong>Usuarios y roles</strong>
-          <span>Administrar accesos y roles del portal.</span>
+
+        <div
+          class="menu-item"
+          onclick="irAUsuarios()"
+        >
+
+          <div class="mi">
+            🔐
+          </div>
+
+          <strong>
+            Usuarios y roles
+          </strong>
+
+          <span>
+            Administrar accesos y roles del portal.
+          </span>
+
         </div>
 
-        <div class="menu-item" onclick="mostrarInfoComunidad()">
-          <div class="mi">🏛️</div>
-          <strong>Datos de la comunidad</strong>
-          <span>Información institucional y directiva.</span>
+
+        <div
+          class="menu-item"
+          onclick="mostrarInfoComunidad()"
+        >
+
+          <div class="mi">
+            🏛️
+          </div>
+
+          <strong>
+            Datos de la comunidad
+          </strong>
+
+          <span>
+            Información institucional y directiva.
+          </span>
+
         </div>
 
-        <div class="menu-item" onclick="mostrarMantenimiento()">
-          <div class="mi">⚙️</div>
-          <strong>Mantenimiento</strong>
-          <span>Funciones administrativas del sistema.</span>
+
+        <div
+          class="menu-item"
+          onclick="mostrarMantenimiento()"
+        >
+
+          <div class="mi">
+            ⚙️
+          </div>
+
+          <strong>
+            Mantenimiento
+          </strong>
+
+          <span>
+            Herramientas administrativas del sistema.
+          </span>
+
         </div>
 
       </div>
 
     </section>
 
-    <!-- COMUNEROS -->
-    <section class="section" id="seccionComuneros">
+
+    <!-- =====================================================
+         COMUNEROS
+    ====================================================== -->
+
+    <section
+      class="section"
+      id="seccionComuneros"
+    >
 
       <div class="section-title">
-        <h3>👥 Comuneros</h3>
 
-        <button class="btn-primary" onclick="abrirNuevoComunero()">
+        <h3>
+          👥 Comuneros
+        </h3>
+
+        <button
+          class="btn-primary"
+          onclick="abrirNuevoComunero()"
+        >
           ➕ Nuevo comunero
         </button>
+
       </div>
+
 
       <div class="toolbar">
 
@@ -623,34 +837,68 @@
           oninput="buscarComuneros()"
         >
 
-        <button class="btn-secondary" onclick="cargarComuneros()">
+        <button
+          class="btn-secondary"
+          onclick="cargarComuneros()"
+        >
           🔄 Actualizar
         </button>
 
       </div>
+
 
       <div class="table-wrapper">
 
         <table>
 
           <thead>
+
             <tr>
-              <th>Código</th>
-              <th>DNI</th>
-              <th>Comunero</th>
-              <th>Celular</th>
-              <th>Centro poblado</th>
-              <th>Estado</th>
-              <th>Acciones</th>
+
+              <th>
+                Código
+              </th>
+
+              <th>
+                DNI
+              </th>
+
+              <th>
+                Comunero
+              </th>
+
+              <th>
+                Celular
+              </th>
+
+              <th>
+                Centro poblado
+              </th>
+
+              <th>
+                Estado
+              </th>
+
+              <th>
+                Acciones
+              </th>
+
             </tr>
+
           </thead>
+
 
           <tbody id="tablaComuneros">
 
             <tr>
-              <td colspan="7" class="loading">
+
+              <td
+                colspan="7"
+                class="loading"
+              >
                 Cargando comuneros...
               </td>
+
             </tr>
 
           </tbody>
@@ -661,39 +909,81 @@
 
     </section>
 
-    <!-- USUARIOS -->
-    <section class="section" id="seccionUsuarios">
+
+    <!-- =====================================================
+         USUARIOS Y ROLES
+    ====================================================== -->
+
+    <section
+      class="section"
+      id="seccionUsuarios"
+    >
 
       <div class="section-title">
-        <h3>🔐 Usuarios y roles</h3>
+
+        <h3>
+          🔐 Usuarios y roles
+        </h3>
+
       </div>
 
+
       <div class="info-box">
-        La administración de usuarios Auth y contraseñas se habilitará
-        mediante una función segura del servidor. Esta sección ya queda
-        preparada para esa integración.
+
+        La administración de cuentas de acceso,
+        creación de usuarios y restablecimiento de
+        contraseñas se incorporará mediante una
+        función segura del servidor.
+
       </div>
+
 
       <div class="table-wrapper">
 
         <table>
 
           <thead>
+
             <tr>
-              <th>Comunero</th>
-              <th>DNI</th>
-              <th>Rol</th>
-              <th>Acceso</th>
-              <th>Acción</th>
+
+              <th>
+                Comunero
+              </th>
+
+              <th>
+                DNI
+              </th>
+
+              <th>
+                Rol
+              </th>
+
+              <th>
+                Acceso
+              </th>
+
+              <th>
+                Acción
+              </th>
+
             </tr>
+
           </thead>
+
 
           <tbody id="tablaUsuarios">
 
             <tr>
-              <td colspan="5" class="empty">
-                La información de acceso se cargará en la siguiente etapa.
+
+              <td
+                colspan="5"
+                class="empty"
+              >
+                La gestión completa de usuarios se
+                habilitará en la siguiente etapa.
+
               </td>
+
             </tr>
 
           </tbody>
@@ -706,66 +996,153 @@
 
   </main>
 
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
   <footer class="footer">
+
     Comunidad Campesina de Apurí · Portal Comunal
+
   </footer>
 
 
-  <!-- MODAL NUEVO / EDITAR -->
-  <div class="modal" id="modalComunero">
+  <!-- =====================================================
+       MODAL NUEVO / EDITAR COMUNERO
+  ====================================================== -->
+
+  <div
+    class="modal"
+    id="modalComunero"
+  >
 
     <div class="modal-content">
 
       <div class="modal-header">
 
-        <h3 id="modalTitulo">Nuevo comunero</h3>
+        <h3 id="modalTitulo">
+          Nuevo comunero
+        </h3>
 
-        <button class="close" onclick="cerrarModal('modalComunero')">
+        <button
+          class="close"
+          onclick="cerrarModal('modalComunero')"
+        >
           ×
         </button>
 
       </div>
+
 
       <div class="modal-body">
 
         <div class="form-grid">
 
           <div class="form-group">
-            <label>Código del comunero</label>
-            <input type="text" id="codigo" placeholder="Ej. COM-006">
+
+            <label>
+              Código del comunero
+            </label>
+
+            <input
+              type="text"
+              id="codigo"
+              placeholder="Ej. COM-006"
+            >
+
           </div>
 
-          <div class="form-group">
-            <label>DNI *</label>
-            <input type="text" id="dni" maxlength="8" placeholder="8 dígitos">
-          </div>
 
           <div class="form-group">
-            <label>Nombres *</label>
-            <input type="text" id="nombres">
+
+            <label>
+              DNI *
+            </label>
+
+            <input
+              type="text"
+              id="dni"
+              maxlength="8"
+              placeholder="8 dígitos"
+            >
+
           </div>
 
-          <div class="form-group">
-            <label>Apellidos *</label>
-            <input type="text" id="apellidos">
-          </div>
 
           <div class="form-group">
-            <label>Celular</label>
-            <input type="text" id="celular" maxlength="9">
+
+            <label>
+              Nombres *
+            </label>
+
+            <input
+              type="text"
+              id="nombres"
+            >
+
           </div>
 
+
           <div class="form-group">
-            <label>Centro poblado</label>
-            <input type="text" id="centroPoblado">
+
+            <label>
+              Apellidos *
+            </label>
+
+            <input
+              type="text"
+              id="apellidos"
+            >
+
           </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Celular
+            </label>
+
+            <input
+              type="text"
+              id="celular"
+              maxlength="9"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Centro poblado
+            </label>
+
+            <input
+              type="text"
+              id="centroPoblado"
+            >
+
+          </div>
+
 
           <div class="form-group full">
-            <label>Estado</label>
+
+            <label>
+              Estado
+            </label>
 
             <select id="estado">
-              <option value="ACTIVO">ACTIVO</option>
-              <option value="INACTIVO">INACTIVO</option>
+
+              <option value="ACTIVO">
+                ACTIVO
+              </option>
+
+              <option value="INACTIVO">
+                INACTIVO
+              </option>
+
             </select>
 
           </div>
@@ -773,6 +1150,7 @@
         </div>
 
       </div>
+
 
       <div class="modal-footer">
 
@@ -798,88 +1176,42 @@
   </div>
 
 
-  <!-- MODAL ROL -->
-  <div class="modal" id="modalRol">
+  <!-- =====================================================
+       MODAL INFORMACIÓN COMUNIDAD
+  ====================================================== -->
+
+  <div
+    class="modal"
+    id="modalInfo"
+  >
 
     <div class="modal-content">
 
       <div class="modal-header">
 
-        <h3>🔐 Cambiar rol</h3>
+        <h3>
+          🏛️ Información de la comunidad
+        </h3>
 
-        <button class="close" onclick="cerrarModal('modalRol')">
+        <button
+          class="close"
+          onclick="cerrarModal('modalInfo')"
+        >
           ×
         </button>
 
       </div>
 
-      <div class="modal-body">
 
-        <div class="info-box">
-          El cambio de rol modifica los permisos del usuario dentro
-          del Portal Comunal.
-        </div>
+      <div
+        class="modal-body"
+        id="contenidoInfo"
+      >
 
-        <p id="rolComuneroNombre" style="margin-bottom:15px;font-weight:bold;"></p>
-
-        <div class="form-group">
-
-          <label>Rol</label>
-
-          <select id="nuevoRol">
-
-            <option value="COMUNERO">COMUNERO</option>
-            <option value="TESORERO">TESORERO</option>
-            <option value="PRESIDENTE">PRESIDENTE</option>
-            <option value="ADMINISTRADOR">ADMINISTRADOR</option>
-
-          </select>
-
-        </div>
-
-      </div>
-
-      <div class="modal-footer">
-
-        <button
-          class="btn-secondary"
-          onclick="cerrarModal('modalRol')"
-        >
-          Cancelar
-        </button>
-
-        <button
-          class="btn-primary"
-          onclick="guardarRol()"
-        >
-          Guardar rol
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- MODAL INFO COMUNIDAD -->
-  <div class="modal" id="modalInfo">
-
-    <div class="modal-content">
-
-      <div class="modal-header">
-
-        <h3>🏛️ Información de la comunidad</h3>
-
-        <button class="close" onclick="cerrarModal('modalInfo')">
-          ×
-        </button>
-
-      </div>
-
-      <div class="modal-body" id="contenidoInfo">
         Cargando...
+
       </div>
+
 
       <div class="modal-footer">
 
@@ -897,47 +1229,102 @@
   </div>
 
 
-  <!-- MODAL MANTENIMIENTO -->
-  <div class="modal" id="modalMantenimiento">
+  <!-- =====================================================
+       MODAL MANTENIMIENTO
+  ====================================================== -->
+
+  <div
+    class="modal"
+    id="modalMantenimiento"
+  >
 
     <div class="modal-content">
 
       <div class="modal-header">
 
-        <h3>⚙️ Mantenimiento</h3>
+        <h3>
+          ⚙️ Mantenimiento
+        </h3>
 
-        <button class="close" onclick="cerrarModal('modalMantenimiento')">
+        <button
+          class="close"
+          onclick="cerrarModal('modalMantenimiento')"
+        >
           ×
         </button>
 
       </div>
+
 
       <div class="modal-body">
 
         <div class="menu-grid">
 
           <div class="menu-item">
-            <div class="mi">📥</div>
-            <strong>Importar</strong>
-            <span>Preparado para carga masiva desde Excel.</span>
+
+            <div class="mi">
+              📥
+            </div>
+
+            <strong>
+              Importar
+            </strong>
+
+            <span>
+              Carga masiva desde Excel.
+            </span>
+
           </div>
 
-          <div class="menu-item">
-            <div class="mi">📤</div>
-            <strong>Exportar</strong>
-            <span>Exportación de información del sistema.</span>
-          </div>
 
           <div class="menu-item">
-            <div class="mi">💾</div>
-            <strong>Respaldos</strong>
-            <span>Herramientas para respaldo de información.</span>
+
+            <div class="mi">
+              📤
+            </div>
+
+            <strong>
+              Exportar
+            </strong>
+
+            <span>
+              Exportación de información.
+            </span>
+
           </div>
 
+
           <div class="menu-item">
-            <div class="mi">🛠️</div>
-            <strong>Revisión</strong>
-            <span>Funciones de mantenimiento y control.</span>
+
+            <div class="mi">
+              💾
+            </div>
+
+            <strong>
+              Respaldos
+            </strong>
+
+            <span>
+              Herramientas de respaldo.
+            </span>
+
+          </div>
+
+
+          <div class="menu-item">
+
+            <div class="mi">
+              🛠️
+            </div>
+
+            <strong>
+              Revisión
+            </strong>
+
+            <span>
+              Mantenimiento del sistema.
+            </span>
+
           </div>
 
         </div>
@@ -951,831 +1338,1190 @@
 
 <script>
 
-  let comuneros = [];
-  let comuneroEditando = null;
-  let comuneroRolEditando = null;
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let comuneros = [];
+let comuneroEditando = null;
 
 
-  /* =====================================================
-     MENSAJES
-  ===================================================== */
+/* =========================================================
+   MENSAJES
+========================================================= */
 
-  function mostrarMensaje(texto, tipo = "success") {
+function mostrarMensaje(texto, tipo = "success") {
 
-    const el = document.getElementById("mensaje");
+  const el = document.getElementById("mensaje");
 
-    el.className = "message " + tipo;
-    el.textContent = texto;
+  el.className = "message " + tipo;
+  el.textContent = texto;
 
-    setTimeout(() => {
-      el.className = "message";
-      el.textContent = "";
-    }, 5000);
-  }
+  setTimeout(() => {
 
+    el.className = "message";
+    el.textContent = "";
 
-  /* =====================================================
-     MODALES
-  ===================================================== */
-
-  function abrirModal(id) {
-    document.getElementById(id).classList.add("show");
-  }
-
-  function cerrarModal(id) {
-    document.getElementById(id).classList.remove("show");
-  }
+  }, 5000);
+}
 
 
-  /* =====================================================
-     VERIFICAR ADMINISTRADOR
-  ===================================================== */
+/* =========================================================
+   MODALES
+========================================================= */
 
-  async function verificarAdministrador() {
+function abrirModal(id) {
 
-    try {
+  document
+    .getElementById(id)
+    .classList.add("show");
 
-      const {
-        data: { session },
-        error
-      } = await supabaseClient.auth.getSession();
+}
 
-      if (error || !session) {
-        window.location.href = "index.html";
-        return false;
-      }
 
-      const { data, error: perfilError } =
-        await supabaseClient
-          .from("perfiles")
-          .select(`
-            rol,
-            comunero_id,
-            comuneros (
-              nombres,
-              apellidos,
-              dni
-            )
-          `)
-          .eq("id", session.user.id)
-          .maybeSingle();
+function cerrarModal(id) {
 
-      if (perfilError) {
-        console.error(perfilError);
-        mostrarMensaje("No fue posible verificar el perfil.", "error");
-        return false;
-      }
+  document
+    .getElementById(id)
+    .classList.remove("show");
 
-      if (!data || data.rol !== "ADMINISTRADOR") {
+}
 
-        alert(
-          "Acceso denegado.\n\n" +
-          "Esta sección es exclusiva del Administrador."
-        );
 
-        window.location.href = "dashboard.html";
-        return false;
-      }
+/* =========================================================
+   VERIFICAR ADMINISTRADOR
+========================================================= */
 
-      const nombre =
-        data.comuneros
-          ? `${data.comuneros.nombres} ${data.comuneros.apellidos}`
-          : "Administrador";
+async function verificarAdministrador() {
 
-      document.getElementById("usuarioNombre").textContent =
-        nombre;
+  try {
 
-      return true;
+    /*
+     * Primero comprobamos que exista una sesión.
+     */
 
-    } catch (error) {
+    const {
+      data: { session },
+      error: sessionError
+    } = await supabaseClient.auth.getSession();
 
-      console.error(error);
+
+    if (sessionError) {
+
+      console.error(sessionError);
 
       window.location.href = "index.html";
 
       return false;
     }
+
+
+    if (!session) {
+
+      window.location.href = "index.html";
+
+      return false;
+    }
+
+
+    /*
+     * IMPORTANTE:
+     *
+     * La autorización se realiza mediante la función
+     * SECURITY DEFINER que ya creamos en Supabase.
+     *
+     * No hacemos una consulta directa a perfiles
+     * para decidir si puede entrar.
+     */
+
+    const {
+      data: esAdministrador,
+      error: adminError
+    } = await supabaseClient.rpc(
+      "usuario_es_administrador"
+    );
+
+
+    if (adminError) {
+
+      console.error(
+        "Error verificando administrador:",
+        adminError
+      );
+
+      mostrarMensaje(
+        "No fue posible verificar los permisos de administrador.",
+        "error"
+      );
+
+      return false;
+    }
+
+
+    /*
+     * Si la función devuelve FALSE,
+     * se deniega el acceso.
+     */
+
+    if (esAdministrador !== true) {
+
+      alert(
+        "Acceso denegado.\n\n" +
+        "Esta sección es exclusiva del Administrador."
+      );
+
+      window.location.href = "dashboard.html";
+
+      return false;
+    }
+
+
+    /*
+     * Autorización correcta.
+     */
+
+    document.getElementById(
+      "usuarioNombre"
+    ).textContent = "Cristian Mao Huaman Meneses";
+
+
+    return true;
+
+
+  } catch (error) {
+
+    console.error(
+      "Error inesperado:",
+      error
+    );
+
+    window.location.href = "index.html";
+
+    return false;
   }
+}
 
 
-  /* =====================================================
-     CARGAR COMUNEROS
-  ===================================================== */
+/* =========================================================
+   CARGAR COMUNEROS
+========================================================= */
 
-  async function cargarComuneros() {
+async function cargarComuneros() {
 
-    const tbody =
-      document.getElementById("tablaComuneros");
+  const tbody =
+    document.getElementById("tablaComuneros");
+
+
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="7" class="loading">
+        Cargando comuneros...
+      </td>
+    </tr>
+  `;
+
+
+  try {
+
+    const {
+      data,
+      error
+    } = await supabaseClient.rpc(
+      "obtener_comuneros_admin"
+    );
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    comuneros = data || [];
+
+
+    renderComuneros(comuneros);
+
+    actualizarResumen();
+
+
+  } catch (error) {
+
+    console.error(error);
+
 
     tbody.innerHTML = `
       <tr>
-        <td colspan="7" class="loading">
-          Cargando comuneros...
+        <td colspan="7" class="empty">
+          No fue posible cargar los comuneros.
         </td>
       </tr>
     `;
 
+
+    mostrarMensaje(
+      error.message ||
+      "Error cargando comuneros.",
+      "error"
+    );
+
+  }
+}
+
+
+/* =========================================================
+   MOSTRAR COMUNEROS
+========================================================= */
+
+function renderComuneros(lista) {
+
+  const tbody =
+    document.getElementById("tablaComuneros");
+
+
+  if (!lista.length) {
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" class="empty">
+          No se encontraron comuneros.
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+
+  tbody.innerHTML = lista.map(c => {
+
+    const estado =
+      String(c.estado || "").toUpperCase();
+
+
+    return `
+
+      <tr>
+
+        <td>
+          <strong>
+            ${esc(c.codigo || "-")}
+          </strong>
+        </td>
+
+
+        <td>
+          ${esc(c.dni || "-")}
+        </td>
+
+
+        <td>
+          <strong>
+            ${esc(
+              (c.nombres || "") +
+              " " +
+              (c.apellidos || "")
+            )}
+          </strong>
+        </td>
+
+
+        <td>
+          ${esc(c.celular || "-")}
+        </td>
+
+
+        <td>
+          ${esc(c.centro_poblado || "-")}
+        </td>
+
+
+        <td>
+
+          ${
+            estado === "ACTIVO"
+
+            ?
+
+            `<span class="badge badge-activo">
+              ACTIVO
+            </span>`
+
+            :
+
+            `<span class="badge badge-inactivo">
+              INACTIVO
+            </span>`
+          }
+
+        </td>
+
+
+        <td>
+
+          <div class="actions">
+
+            <button
+              class="btn-warning btn-small"
+              onclick="editarComunero('${c.id}')"
+            >
+              ✏️ Editar
+            </button>
+
+
+            ${
+              estado === "ACTIVO"
+
+              ?
+
+              `
+              <button
+                class="btn-danger btn-small"
+                onclick="cambiarEstado('${c.id}', 'INACTIVO')"
+              >
+                🔴 Inactivar
+              </button>
+              `
+
+              :
+
+              `
+              <button
+                class="btn-success btn-small"
+                onclick="cambiarEstado('${c.id}', 'ACTIVO')"
+              >
+                🟢 Activar
+              </button>
+              `
+            }
+
+          </div>
+
+        </td>
+
+      </tr>
+
+    `;
+
+  }).join("");
+}
+
+
+/* =========================================================
+   BUSCAR COMUNEROS
+========================================================= */
+
+let timerBusqueda = null;
+
+
+function buscarComuneros() {
+
+  clearTimeout(timerBusqueda);
+
+
+  timerBusqueda = setTimeout(async () => {
+
+    const texto =
+      document.getElementById(
+        "buscar"
+      ).value.trim();
+
+
+    if (!texto) {
+
+      renderComuneros(comuneros);
+
+      return;
+    }
+
+
     try {
 
       const {
         data,
         error
       } = await supabaseClient.rpc(
-        "obtener_comuneros_admin"
+        "buscar_comuneros_admin",
+        {
+          p_busqueda: texto
+        }
       );
+
 
       if (error) {
+
         throw error;
+
       }
 
-      comuneros = data || [];
 
-      renderComuneros(comuneros);
-      actualizarResumen();
+      renderComuneros(
+        data || []
+      );
+
 
     } catch (error) {
 
       console.error(error);
 
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="7" class="empty">
-            No fue posible cargar los comuneros.
-          </td>
-        </tr>
-      `;
-
-      mostrarMensaje(
-        error.message || "Error cargando comuneros.",
-        "error"
-      );
-    }
-  }
-
-
-  /* =====================================================
-     RENDER TABLA
-  ===================================================== */
-
-  function renderComuneros(lista) {
-
-    const tbody =
-      document.getElementById("tablaComuneros");
-
-    if (!lista.length) {
-
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="7" class="empty">
-            No se encontraron comuneros.
-          </td>
-        </tr>
-      `;
-
-      return;
-    }
-
-    tbody.innerHTML = lista.map(c => {
-
-      const estado =
-        String(c.estado || "").toUpperCase();
-
-      return `
-        <tr>
-
-          <td>
-            <strong>${esc(c.codigo || "-")}</strong>
-          </td>
-
-          <td>
-            ${esc(c.dni || "-")}
-          </td>
-
-          <td>
-            <strong>
-              ${esc((c.nombres || "") + " " + (c.apellidos || ""))}
-            </strong>
-          </td>
-
-          <td>
-            ${esc(c.celular || "-")}
-          </td>
-
-          <td>
-            ${esc(c.centro_poblado || "-")}
-          </td>
-
-          <td>
-            ${
-              estado === "ACTIVO"
-              ? `<span class="badge badge-activo">ACTIVO</span>`
-              : `<span class="badge badge-inactivo">INACTIVO</span>`
-            }
-          </td>
-
-          <td>
-
-            <div class="actions">
-
-              <button
-                class="btn-warning btn-small"
-                onclick="editarComunero('${c.id}')"
-              >
-                ✏️ Editar
-              </button>
-
-              ${
-                estado === "ACTIVO"
-                ?
-                `
-                <button
-                  class="btn-danger btn-small"
-                  onclick="cambiarEstado('${c.id}', 'INACTIVO')"
-                >
-                  🔴 Inactivar
-                </button>
-                `
-                :
-                `
-                <button
-                  class="btn-success btn-small"
-                  onclick="cambiarEstado('${c.id}', 'ACTIVO')"
-                >
-                  🟢 Activar
-                </button>
-                `
-              }
-
-            </div>
-
-          </td>
-
-        </tr>
-      `;
-
-    }).join("");
-  }
-
-
-  /* =====================================================
-     BUSCAR
-  ===================================================== */
-
-  let timerBusqueda = null;
-
-  function buscarComuneros() {
-
-    clearTimeout(timerBusqueda);
-
-    timerBusqueda = setTimeout(async () => {
-
-      const texto =
-        document.getElementById("buscar").value.trim();
-
-      if (!texto) {
-
-        renderComuneros(comuneros);
-
-        return;
-      }
-
-      try {
-
-        const {
-          data,
-          error
-        } = await supabaseClient.rpc(
-          "buscar_comuneros_admin",
-          {
-            p_busqueda: texto
-          }
-        );
-
-        if (error) {
-          throw error;
-        }
-
-        renderComuneros(data || []);
-
-      } catch (error) {
-
-        console.error(error);
-
-        mostrarMensaje(
-          error.message || "No fue posible realizar la búsqueda.",
-          "error"
-        );
-      }
-
-    }, 250);
-  }
-
-
-  /* =====================================================
-     NUEVO COMUNERO
-  ===================================================== */
-
-  function abrirNuevoComunero() {
-
-    comuneroEditando = null;
-
-    document.getElementById("modalTitulo").textContent =
-      "Nuevo comunero";
-
-    document.getElementById("codigo").value = "";
-    document.getElementById("dni").value = "";
-    document.getElementById("nombres").value = "";
-    document.getElementById("apellidos").value = "";
-    document.getElementById("celular").value = "";
-    document.getElementById("centroPoblado").value = "";
-    document.getElementById("estado").value = "ACTIVO";
-
-    abrirModal("modalComunero");
-  }
-
-
-  /* =====================================================
-     EDITAR
-  ===================================================== */
-
-  function editarComunero(id) {
-
-    const c =
-      comuneros.find(x => x.id === id);
-
-    if (!c) {
-
-      mostrarMensaje(
-        "No se encontró el comunero.",
-        "error"
-      );
-
-      return;
-    }
-
-    comuneroEditando = id;
-
-    document.getElementById("modalTitulo").textContent =
-      "Editar comunero";
-
-    document.getElementById("codigo").value =
-      c.codigo || "";
-
-    document.getElementById("dni").value =
-      c.dni || "";
-
-    document.getElementById("nombres").value =
-      c.nombres || "";
-
-    document.getElementById("apellidos").value =
-      c.apellidos || "";
-
-    document.getElementById("celular").value =
-      c.celular || "";
-
-    document.getElementById("centroPoblado").value =
-      c.centro_poblado || "";
-
-    document.getElementById("estado").value =
-      c.estado || "ACTIVO";
-
-    abrirModal("modalComunero");
-  }
-
-
-  /* =====================================================
-     GUARDAR
-  ===================================================== */
-
-  async function guardarComunero() {
-
-    const codigo =
-      document.getElementById("codigo").value.trim();
-
-    const dni =
-      document.getElementById("dni").value.trim();
-
-    const nombres =
-      document.getElementById("nombres").value.trim();
-
-    const apellidos =
-      document.getElementById("apellidos").value.trim();
-
-    const celular =
-      document.getElementById("celular").value.trim();
-
-    const centroPoblado =
-      document.getElementById("centroPoblado").value.trim();
-
-    const estado =
-      document.getElementById("estado").value;
-
-    if (!dni || !nombres || !apellidos) {
-
-      mostrarMensaje(
-        "DNI, nombres y apellidos son obligatorios.",
-        "error"
-      );
-
-      return;
-    }
-
-    if (!/^\d{8}$/.test(dni)) {
-
-      mostrarMensaje(
-        "El DNI debe tener exactamente 8 dígitos.",
-        "error"
-      );
-
-      return;
-    }
-
-    const btn =
-      document.getElementById("btnGuardar");
-
-    btn.disabled = true;
-    btn.textContent = "Guardando...";
-
-    try {
-
-      if (!comuneroEditando) {
-
-        const {
-          error
-        } = await supabaseClient.rpc(
-          "crear_comunero_admin",
-          {
-            p_codigo: codigo || null,
-            p_dni: dni,
-            p_nombres: nombres,
-            p_apellidos: apellidos,
-            p_celular: celular || null,
-            p_centro_poblado: centroPoblado || null
-          }
-        );
-
-        if (error) {
-          throw error;
-        }
-
-        mostrarMensaje(
-          "Comunero registrado correctamente."
-        );
-
-      } else {
-
-        const {
-          error
-        } = await supabaseClient.rpc(
-          "editar_comunero_admin",
-          {
-            p_id: comuneroEditando,
-            p_codigo: codigo || null,
-            p_dni: dni,
-            p_nombres: nombres,
-            p_apellidos: apellidos,
-            p_celular: celular || null,
-            p_centro_poblado: centroPoblado || null
-          }
-        );
-
-        if (error) {
-          throw error;
-        }
-
-        if (
-          estado === "ACTIVO" ||
-          estado === "INACTIVO"
-        ) {
-
-          const {
-            error: estadoError
-          } = await supabaseClient.rpc(
-            "cambiar_estado_comunero_admin",
-            {
-              p_comunero_id: comuneroEditando,
-              p_estado: estado
-            }
-          );
-
-          if (estadoError) {
-            throw estadoError;
-          }
-        }
-
-        mostrarMensaje(
-          "Comunero actualizado correctamente."
-        );
-      }
-
-      cerrarModal("modalComunero");
-
-      await cargarComuneros();
-
-    } catch (error) {
-
-      console.error(error);
 
       mostrarMensaje(
         error.message ||
-        "No fue posible guardar el comunero.",
+        "No fue posible realizar la búsqueda.",
         "error"
       );
 
-    } finally {
-
-      btn.disabled = false;
-      btn.textContent = "Guardar";
     }
+
+  }, 250);
+}
+
+
+/* =========================================================
+   NUEVO COMUNERO
+========================================================= */
+
+function abrirNuevoComunero() {
+
+  comuneroEditando = null;
+
+
+  document.getElementById(
+    "modalTitulo"
+  ).textContent =
+    "Nuevo comunero";
+
+
+  document.getElementById(
+    "codigo"
+  ).value = "";
+
+
+  document.getElementById(
+    "dni"
+  ).value = "";
+
+
+  document.getElementById(
+    "nombres"
+  ).value = "";
+
+
+  document.getElementById(
+    "apellidos"
+  ).value = "";
+
+
+  document.getElementById(
+    "celular"
+  ).value = "";
+
+
+  document.getElementById(
+    "centroPoblado"
+  ).value = "";
+
+
+  document.getElementById(
+    "estado"
+  ).value = "ACTIVO";
+
+
+  abrirModal(
+    "modalComunero"
+  );
+}
+
+
+/* =========================================================
+   EDITAR COMUNERO
+========================================================= */
+
+function editarComunero(id) {
+
+  const c =
+    comuneros.find(
+      x => x.id === id
+    );
+
+
+  if (!c) {
+
+    mostrarMensaje(
+      "No se encontró el comunero.",
+      "error"
+    );
+
+    return;
   }
 
 
-  /* =====================================================
-     CAMBIAR ESTADO
-  ===================================================== */
+  comuneroEditando = id;
 
-  async function cambiarEstado(id, nuevoEstado) {
 
-    const c =
-      comuneros.find(x => x.id === id);
+  document.getElementById(
+    "modalTitulo"
+  ).textContent =
+    "Editar comunero";
 
-    if (!c) return;
 
-    const nombre =
-      `${c.nombres} ${c.apellidos}`;
+  document.getElementById(
+    "codigo"
+  ).value =
+    c.codigo || "";
 
-    const accion =
-      nuevoEstado === "ACTIVO"
-      ? "activar"
-      : "inactivar";
 
-    const confirmado =
-      confirm(
-        `¿Está seguro de ${accion} a:\n\n${nombre}?`
-      );
+  document.getElementById(
+    "dni"
+  ).value =
+    c.dni || "";
 
-    if (!confirmado) return;
 
-    try {
+  document.getElementById(
+    "nombres"
+  ).value =
+    c.nombres || "";
+
+
+  document.getElementById(
+    "apellidos"
+  ).value =
+    c.apellidos || "";
+
+
+  document.getElementById(
+    "celular"
+  ).value =
+    c.celular || "";
+
+
+  document.getElementById(
+    "centroPoblado"
+  ).value =
+    c.centro_poblado || "";
+
+
+  document.getElementById(
+    "estado"
+  ).value =
+    c.estado || "ACTIVO";
+
+
+  abrirModal(
+    "modalComunero"
+  );
+}
+
+
+/* =========================================================
+   GUARDAR COMUNERO
+========================================================= */
+
+async function guardarComunero() {
+
+  const codigo =
+    document.getElementById(
+      "codigo"
+    ).value.trim();
+
+
+  const dni =
+    document.getElementById(
+      "dni"
+    ).value.trim();
+
+
+  const nombres =
+    document.getElementById(
+      "nombres"
+    ).value.trim();
+
+
+  const apellidos =
+    document.getElementById(
+      "apellidos"
+    ).value.trim();
+
+
+  const celular =
+    document.getElementById(
+      "celular"
+    ).value.trim();
+
+
+  const centroPoblado =
+    document.getElementById(
+      "centroPoblado"
+    ).value.trim();
+
+
+  const estado =
+    document.getElementById(
+      "estado"
+    ).value;
+
+
+  /* VALIDACIONES */
+
+  if (
+    !dni ||
+    !nombres ||
+    !apellidos
+  ) {
+
+    mostrarMensaje(
+      "DNI, nombres y apellidos son obligatorios.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (
+    !/^\d{8}$/.test(dni)
+  ) {
+
+    mostrarMensaje(
+      "El DNI debe tener exactamente 8 dígitos.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  const btn =
+    document.getElementById(
+      "btnGuardar"
+    );
+
+
+  btn.disabled = true;
+
+  btn.textContent =
+    "Guardando...";
+
+
+  try {
+
+
+    /* =========================
+       NUEVO
+    ========================= */
+
+    if (!comuneroEditando) {
+
 
       const {
         error
+      } = await supabaseClient.rpc(
+        "crear_comunero_admin",
+        {
+          p_codigo:
+            codigo || null,
+
+          p_dni:
+            dni,
+
+          p_nombres:
+            nombres,
+
+          p_apellidos:
+            apellidos,
+
+          p_celular:
+            celular || null,
+
+          p_centro_poblado:
+            centroPoblado || null
+        }
+      );
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      mostrarMensaje(
+        "Comunero registrado correctamente."
+      );
+
+
+    }
+
+
+    /* =========================
+       EDITAR
+    ========================= */
+
+    else {
+
+
+      const {
+        error
+      } = await supabaseClient.rpc(
+        "editar_comunero_admin",
+        {
+          p_id:
+            comuneroEditando,
+
+          p_codigo:
+            codigo || null,
+
+          p_dni:
+            dni,
+
+          p_nombres:
+            nombres,
+
+          p_apellidos:
+            apellidos,
+
+          p_celular:
+            celular || null,
+
+          p_centro_poblado:
+            centroPoblado || null
+        }
+      );
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      /*
+       * Actualizamos estado
+       */
+
+      const {
+        error: estadoError
       } = await supabaseClient.rpc(
         "cambiar_estado_comunero_admin",
         {
-          p_comunero_id: id,
-          p_estado: nuevoEstado
+          p_comunero_id:
+            comuneroEditando,
+
+          p_estado:
+            estado
         }
       );
 
-      if (error) {
-        throw error;
+
+      if (estadoError) {
+
+        throw estadoError;
+
       }
 
-      mostrarMensaje(
-        `Comunero ${nuevoEstado === "ACTIVO" ? "activado" : "inactivado"} correctamente.`
-      );
-
-      await cargarComuneros();
-
-    } catch (error) {
-
-      console.error(error);
 
       mostrarMensaje(
-        error.message ||
-        "No fue posible cambiar el estado.",
-        "error"
+        "Comunero actualizado correctamente."
       );
+
     }
+
+
+    cerrarModal(
+      "modalComunero"
+    );
+
+
+    await cargarComuneros();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    mostrarMensaje(
+      error.message ||
+      "No fue posible guardar el comunero.",
+      "error"
+    );
+
+
+  } finally {
+
+    btn.disabled = false;
+
+    btn.textContent =
+      "Guardar";
   }
+}
 
 
-  /* =====================================================
-     RESUMEN
-  ===================================================== */
+/* =========================================================
+   CAMBIAR ESTADO
+========================================================= */
 
-  function actualizarResumen() {
+async function cambiarEstado(
+  id,
+  nuevoEstado
+) {
 
-    const total =
-      comuneros.length;
+  const c =
+    comuneros.find(
+      x => x.id === id
+    );
 
-    const activos =
-      comuneros.filter(
-        c => c.estado === "ACTIVO"
-      ).length;
 
-    const inactivos =
-      comuneros.filter(
-        c => c.estado === "INACTIVO"
-      ).length;
+  if (!c) return;
 
-    document.getElementById("totalComuneros").textContent =
-      total;
 
-    document.getElementById("totalActivos").textContent =
-      activos;
+  const nombre =
+    `${c.nombres} ${c.apellidos}`;
 
-    document.getElementById("totalInactivos").textContent =
-      inactivos;
+
+  const accion =
+    nuevoEstado === "ACTIVO"
+      ? "activar"
+      : "inactivar";
+
+
+  const confirmado =
+    confirm(
+      `¿Está seguro de ${accion} a:\n\n${nombre}?`
+    );
+
+
+  if (!confirmado) return;
+
+
+  try {
+
+
+    const {
+      error
+    } = await supabaseClient.rpc(
+      "cambiar_estado_comunero_admin",
+      {
+        p_comunero_id:
+          id,
+
+        p_estado:
+          nuevoEstado
+      }
+    );
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    mostrarMensaje(
+      nuevoEstado === "ACTIVO"
+        ? "Comunero activado correctamente."
+        : "Comunero inactivado correctamente."
+    );
+
+
+    await cargarComuneros();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    mostrarMensaje(
+      error.message ||
+      "No fue posible cambiar el estado.",
+      "error"
+    );
+  }
+}
+
+
+/* =========================================================
+   ACTUALIZAR RESUMEN
+========================================================= */
+
+function actualizarResumen() {
+
+  const total =
+    comuneros.length;
+
+
+  const activos =
+    comuneros.filter(
+      c =>
+        String(c.estado)
+          .toUpperCase() ===
+        "ACTIVO"
+    ).length;
+
+
+  const inactivos =
+    comuneros.filter(
+      c =>
+        String(c.estado)
+          .toUpperCase() ===
+        "INACTIVO"
+    ).length;
+
+
+  document.getElementById(
+    "totalComuneros"
+  ).textContent =
+    total;
+
+
+  document.getElementById(
+    "totalActivos"
+  ).textContent =
+    activos;
+
+
+  document.getElementById(
+    "totalInactivos"
+  ).textContent =
+    inactivos;
+
+
+  /*
+   * Todavía no contamos usuarios Auth aquí.
+   * Esa parte la implementaremos mediante
+   * la Edge Function administrativa.
+   */
+
+  document.getElementById(
+    "totalUsuarios"
+  ).textContent =
+    "—";
+}
+
+
+/* =========================================================
+   DATOS DE LA COMUNIDAD
+========================================================= */
+
+async function mostrarInfoComunidad() {
+
+  abrirModal(
+    "modalInfo"
+  );
+
+
+  const contenido =
+    document.getElementById(
+      "contenidoInfo"
+    );
+
+
+  contenido.innerHTML = `
+    <div class="loading">
+      Cargando información...
+    </div>
+  `;
+
+
+  try {
+
+    const {
+      data,
+      error
+    } = await supabaseClient.rpc(
+      "obtener_datos_comunidad"
+    );
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
 
     /*
-     * Por ahora mostramos los comuneros que tienen
-     * relación de credenciales cuando la información
-     * esté disponible en la consulta.
-     *
-     * La gestión completa de Auth se agregará
-     * mediante Edge Function.
+     * Mostramos la información institucional
+     * conocida actualmente.
      */
-    const usuarios =
-      comuneros.filter(
-        c => c.usuario_auth_id
-      ).length;
 
-    document.getElementById("totalUsuarios").textContent =
-      usuarios || "0";
-  }
+    contenido.innerHTML = `
 
-
-  /* =====================================================
-     DATOS DE COMUNIDAD
-  ===================================================== */
-
-  async function mostrarInfoComunidad() {
-
-    abrirModal("modalInfo");
-
-    const contenido =
-      document.getElementById("contenidoInfo");
-
-    contenido.innerHTML =
-      `<div class="loading">Cargando información...</div>`;
-
-    try {
-
-      const {
-        data,
-        error
-      } = await supabaseClient.rpc(
-        "obtener_datos_comunidad"
-      );
-
-      if (error) {
-        throw error;
-      }
-
-      if (!data) {
-
-        contenido.innerHTML = `
-          <div class="empty">
-            No se encontró información registrada.
-          </div>
-        `;
-
-        return;
-      }
-
-      let comunidad = null;
-      let directiva = [];
-
-      /*
-       * La función puede devolver la información
-       * como objeto o como arreglo dependiendo
-       * de su definición.
-       */
-
-      if (Array.isArray(data)) {
-
-        if (data.length) {
-
-          comunidad = data[0];
-
-        }
-
-      } else {
-
-        comunidad = data;
-
-        if (data.directiva) {
-          directiva = data.directiva;
-        }
-      }
-
-      contenido.innerHTML = `
-
-        <div style="
+      <div
+        style="
           padding:15px;
           border:1px solid #e5e7eb;
           border-radius:10px;
           margin-bottom:15px;
-        ">
+        "
+      >
 
-          <h4 style="
+        <h4
+          style="
             color:#14532d;
             margin-bottom:8px;
-          ">
-            Comunidad Campesina de Apurí
-          </h4>
+          "
+        >
+          Comunidad Campesina de Apurí
+        </h4>
 
-          <p style="
+
+        <p
+          style="
             color:#6b7280;
             font-size:13px;
             line-height:1.6;
-          ">
-            Información institucional de la
-            Comunidad Campesina de Apurí.
-          </p>
+          "
+        >
+          Información institucional de la
+          Comunidad Campesina de Apurí.
+        </p>
 
-        </div>
+      </div>
 
-        <div class="info-box">
-          La edición de los datos institucionales
-          se incorporará en la siguiente etapa
-          del panel administrativo.
-        </div>
 
-      `;
+      <div class="info-box">
 
-    } catch (error) {
+        La edición de los datos institucionales
+        se incorporará en la siguiente etapa
+        del panel administrativo.
 
-      console.error(error);
+      </div>
 
-      contenido.innerHTML = `
-        <div class="message error">
-          ${esc(
-            error.message ||
-            "No fue posible cargar la información."
-          )}
-        </div>
-      `;
-    }
+    `;
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    contenido.innerHTML = `
+
+      <div class="message error">
+
+        No fue posible cargar la información
+        de la comunidad.
+
+      </div>
+
+    `;
+  }
+}
+
+
+/* =========================================================
+   MANTENIMIENTO
+========================================================= */
+
+function mostrarMantenimiento() {
+
+  abrirModal(
+    "modalMantenimiento"
+  );
+}
+
+
+/* =========================================================
+   NAVEGACIÓN
+========================================================= */
+
+function irAComuneros() {
+
+  document
+    .getElementById(
+      "seccionComuneros"
+    )
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+}
+
+
+function irAUsuarios() {
+
+  document
+    .getElementById(
+      "seccionUsuarios"
+    )
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+}
+
+
+/* =========================================================
+   SEGURIDAD HTML
+========================================================= */
+
+function esc(value) {
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+}
+
+
+/* =========================================================
+   INICIO
+========================================================= */
+
+async function iniciar() {
+
+  /*
+   * Primero verificamos sesión y rol.
+   */
+
+  const autorizado =
+    await verificarAdministrador();
+
+
+  if (!autorizado) {
+
+    return;
+
   }
 
 
-  /* =====================================================
-     MANTENIMIENTO
-  ===================================================== */
+  /*
+   * Si es administrador,
+   * cargamos los comuneros.
+   */
 
-  function mostrarMantenimiento() {
-
-    abrirModal("modalMantenimiento");
-  }
-
-
-  /* =====================================================
-     NAVEGACIÓN
-  ===================================================== */
-
-  function irAComuneros() {
-
-    document
-      .getElementById("seccionComuneros")
-      .scrollIntoView({
-        behavior: "smooth"
-      });
-  }
-
-  function irAUsuarios() {
-
-    document
-      .getElementById("seccionUsuarios")
-      .scrollIntoView({
-        behavior: "smooth"
-      });
-  }
+  await cargarComuneros();
+}
 
 
-  /* =====================================================
-     ESCAPAR HTML
-  ===================================================== */
+/* =========================================================
+   EJECUTAR
+========================================================= */
 
-  function esc(value) {
-
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
-
-  /* =====================================================
-     INICIO
-  ===================================================== */
-
-  async function iniciar() {
-
-    const autorizado =
-      await verificarAdministrador();
-
-    if (!autorizado) return;
-
-    await cargarComuneros();
-  }
-
-
-  iniciar();
+iniciar();
 
 </script>
 
