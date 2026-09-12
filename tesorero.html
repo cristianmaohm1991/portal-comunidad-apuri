@@ -313,18 +313,54 @@ $('guardarM').onclick=async()=>{
  b.disabled=false;b.textContent='Registrar pago de multa';if(error){msg(error.message,true);return}
  msg('Pago de multa registrado correctamente.');$('dniM').value='';$('personaM').classList.add('hide');$('multasM').classList.add('hide');$('pagoM').classList.add('hide');comuneroM=null;multaSeleccionada=null;await fondos();await cargar()
 }
-async function getAportante(tipo,doc,nombre){
- const {data,error}=await sb.from('aportantes').select('id').eq('tipo',tipo).eq('documento',doc||'').maybeSingle();
- if(error)throw error;if(data)return data.id;
- const ins=await sb.from('aportantes').insert({tipo,documento:doc||null,nombre}).select('id').single();if(ins.error)throw ins.error;return ins.data.id
-}
 $('formEmpresa').onsubmit=async e=>{
- e.preventDefault();const b=$('guardarE');b.disabled=true;b.textContent='Registrando...';
+ e.preventDefault();
+
+ const tipo=$('tipoE').value;
+ const documento=$('docE').value.trim()||null;
+ const nombre=$('nombreE').value.trim();
+ const monto=Number($('montoE').value);
+ const fecha=$('fechaE').value;
+ const fondo=$('fondoE').value;
+ const medio=$('medioE').value;
+ const referencia=$('refE').value.trim()||null;
+ const observacion=$('obsE').value.trim()||null;
+
+ if(!nombre){msg('Debe indicar la razón social o nombre.',true);return}
+ if(!fecha){msg('Debe indicar la fecha.',true);return}
+ if(!monto||monto<=0){msg('El monto debe ser mayor que cero.',true);return}
+
+ const b=$('guardarE');
+ b.disabled=true;
+ b.textContent='Registrando...';
+
  try{
-  const id=await getAportante($('tipoE').value,$('docE').value.trim(),$('nombreE').value.trim());
-  const {error}=await sb.rpc('registrar_aporte',{p_comunero_id:null,p_aportante_id:id,p_monto:Number($('montoE').value),p_fecha:$('fechaE').value,p_fondo:$('fondoE').value,p_medio:$('medioE').value,p_referencia:$('refE').value.trim()||null,p_observacion:$('obsE').value.trim()||null});
-  if(error)throw error;msg('Ingreso de empresa/tercero registrado correctamente.');$('formEmpresa').reset();dates();await fondos();await cargar()
- }catch(e){msg(e.message,true)}finally{b.disabled=false;b.textContent='Registrar ingreso'}
+  const {error}=await sb.rpc('registrar_ingreso_tercero',{
+   p_tipo:tipo,
+   p_documento:documento,
+   p_nombre:nombre,
+   p_monto:monto,
+   p_fecha:fecha,
+   p_fondo:fondo,
+   p_medio:medio,
+   p_referencia:referencia,
+   p_observacion:observacion
+  });
+
+  if(error)throw error;
+
+  msg('Ingreso de empresa/tercero registrado correctamente.');
+  $('formEmpresa').reset();
+  dates();
+  await fondos();
+  await cargar();
+
+ }catch(e){
+  msg('No se pudo registrar el ingreso: '+e.message,true);
+ }finally{
+  b.disabled=false;
+  b.textContent='Registrar ingreso';
+ }
 }
 $('formEgreso').onsubmit=async e=>{
  e.preventDefault();const b=$('guardarG');b.disabled=true;b.textContent='Registrando...';
